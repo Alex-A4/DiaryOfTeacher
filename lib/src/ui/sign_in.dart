@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:diary_of_teacher/src/ui/authentification.dart';
+import 'package:diary_of_teacher/src/ui/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -127,7 +127,7 @@ class _SignInState extends State<SignIn> {
                       if (_formKey.currentState.validate()) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (_)=> Authentification())
+                            builder: (_)=> LogIn())
                         );
                       }
                     },
