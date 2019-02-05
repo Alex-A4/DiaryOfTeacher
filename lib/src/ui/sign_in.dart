@@ -148,36 +148,13 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                  elevation: 5.0,
                   child: Text(
                     'Сохранить',
                     style: TextStyle(fontSize: 20.0),
                   ),
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      //Writing hashcode of password to stores
-                      Firestore.instance
-                          .collection('users')
-                          .document(currentUser.uid)
-                          .updateData({
-                        'passwordHash': _passwordController.text.hashCode
-                      });
-
-                      prefs.setInt(
-                          'passwordHash', _passwordController.text.hashCode);
-
-                      print(
-                          'PasswordHash: ${_passwordController.text.hashCode}');
-
-                      Fluttertoast.showToast(
-                          msg: 'Пароль сохранён',
-                          gravity: ToastGravity.BOTTOM,
-                          textColor: Colors.black);
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => LogIn()));
-                    }
-                  },
+                  onPressed: tryToSave,
                 )
               ],
             ),
@@ -185,6 +162,33 @@ class _SignInState extends State<SignIn> {
         ],
       ),
     );
+  }
+
+  void tryToSave() async {
+    if (_formKey.currentState.validate()) {
+      SharedPreferences prefs =
+      await SharedPreferences.getInstance();
+      //Writing hashcode of password to stores
+      Firestore.instance
+          .collection('users')
+          .document(currentUser.uid)
+          .updateData({
+        'passwordHash': _passwordController.text.hashCode
+      });
+
+      prefs.setInt(
+          'passwordHash', _passwordController.text.hashCode);
+
+      print(
+          'PasswordHash: ${_passwordController.text.hashCode}');
+
+      Fluttertoast.showToast(
+          msg: 'Пароль сохранён',
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.black);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => LogIn()));
+    }
   }
 
   //Screen to sign in with Google
