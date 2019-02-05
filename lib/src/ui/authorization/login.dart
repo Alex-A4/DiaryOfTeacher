@@ -1,6 +1,9 @@
+import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
 import 'package:diary_of_teacher/src/ui/main/welcome_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
@@ -29,6 +32,12 @@ class _LogIn extends State<LogIn> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Вход'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: handleSignOut,
+          )
+        ],
       ),
       body: ListView(
         padding: EdgeInsets.all(32.0),
@@ -54,6 +63,7 @@ class _LogIn extends State<LogIn> {
                     style: TextStyle(
                       fontSize: 20.0,
                       letterSpacing: 5.0,
+                      color: Colors.black,
                     ),
                     controller: _passwordController,
                     obscureText: true,
@@ -100,5 +110,18 @@ class _LogIn extends State<LogIn> {
       Fluttertoast.showToast(msg: 'Пароль неверный');
       _passwordController.clear();
     }
+  }
+
+
+  Future<Null> handleSignOut() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+
+    await FirebaseAuth.instance.signOut();
+    await googleSignIn.disconnect();
+    await googleSignIn.signOut();
+
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => SignIn()),
+            (Route<dynamic> route) => false);
   }
 }
