@@ -1,5 +1,5 @@
-import 'package:diary_of_teacher/src/ui/login.dart';
-import 'package:diary_of_teacher/src/ui/sign_in.dart';
+import 'package:diary_of_teacher/src/ui/authorization/login.dart';
+import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

@@ -1,4 +1,4 @@
-import 'package:diary_of_teacher/src/ui/check_login.dart';
+import 'package:diary_of_teacher/src/ui/authorization/check_login.dart';
 import 'package:flutter/material.dart';
 
 //Start's point of the app
