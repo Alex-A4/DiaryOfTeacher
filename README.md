@@ -1,4 +1,4 @@
-# Application that allows you to keep a diary, especially about students, lessons and more.
+Application that allows teachers to keep a diary, especially about students, lessons and much more.
 
 ## Getting Started
 
