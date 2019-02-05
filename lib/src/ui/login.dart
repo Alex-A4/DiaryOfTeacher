@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class Authentification extends StatefulWidget {
-  _AuthState createState() => _AuthState();
+class LogIn extends StatefulWidget {
+  _LogIn createState() => _LogIn();
 }
 
-class _AuthState extends State<Authentification> {
+class _LogIn extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

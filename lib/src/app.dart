@@ -1,4 +1,4 @@
-import 'package:diary_of_teacher/src/ui/log_in.dart';
+import 'package:diary_of_teacher/src/ui/check_login.dart';
 import 'package:flutter/material.dart';
 
 //Start's point of the app
@@ -9,7 +9,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Diary of teacher',
       theme: theme,
-      home: LogIn(),
+      home: CheckLogin(),
     );
   }
 }
