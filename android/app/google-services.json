@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "265922678061",
+    "firebase_url": "https://diary-of-teacher-46bf7.firebaseio.com",
+    "project_id": "diary-of-teacher-46bf7",
+    "storage_bucket": "diary-of-teacher-46bf7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265922678061:android:1cf5a24aaea45dfd",
+        "android_client_info": {
+          "package_name": "com.alexa4.diary_of_teacher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "265922678061-oe6bvldhiia4ha0kiskec03k5r7pusip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexa4.diary_of_teacher",
+            "certificate_hash": "7521544e172c8c475f946bfe4e3c06a3af77b0ed"
+          }
+        },
+        {
+          "client_id": "265922678061-ndun1t3oq9p05vv5vp2k5id10bujp36r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqCO0OoDwEk9dCT5YIbwMyo3WS0Y8-zVY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "265922678061-ndun1t3oq9p05vv5vp2k5id10bujp36r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
