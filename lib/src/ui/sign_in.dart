@@ -135,6 +135,10 @@ class _SignInState extends State<SignIn> {
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       hintText: 'Введите пароль',
                     ),
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      letterSpacing: 5.0,
+                    ),
                     controller: _passwordController,
                     obscureText: true,
                     keyboardType: TextInputType.number,
