@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/ui/authorization/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -100,12 +101,15 @@ class _PasswordBuilderState extends State<PasswordBuilder> {
       SharedPreferences prefs =
       await SharedPreferences.getInstance();
       //Writing hashcode of password to stores
-      Firestore.instance
-          .collection('users')
-          .document(userID)
-          .updateData({
-        'passwordHash': _passwordController.text.hashCode
-      });
+
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        Firestore.instance
+            .collection('users')
+            .document(userID)
+            .updateData({
+          'passwordHash': _passwordController.text.hashCode
+        });
+      }
 
       prefs.setInt(
           'passwordHash', _passwordController.text.hashCode);

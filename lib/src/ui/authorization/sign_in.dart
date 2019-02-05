@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:connectivity/connectivity.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -23,6 +24,13 @@ class _SignInState extends State<SignIn> {
   bool isLoggedIn = false;
 
   Future<Null> handleSignIn() async {
+    ConnectivityResult res = await Connectivity().checkConnectivity();
+
+    if (res == ConnectivityResult.none) {
+      Fluttertoast.showToast(msg: 'Отсутствует интернет соединение');
+      return;
+    }
+
     prefs = await SharedPreferences.getInstance();
 
     this.setState(() {
@@ -118,6 +126,7 @@ class _SignInState extends State<SignIn> {
                     onPressed: handleSignIn,
                     child: Text('войти с помощью гугл'.toUpperCase()),
                     elevation: 5.0,
+                    color: Color(0xFFFFE4E1),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6.0)),
                   ),
