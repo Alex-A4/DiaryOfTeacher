@@ -1,4 +1,4 @@
-import 'package:diary_of_teacher/src/ui/authentification.dart';
+import 'package:diary_of_teacher/src/ui/login.dart';
 import 'package:diary_of_teacher/src/ui/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,13 +6,13 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 
 // Checks is user already logged in
-class LogIn extends StatefulWidget {
+class CheckLogin extends StatefulWidget {
 
   @override
-  _LogInState createState() => _LogInState();
+  _CheckLoginState createState() => _CheckLoginState();
 }
 
-class _LogInState extends State<LogIn> {
+class _CheckLoginState extends State<CheckLogin> {
   final GoogleSignIn _gsi = GoogleSignIn();
 
   bool isLoggedIn = false;
@@ -44,7 +44,7 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return isLoading ? Container()
-        : isLoggedIn ? Authentification()
+        : isLoggedIn ? LogIn()
         : SignIn();
   }
 }
