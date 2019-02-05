@@ -66,6 +66,7 @@ class _PasswordBuilderState extends State<PasswordBuilder> {
                     style: TextStyle(
                       fontSize: 20.0,
                       letterSpacing: 5.0,
+                      color: Colors.black
                     ),
                     controller: _passwordController,
                     obscureText: true,
@@ -82,6 +83,7 @@ class _PasswordBuilderState extends State<PasswordBuilder> {
                 RaisedButton(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                   elevation: 5.0,
+                  color: Color(0xFFFFE4E1),
                   child: Text(
                     'Сохранить',
                     style: TextStyle(fontSize: 20.0),
