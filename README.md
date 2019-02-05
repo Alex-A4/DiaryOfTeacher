@@ -1,6 +1,4 @@
-# diary_of_teacher
-
-Application that allows you to keep a diary, especially about students, lessons and more.
+# Application that allows you to keep a diary, especially about students, lessons and more.
 
 ## Getting Started
 
