@@ -1,7 +1,7 @@
-import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:diary_of_teacher/src/ui/main/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
   _LogIn createState() => _LogIn();
@@ -41,7 +41,6 @@ class _LogIn extends State<LogIn> {
                 fit: BoxFit.fitHeight,
                 height: 200.0,
               ),
-
               SizedBox(
                 height: 50.0,
               ),
@@ -51,6 +50,10 @@ class _LogIn extends State<LogIn> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       hintText: 'Введите пароль',
+                    ),
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      letterSpacing: 5.0,
                     ),
                     controller: _passwordController,
                     obscureText: true,
@@ -63,6 +66,19 @@ class _LogIn extends State<LogIn> {
                     textAlign: TextAlign.center,
                     maxLength: 6,
                   )),
+              RaisedButton(
+                elevation: 5.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+                color: Color(0xFFFFE4E1),
+                child: Text(
+                  'Проверить',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                onPressed: handleLogin,
+              ),
             ],
           ),
         ],
@@ -70,15 +86,19 @@ class _LogIn extends State<LogIn> {
     );
   }
 
-  Future<Null> handleSignOut() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
+  Future<Null> handleLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    await FirebaseAuth.instance.signOut();
-    await googleSignIn.disconnect();
-    await googleSignIn.signOut();
+    int hash = prefs.getInt('passwordHash');
 
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => SignIn()),
-        (Route<dynamic> route) => false);
+    //If password if correct
+    if (_passwordController.text.hashCode == hash) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => WelcomeScreen(
+              prefs.getString('id'), prefs.getString('photoUrl'))));
+    } else {
+      Fluttertoast.showToast(msg: 'Пароль неверный');
+      _passwordController.clear();
+    }
   }
 }
