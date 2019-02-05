@@ -41,6 +41,10 @@ class _LogIn extends State<LogIn> {
                 fit: BoxFit.fitHeight,
                 height: 200.0,
               ),
+
+              SizedBox(
+                height: 50.0,
+              ),
               Form(
                   key: _formKey,
                   child: TextFormField(
