@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 ///Trying to sign in with google
 ///returns the FirebaseUser if success
 Future<FirebaseUser> handleSignIn() async {
@@ -19,8 +18,6 @@ Future<FirebaseUser> handleSignIn() async {
   //For authentication
   GoogleSignIn _gsi = GoogleSignIn();
   FirebaseAuth _fbAuth = FirebaseAuth.instance;
-
-
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -49,7 +46,6 @@ Future<FirebaseUser> handleSignIn() async {
           .setData({'photoUrl': user.photoUrl, 'id': user.uid});
 
       // Write data to local
-      print('UserId: ${user.uid}\nPhotoUrl: ${user.photoUrl}');
       await prefs.setString('id', user.uid);
       await prefs.setString('photoUrl', user.photoUrl);
     } else {
@@ -64,24 +60,21 @@ Future<FirebaseUser> handleSignIn() async {
   }
 }
 
-
 //Signing out user and clearing password hash
-handleSignOut(BuildContext context) async {
+Future<Null> handleSignOut(BuildContext context) async {
   GoogleSignIn googleSignIn = GoogleSignIn();
 
   await FirebaseAuth.instance.signOut();
   await googleSignIn.disconnect();
   await googleSignIn.signOut();
-  SharedPreferences.getInstance().then((prefs){
+  SharedPreferences.getInstance().then((prefs) {
     prefs.remove('passwordHash');
-  });
-
-  Navigator.of(context).pushAndRemoveUntil(
+  }).then((_) => Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => SignIn()),
-          (Route<dynamic> route) => false);
+      (Route<dynamic> route) => false));
 }
 
-
+//Trying to login by comparing password's hash
 Future<Null> handleLogin(BuildContext context, String password) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -90,9 +83,16 @@ Future<Null> handleLogin(BuildContext context, String password) async {
   //If password if correct
   if (password.hashCode == hash) {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (_) => WelcomeScreen(
-            prefs.getString('id'), prefs.getString('photoUrl'))));
+        builder: (_) =>
+            WelcomeScreen(prefs.getString('id'), prefs.getString('photoUrl'))));
   } else {
     throw 'Пароль неверный';
   }
+}
+
+//Check is password exist
+Future<bool> isPasswordExist() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getInt('passwordHash') != null) return true;
+  return false;
 }
