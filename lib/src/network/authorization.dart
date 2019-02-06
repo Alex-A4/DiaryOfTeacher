@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
+import 'package:diary_of_teacher/src/ui/main/welcome_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 
 ///Trying to sign in with google
@@ -58,5 +61,38 @@ Future<FirebaseUser> handleSignIn() async {
     return user;
   } else {
     throw 'Ошибка входа';
+  }
+}
+
+
+//Signing out user and clearing password hash
+handleSignOut(BuildContext context) async {
+  GoogleSignIn googleSignIn = GoogleSignIn();
+
+  await FirebaseAuth.instance.signOut();
+  await googleSignIn.disconnect();
+  await googleSignIn.signOut();
+  SharedPreferences.getInstance().then((prefs){
+    prefs.remove('passwordHash');
+  });
+
+  Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => SignIn()),
+          (Route<dynamic> route) => false);
+}
+
+
+Future<Null> handleLogin(BuildContext context, String password) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  int hash = prefs.getInt('passwordHash');
+
+  //If password if correct
+  if (password.hashCode == hash) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (_) => WelcomeScreen(
+            prefs.getString('id'), prefs.getString('photoUrl'))));
+  } else {
+    throw 'Пароль неверный';
   }
 }

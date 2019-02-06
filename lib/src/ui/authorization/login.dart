@@ -1,10 +1,6 @@
-import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
-import 'package:diary_of_teacher/src/ui/main/welcome_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:diary_of_teacher/src/network/authorization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
   _LogIn createState() => _LogIn();
@@ -35,7 +31,7 @@ class _LogIn extends State<LogIn> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: handleSignOut,
+            onPressed: handleSignOut(context),
           )
         ],
       ),
@@ -87,7 +83,13 @@ class _LogIn extends State<LogIn> {
                     fontSize: 20,
                   ),
                 ),
-                onPressed: handleLogin,
+                onPressed: (){
+                  handleLogin(context, _passwordController.text)
+                      .catchError((error){
+                        Fluttertoast.showToast(msg: error.toString());
+                        _passwordController.clear();
+                  });
+                },
               ),
             ],
           ),
@@ -96,32 +98,4 @@ class _LogIn extends State<LogIn> {
     );
   }
 
-  Future<Null> handleLogin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    int hash = prefs.getInt('passwordHash');
-
-    //If password if correct
-    if (_passwordController.text.hashCode == hash) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => WelcomeScreen(
-              prefs.getString('id'), prefs.getString('photoUrl'))));
-    } else {
-      Fluttertoast.showToast(msg: 'Пароль неверный');
-      _passwordController.clear();
-    }
-  }
-
-
-  Future<Null> handleSignOut() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-
-    await FirebaseAuth.instance.signOut();
-    await googleSignIn.disconnect();
-    await googleSignIn.signOut();
-
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => SignIn()),
-            (Route<dynamic> route) => false);
-  }
 }
