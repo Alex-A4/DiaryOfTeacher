@@ -2,31 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
-//For authentication
-final GoogleSignIn _gsi = GoogleSignIn();
-final FirebaseAuth _fbAuth = FirebaseAuth.instance;
 
 
 ///Trying to sign in with google
 ///returns the FirebaseUser if success
 Future<FirebaseUser> handleSignIn() async {
   ConnectivityResult res = await Connectivity().checkConnectivity();
-
   if (res == ConnectivityResult.none) {
-    Fluttertoast.showToast(msg: 'Отсутствует интернет соединение');
-    throw 'internet absent';
+    throw 'Отсутствует интернет соединение';
   }
+
+  //For authentication
+  GoogleSignIn _gsi = GoogleSignIn();
+  FirebaseAuth _fbAuth = FirebaseAuth.instance;
+
+
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   GoogleSignInAccount googleUser = await _gsi.signIn();
   //If user not select an account
   if (googleUser == null) {
-    throw 'user not selected';
+    throw 'Аккаунт не выбран';
   }
 
   GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -57,11 +55,8 @@ Future<FirebaseUser> handleSignIn() async {
       await prefs.setString('photoUrl', documents[0]['photoUrl']);
     }
 
-
-    Fluttertoast.showToast(msg: "Sign in success");
     return user;
   } else {
-    Fluttertoast.showToast(msg: "Sign in fail");
-    throw 'wrong authorization';
+    throw 'Ошибка входа';
   }
 }
