@@ -31,7 +31,9 @@ class _LogIn extends State<LogIn> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: handleSignOut(context),
+            onPressed: (){
+              handleSignOut(context);
+            },
           )
         ],
       ),
