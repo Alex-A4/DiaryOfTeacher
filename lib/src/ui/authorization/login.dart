@@ -28,14 +28,6 @@ class _LogIn extends State<LogIn> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Вход'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: (){
-              handleSignOut(context);
-            },
-          )
-        ],
       ),
       body: ListView(
         padding: EdgeInsets.all(32.0),
