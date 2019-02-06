@@ -33,11 +33,8 @@ class _CheckLoginState extends State<CheckLogin> {
     isLoggedIn = await _gsi.isSignedIn();
     if (isLoggedIn)
       setState(() {
+        isLoading = false;
       });
-
-    this.setState(() {
-      isLoading = false;
-    });
   }
 
 
