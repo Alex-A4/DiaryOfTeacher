@@ -1,3 +1,4 @@
+import 'package:diary_of_teacher/src/network/authorization.dart';
 import 'package:diary_of_teacher/src/ui/authorization/login.dart';
 import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +32,14 @@ class _CheckLoginState extends State<CheckLogin> {
     });
 
     isLoggedIn = await _gsi.isSignedIn();
+    isLoggedIn = isLoggedIn && await isPasswordExist();
     if (isLoggedIn)
       setState(() {
-        isLoading = false;
       });
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
 
