@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/ui/main/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +40,7 @@ class MyDrawer extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20.0, bottom: 7.0),
                         child: Text(
                           User.user.userName,
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            letterSpacing: 2.0,
-                          ),
+                          style: theme.textTheme.display1,
                         ),
                       )
                     ],
@@ -53,29 +51,30 @@ class MyDrawer extends StatelessWidget {
             SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[
+                  SizedBox(height: 25.0,),
                   ListTile(
                     leading: Icon(Icons.event),
-                    title: Text('Расписание'),
+                    title: Text('Расписание', style: theme.textTheme.display1),
                     onTap: () {},
                   ),
                   ListTile(
                     leading: Icon(Icons.people),
-                    title: Text('Ученики'),
+                    title: Text('Ученики', style: theme.textTheme.display1),
                     onTap: () {},
                   ),
                   ListTile(
                     leading: Icon(Icons.featured_play_list),
-                    title: Text('Уроки'),
+                    title: Text('Уроки', style: theme.textTheme.display1),
                     onTap: () {},
                   ),
                   ListTile(
                     leading: Icon(Icons.access_time),
-                    title: Text('Перерыв'),
+                    title: Text('Перерыв', style: theme.textTheme.display1),
                     onTap: () {},
                   ),
                   ListTile(
                     leading: Icon(Icons.settings),
-                    title: Text('Настройки'),
+                    title: Text('Настройки', style: theme.textTheme.display1),
                     onTap: () {},
                   ),
                 ],
