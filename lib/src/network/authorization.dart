@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
 import 'package:diary_of_teacher/src/ui/main/welcome_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -39,17 +40,17 @@ Future<FirebaseUser> handleSignIn() async {
         .getDocuments();
     final List<DocumentSnapshot> documents = result.documents;
     if (documents.length == 0) {
+      String userName = user.displayName ?? 'User';
       // Update data to server if new user
       Firestore.instance
           .collection('users')
           .document(user.uid)
-          .setData({'photoUrl': user.photoUrl, 'id': user.uid, 'userName': user.displayName});
+          .setData({'photoUrl': user.photoUrl, 'id': user.uid, 'userName': userName});
 
-      print('UserName: ${user.displayName}');
       // Write data to local
       await prefs.setString('id', user.uid);
       await prefs.setString('photoUrl', user.photoUrl);
-      await prefs.setString('userName', user.displayName);
+      await prefs.setString('userName', userName);
     } else {
       // Write data to local
       await prefs.setString('id', documents[0]['id']);
@@ -85,6 +86,9 @@ Future<Null> handleLogin(BuildContext context, String password) async {
 
   //If password if correct
   if (password.hashCode == hash) {
+    //Building user singleton
+    await User.buildUser();
+
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (_) =>
             WelcomeScreen()));
