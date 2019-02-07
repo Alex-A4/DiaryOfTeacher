@@ -12,7 +12,6 @@ class MyDrawer extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              elevation: 5.0,
               leading: Container(),
               expandedHeight: 150.0,
               flexibleSpace: GestureDetector(
@@ -21,7 +20,8 @@ class MyDrawer extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },
                 child: Material(
-                  color: Color(0xFFFFEFF5),
+                  elevation: 5.0,
+                  color: Theme.of(context).primaryColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
