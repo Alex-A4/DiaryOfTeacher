@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               IconButton(
-                                color: theme.buttonColor,
+                                color: Color(0xFFFFBED0),
                                 icon: Icon(isEditing ? Icons.done : Icons.edit),
                                 onPressed: () {
                                   if (isEditing && complete()) {
