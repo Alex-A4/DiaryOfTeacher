@@ -1,4 +1,5 @@
 import 'package:diary_of_teacher/src/models/user.dart';
+import 'package:diary_of_teacher/src/network/authorization.dart';
 import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
 import 'package:diary_of_teacher/src/ui/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,20 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: User.user.userName);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,47 +37,49 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.exit_to_app),
-              onPressed: handleSignOut,
+              onPressed: (){
+                handleSignOut(context);
+              },
             )
           ],
         ),
-
         drawer: MyDrawer(),
-
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              CachedNetworkImage(
-                imageUrl: User.user.photoUrl,
-                placeholder: Container(
-                    child: CircularProgressIndicator(
-                  backgroundColor: Color(0xFFDFFAF0),
-                )),
-                width: 150.0,
-                fit: BoxFit.fitWidth,
+              Container(
+                height: 200.0,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    Center(
+                      child: CircleAvatar(
+                        backgroundImage:
+                            CachedNetworkImageProvider(User.user.photoUrl),
+                        radius: 100,
+                      ),
+                    ),
+                    Center(
+                      child: IconButton(
+                        onPressed: () {
+                          print('Button tapped');
+                        },
+                        iconSize: 80.0,
+                        color: Colors.white70,
+                        icon: Icon(Icons.camera_alt),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-
-              //Expand column to full size of screen
-              Flexible(
-                fit: FlexFit.tight,
-                child: Container(),
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(hintText: 'Введите имя'),
               ),
             ],
           ),
         ));
-  }
-
-  Future<Null> handleSignOut() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-
-    await FirebaseAuth.instance.signOut();
-    await googleSignIn.disconnect();
-    await googleSignIn.signOut();
-
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => SignIn()),
-        (Route<dynamic> route) => false);
   }
 }
