@@ -71,6 +71,7 @@ class _SignInState extends State<SignIn> {
                     child: Text(
                       'войти с помощью гугл'.toUpperCase(),
                       style: theme.textTheme.body2,
+                      textAlign: TextAlign.center,
                     ),
                     elevation: 5.0,
                     color: theme.buttonColor,
