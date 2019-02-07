@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Добро пожаловать'),
+          title: Text('Мой профиль'),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
