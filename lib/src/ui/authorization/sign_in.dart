@@ -1,3 +1,4 @@
+import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/ui/authorization/password_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,9 +68,12 @@ class _SignInState extends State<SignIn> {
                       });
                       userFuture = handleSignIn();
                     },
-                    child: Text('войти с помощью гугл'.toUpperCase()),
+                    child: Text(
+                      'войти с помощью гугл'.toUpperCase(),
+                      style: theme.textTheme.body2,
+                    ),
                     elevation: 5.0,
-                    color: Color(0xFFFFE4E1),
+                    color: theme.buttonColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6.0)),
                   ),

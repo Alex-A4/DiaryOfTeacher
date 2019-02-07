@@ -1,3 +1,4 @@
+import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/network/authorization.dart';
 import 'package:diary_of_teacher/src/ui/widgets/drawer.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileScreen extends StatefulWidget {
-
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
@@ -91,15 +91,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     textAlign: TextAlign.center,
                                     controller: _controller,
                                     decoration: InputDecoration(
-                                        hintText: 'Введите имя',
-                                        hintStyle: TextStyle(
-                                          color: Color(0xFFFFC4D1),
-                                        )),
-                                    enabled: isEditing,
-                                    style: TextStyle(
-                                      color: Color(0xFFFFC4D1),
-                                      fontSize: 23.0,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 20.0),
+                                      hintText: 'Введите имя',
                                     ),
+                                    enabled: isEditing,
+                                    style: theme.textTheme.body1,
                                     validator: (value) {
                                       if (value.length == 0)
                                         return 'Имя не должно быть пустым';
@@ -108,6 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               IconButton(
+                                color: theme.buttonColor,
                                 icon: Icon(isEditing ? Icons.done : Icons.edit),
                                 onPressed: () {
                                   if (isEditing && complete()) {

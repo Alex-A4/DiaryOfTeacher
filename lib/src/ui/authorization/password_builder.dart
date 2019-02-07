@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/ui/authorization/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -63,11 +64,7 @@ class _PasswordBuilderState extends State<PasswordBuilder> {
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       hintText: 'Введите пароль',
                     ),
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      letterSpacing: 5.0,
-                      color: Colors.black
-                    ),
+                    style: theme.textTheme.body1,
                     controller: _passwordController,
                     obscureText: true,
                     keyboardType: TextInputType.number,
@@ -83,10 +80,10 @@ class _PasswordBuilderState extends State<PasswordBuilder> {
                 RaisedButton(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                   elevation: 5.0,
-                  color: Color(0xFFFFE4E1),
+                  color: theme.buttonColor,
                   child: Text(
                     'Сохранить',
-                    style: TextStyle(fontSize: 20.0),
+                    style: theme.textTheme.body2,
                   ),
                   onPressed: tryToSave,
                 )

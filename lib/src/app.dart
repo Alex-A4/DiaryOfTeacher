@@ -15,6 +15,16 @@ class App extends StatelessWidget {
 }
 
 final theme = ThemeData(
-  primaryColor: Color(0xFFFFF0F5),
+  primaryColor: Color(0xFFFDF0D5),
   accentColor: Color(0xFFFDF5E6),
+  cursorColor: Color(0xFF9FDFDF),
+  textSelectionColor: Color(0xFF9FDFDF),
+  buttonColor: Color(0xFFFFE4E1),
+  hintColor: Colors.black,
+  textTheme: TextTheme(
+    //For TextField
+    body1: TextStyle(color: Colors.black, fontSize: 23.0,letterSpacing: 5.0),
+    //For button's text
+    body2: TextStyle(color: Colors.black, fontSize: 20.0, letterSpacing: 1.0),
+  ),
 );
