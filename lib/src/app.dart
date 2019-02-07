@@ -15,7 +15,7 @@ class App extends StatelessWidget {
 }
 
 final theme = ThemeData(
-  primaryColor: Color(0xFFFDF0D5),
+  primaryColor: Color(0xFFFFDEE0),
   accentColor: Color(0xFFFDF5E6),
   cursorColor: Color(0xFF9FDFDF),
   textSelectionColor: Color(0xFF9FDFDF),
