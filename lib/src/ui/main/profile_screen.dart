@@ -4,13 +4,12 @@ import 'package:diary_of_teacher/src/ui/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class WelcomeScreen extends StatefulWidget {
-  WelcomeScreen();
+class ProfileScreen extends StatefulWidget {
 
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController _controller;
   bool isEditing = false;
   final _key = GlobalKey<FormState>();

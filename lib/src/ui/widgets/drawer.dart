@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
-import 'package:diary_of_teacher/src/ui/main/welcome_screen.dart';
+import 'package:diary_of_teacher/src/ui/main/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -18,7 +18,7 @@ class MyDrawer extends StatelessWidget {
               flexibleSpace: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => WelcomeScreen()));
+                      MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },
                 child: Material(
                   color: Color(0xFFFFEFF5),
