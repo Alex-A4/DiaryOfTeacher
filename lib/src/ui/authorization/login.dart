@@ -72,7 +72,7 @@ class _LogIn extends State<LogIn> {
                     borderRadius: BorderRadius.circular(5.0)),
                 color: Color(0xFFFFE4E1),
                 child: Text(
-                  'Проверить',
+                  'Войти',
                   style: TextStyle(
                     fontSize: 20,
                   ),
