@@ -29,7 +29,7 @@ class MyDrawer extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 40.0,
                           backgroundImage: CachedNetworkImageProvider(
-                            User.getUser().photoUrl,
+                            User.user.photoUrl,
                           ),
                         ),
                         padding: EdgeInsets.only(
@@ -38,7 +38,7 @@ class MyDrawer extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.only(left: 20.0, bottom: 7.0),
                         child: Text(
-                          User.getUser().userName,
+                          User.user.userName,
                           style: TextStyle(
                             fontSize: 20.0,
                             letterSpacing: 2.0,
