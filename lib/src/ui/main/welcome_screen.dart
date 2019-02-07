@@ -1,14 +1,13 @@
+import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/ui/authorization/sign_in.dart';
+import 'package:diary_of_teacher/src/ui/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  final String uid;
-  final String photoUrl;
-
-  WelcomeScreen(this.uid, this.photoUrl);
+  WelcomeScreen();
 
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
@@ -27,13 +26,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             )
           ],
         ),
+
+        drawer: MyDrawer(),
+
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: widget.photoUrl,
+                imageUrl: User.user.photoUrl,
                 placeholder: Container(
                     child: CircularProgressIndicator(
                   backgroundColor: Color(0xFFDFFAF0),
