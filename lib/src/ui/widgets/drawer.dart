@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/ui/main/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
-  final String photoUrl;
-
-  MyDrawer(this.photoUrl);
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -32,7 +29,7 @@ class MyDrawer extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 40.0,
                           backgroundImage: CachedNetworkImageProvider(
-                            photoUrl,
+                            User.getUser().photoUrl,
                           ),
                         ),
                         padding: EdgeInsets.only(
@@ -41,7 +38,7 @@ class MyDrawer extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.only(left: 20.0, bottom: 7.0),
                         child: Text(
-                          'User',
+                          User.getUser().userName,
                           style: TextStyle(
                             fontSize: 20.0,
                             letterSpacing: 2.0,
