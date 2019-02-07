@@ -43,14 +43,17 @@ Future<FirebaseUser> handleSignIn() async {
       Firestore.instance
           .collection('users')
           .document(user.uid)
-          .setData({'photoUrl': user.photoUrl, 'id': user.uid});
+          .setData({'photoUrl': user.photoUrl, 'id': user.uid, 'userName': user.displayName});
 
+      print('UserName: ${user.displayName}');
       // Write data to local
       await prefs.setString('id', user.uid);
       await prefs.setString('photoUrl', user.photoUrl);
+      await prefs.setString('userName', user.displayName);
     } else {
       // Write data to local
       await prefs.setString('id', documents[0]['id']);
+      await prefs.setString('userName', documents[0]['userName']);
       await prefs.setString('photoUrl', documents[0]['photoUrl']);
     }
 
@@ -84,7 +87,7 @@ Future<Null> handleLogin(BuildContext context, String password) async {
   if (password.hashCode == hash) {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (_) =>
-            WelcomeScreen(prefs.getString('id'), prefs.getString('photoUrl'))));
+            WelcomeScreen()));
   } else {
     throw 'Пароль неверный';
   }
