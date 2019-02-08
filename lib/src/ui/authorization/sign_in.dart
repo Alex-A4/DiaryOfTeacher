@@ -11,8 +11,6 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  FirebaseUser currentUser;
-
   Future<FirebaseUser> userFuture;
 
   @override
@@ -27,9 +25,8 @@ class _SignInState extends State<SignIn> {
       future: userFuture,
       builder: (_, snapshot) {
         if (snapshot.hasData) {
-          currentUser = snapshot.data;
           Fluttertoast.showToast(msg: "Вход выполнен успешно");
-          return PasswordBuilder(currentUser.uid);
+          return PasswordBuilder();
         } else if (snapshot.hasError) {
           Fluttertoast.showToast(msg: snapshot.error.toString());
         }
