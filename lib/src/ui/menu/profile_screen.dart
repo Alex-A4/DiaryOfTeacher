@@ -1,7 +1,7 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
-import 'package:diary_of_teacher/src/ui/main/drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )
           ],
         ),
-        drawer: MyDrawer(),
+        drawer: MenuDrawer(),
         body: Container(
             padding: EdgeInsets.symmetric(vertical: 16.0),
             child: ListView(
