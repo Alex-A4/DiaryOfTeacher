@@ -6,6 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
   ///Trying to sign in with google
   ///returns the FirebaseUser if success
   Future<Null> handleSignIn() async {
@@ -15,12 +17,11 @@ class UserRepository {
     }
 
     //For authentication
-    GoogleSignIn _gsi = GoogleSignIn();
     FirebaseAuth _fbAuth = FirebaseAuth.instance;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    GoogleSignInAccount googleUser = await _gsi.signIn();
+    GoogleSignInAccount googleUser = await googleSignIn.signIn();
     //If user not select an account
     if (googleUser == null) {
       throw 'Аккаунт не выбран';
@@ -62,7 +63,6 @@ class UserRepository {
 
 //Signing out user and clearing password hash
   Future<Null> handleSignOut() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
     await FirebaseAuth.instance.signOut();
     await googleSignIn.disconnect();
     await googleSignIn.signOut();
@@ -87,8 +87,7 @@ class UserRepository {
 
 //Check is user logged in by google and password exists
   Future<bool> isLoggedIn() async {
-    final GoogleSignIn _gsi = GoogleSignIn();
-    bool isLoggedIn = await _gsi.isSignedIn();
+    bool isLoggedIn = await googleSignIn.isSignedIn();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getInt('passwordHash') != null && isLoggedIn) return true;
     return false;
