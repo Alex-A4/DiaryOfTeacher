@@ -45,16 +45,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: <Widget>[
                         Container(
                           height: 200.0,
-                          child: Stack(
-                            children: <Widget>[
-                              Center(
-                                child: CircleAvatar(
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      User.user.photoUrl),
-                                  radius: 100,
-                                ),
-                              ),
-                              Center(
+                          child: Center(
+                            child: CircleAvatar(
+                              backgroundImage: CachedNetworkImageProvider(
+                                  User.user.photoUrl),
+                              radius: 100,
+                              child: Center(
                                 child: IconButton(
                                   onPressed: () {
                                     print('Button tapped');
@@ -64,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   icon: Icon(Icons.camera_alt),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         Container(
