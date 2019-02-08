@@ -5,7 +5,6 @@ import 'package:diary_of_teacher/src/ui/authorization/password_builder.dart';
 import 'package:diary_of_teacher/src/ui/menu/menu_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'ui/authorization/sign_in.dart';
 
@@ -51,20 +50,21 @@ class _AppState extends State<App> {
             if (state is AuthenticationStartApp) {
               return Container(color: Colors.white,);
             }
+
             if (state is AuthenticationUninitialized) {
               return SignInScreen();
             }
+
             if (state is AuthenticationAuthenticated) {
               return MenuScreen();
             }
+
             if (state is AuthenticationUnauthenticated) {
               return LogInScreen();
             }
+
             if (state is AuthenticationPassword) {
               return PasswordBuilder();
-            }
-            if (state is AuthenticationError) {
-              Fluttertoast.showToast(msg: state.error);
             }
           },
         ),
