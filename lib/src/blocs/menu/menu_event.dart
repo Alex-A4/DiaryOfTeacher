@@ -3,32 +3,32 @@ import 'package:equatable/equatable.dart';
 
 abstract class MenuEvent extends Equatable{}
 
-class Profile extends MenuEvent {
+class ProfileEvent extends MenuEvent {
   @override
-  String toString() => 'Profile';
+  String toString() => 'ProfileEvent';
 }
 
-class Schedule extends MenuEvent {
+class ScheduleEvent extends MenuEvent {
   @override
-  String toString() => 'Schedule';
+  String toString() => 'ScheduleEvent';
 }
 
-class Students extends MenuEvent {
+class StudentsEvent extends MenuEvent {
   @override
-  String toString() => 'Students';
+  String toString() => 'StudentsEvent';
 }
 
-class Lessons extends MenuEvent {
+class LessonsEvent extends MenuEvent {
   @override
-  String toString() => 'Lessons';
+  String toString() => 'LessonsEvent';
 }
 
-class Timeout extends MenuEvent {
+class TimeoutEvent extends MenuEvent {
   @override
-  String toString() => 'Timeout';
+  String toString() => 'TimeoutEvent';
 }
 
-class Settings extends MenuEvent {
+class SettingsEvent extends MenuEvent {
   @override
-  String toString() => 'Settings';
+  String toString() => 'SettingsEvent';
 }

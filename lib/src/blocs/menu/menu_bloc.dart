@@ -10,32 +10,32 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   Stream<MenuState> mapEventToState(
       MenuState currentState, MenuEvent event) async* {
     //Opening Profile
-    if (event is Profile) {
+    if (event is ProfileEvent) {
       yield ProfileState();
     }
 
     //Opening Schedule
-    if (event is Schedule) {
+    if (event is ScheduleEvent) {
       yield ScheduleState();
     }
 
     //Opening Students
-    if (event is Students) {
+    if (event is StudentsEvent) {
       yield StudentsState();
     }
 
     //Opening Lessons
-    if (event is Lessons) {
+    if (event is LessonsEvent) {
       yield LessonsState();
     }
 
     //Opening Timeout
-    if (event is Timeout) {
+    if (event is TimeoutEvent) {
       yield TimeoutState();
     }
 
     //Opening Settings
-    if (event is Settings) {
+    if (event is SettingsEvent) {
       yield SettingsState();
     }
   }
