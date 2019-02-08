@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/app.dart';
+import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/ui/authorization/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,17 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 //Screen to set password for user
 class PasswordBuilder extends StatefulWidget {
-  final String userID;
-
-  PasswordBuilder(this.userID);
-
-  _PasswordBuilderState createState() => _PasswordBuilderState(userID);
+  _PasswordBuilderState createState() => _PasswordBuilderState();
 }
 
 class _PasswordBuilderState extends State<PasswordBuilder> {
-  final String userID;
-  _PasswordBuilderState(this.userID);
-
   //For building password
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
@@ -104,7 +98,7 @@ class _PasswordBuilderState extends State<PasswordBuilder> {
       if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
         Firestore.instance
             .collection('users')
-            .document(userID)
+            .document(User.user.uid)
             .updateData({
           'passwordHash': _passwordController.text.hashCode
         });
