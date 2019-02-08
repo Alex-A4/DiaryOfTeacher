@@ -1,12 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:diary_of_teacher/src/app.dart';
+import 'package:diary_of_teacher/src/blocs/menu/menu.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
-import 'package:diary_of_teacher/src/ui/main/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyDrawer extends StatelessWidget {
+  MenuBloc menuBloc;
+
   @override
   Widget build(BuildContext context) {
+    menuBloc = BlocProvider.of<MenuBloc>(context);
+
     return Drawer(
       elevation: 5.0,
       child: Scaffold(
@@ -17,10 +22,7 @@ class MyDrawer extends StatelessWidget {
               expandedHeight: 150.0,
               flexibleSpace: GestureDetector(
                 onTap: () {
-                  Windows.moveTo(Window.Profile, context, () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => ProfileScreen()));
-                  });
+                  moveTo(context, ProfileEvent());
                 },
                 child: Material(
                   elevation: 5.0,
@@ -60,40 +62,35 @@ class MyDrawer extends StatelessWidget {
                     leading: Icon(Icons.event),
                     title: Text('Расписание', style: theme.textTheme.display1),
                     onTap: () {
-                      Windows.moveTo(Window.Schedule, context, (){
-                      });
+                      moveTo(context, ScheduleEvent());
                     },
                   ),
                   ListTile(
                     leading: Icon(Icons.people),
                     title: Text('Ученики', style: theme.textTheme.display1),
                     onTap: () {
-                      Windows.moveTo(Window.Schedule, context, (){
-                      });
+                      moveTo(context, StudentsEvent());
                     },
                   ),
                   ListTile(
                     leading: Icon(Icons.featured_play_list),
                     title: Text('Уроки', style: theme.textTheme.display1),
                     onTap: () {
-                      Windows.moveTo(Window.Schedule, context, (){
-                      });
+                      moveTo(context, LessonsEvent());
                     },
                   ),
                   ListTile(
                     leading: Icon(Icons.access_time),
                     title: Text('Перерыв', style: theme.textTheme.display1),
                     onTap: () {
-                      Windows.moveTo(Window.Schedule, context, (){
-                      });
+                      moveTo(context, TimeoutEvent());
                     },
                   ),
                   ListTile(
                     leading: Icon(Icons.settings),
                     title: Text('Настройки', style: theme.textTheme.display1),
                     onTap: () {
-                      Windows.moveTo(Window.Schedule, context, (){
-                      });
+                      moveTo(context, SettingsEvent());
                     },
                   ),
                 ],
@@ -104,45 +101,9 @@ class MyDrawer extends StatelessWidget {
       ),
     );
   }
-}
 
-enum Window {
-  Profile,
-  Schedule,
-  Students,
-  Lessons,
-  Timeout,
-  Settings,
-}
-
-class Windows {
-  Window _currentWindow;
-
-  set currentWindow(Window value) => _currentWindow = value;
-
-  Window get currentWindow => _currentWindow;
-
-  //Singleton instance
-  static Windows _window;
-
-  //Close drawer and move to another window
-  static void moveTo(
-      Window nextWindow, BuildContext context, Function func) async {
-    if (_window == null) {
-      _window = Windows();
-    }
-    _window.currentWindow = nextWindow;
-
-    _closeDrawer(context);
-    //Wait while drawer is not close
-    await Future.delayed(Duration(seconds: 1));
-
-    //If we choose another window then open it
-    if (_window.currentWindow != nextWindow) func();
-  }
-
-  //Close the drawer and go to new screen
-  static void _closeDrawer(context) {
+  void moveTo(context, MenuEvent event) {
     Navigator.of(context).pop();
+    menuBloc.dispatch(event);
   }
 }
