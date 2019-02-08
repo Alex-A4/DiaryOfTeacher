@@ -48,6 +48,9 @@ class _AppState extends State<App> {
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
           bloc: authenticationBloc,
           builder: (BuildContext context, AuthenticationState state) {
+            if (state is AuthenticationStartApp) {
+              return Container(color: Colors.white,);
+            }
             if (state is AuthenticationUninitialized) {
               return SignInScreen();
             }

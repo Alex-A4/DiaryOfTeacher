@@ -3,6 +3,12 @@ import 'package:meta/meta.dart';
 
 abstract class AuthenticationState extends Equatable{}
 
+//When app is loading, hide another UI
+class AuthenticationStartApp extends AuthenticationState {
+  @override
+  String toString() => 'AuthenticationStartApp';
+}
+
 //If user Uninitialized then need to signIn by google
 class AuthenticationUninitialized extends AuthenticationState {
   @override
