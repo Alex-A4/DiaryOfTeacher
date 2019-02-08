@@ -1,43 +1,24 @@
 import 'package:diary_of_teacher/src/app.dart';
-import 'package:diary_of_teacher/src/ui/authorization/password_builder.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import '../../network/authorization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignIn extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
-  Future<FirebaseUser> userFuture;
+class _SignInState extends State<SignInScreen> {
+  AuthenticationBloc _authenticationBloc;
 
   @override
   void initState() {
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     super.initState();
-    userFuture = null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<FirebaseUser>(
-      future: userFuture,
-      builder: (_, snapshot) {
-        if (snapshot.hasData) {
-          Fluttertoast.showToast(msg: "Вход выполнен успешно");
-          return PasswordBuilder();
-        } else if (snapshot.hasError) {
-          Fluttertoast.showToast(msg: snapshot.error.toString());
-        }
-
-        return getSignIn();
-      },
-    );
-  }
-
-  //Screen to sign in with Google
-  Widget getSignIn() {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -61,9 +42,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   RaisedButton(
                     onPressed: () {
-                      setState(() {
-                      });
-                      userFuture = handleSignIn();
+                      _authenticationBloc.dispatch(SignIn());
                     },
                     child: Text(
                       'войти с помощью гугл'.toUpperCase(),

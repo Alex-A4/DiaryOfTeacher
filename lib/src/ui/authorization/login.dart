@@ -1,20 +1,22 @@
 import 'package:diary_of_teacher/src/app.dart';
-import 'package:diary_of_teacher/src/network/authorization.dart';
+import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LogIn extends StatefulWidget {
+class LogInScreen extends StatefulWidget {
   _LogIn createState() => _LogIn();
 }
 
-class _LogIn extends State<LogIn> {
+class _LogIn extends State<LogInScreen> {
   final _formKey = GlobalKey<FormState>();
   var _passwordController;
+  AuthenticationBloc _authenticationBloc;
 
   @override
   void initState() {
-    super.initState();
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     _passwordController = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -73,11 +75,10 @@ class _LogIn extends State<LogIn> {
                   style: theme.textTheme.body2,
                 ),
                 onPressed: (){
-                  handleLogin(context, _passwordController.text)
-                      .catchError((error){
-                        Fluttertoast.showToast(msg: error.toString());
-                        _passwordController.clear();
-                  });
+                  if (_formKey.currentState.validate()) {
+                    _authenticationBloc.dispatch(LogIn(_passwordController.text));
+                  }
+                  _passwordController.clear();
                 },
               ),
             ],
