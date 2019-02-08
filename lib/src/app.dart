@@ -2,7 +2,7 @@ import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
 import 'package:diary_of_teacher/src/ui/authorization/login.dart';
 import 'package:diary_of_teacher/src/ui/authorization/password_builder.dart';
-import 'package:diary_of_teacher/src/ui/main/profile_screen.dart';
+import 'package:diary_of_teacher/src/ui/main/menu_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -55,7 +55,7 @@ class _AppState extends State<App> {
               return SignInScreen();
             }
             if (state is AuthenticationAuthenticated) {
-              return ProfileScreen();
+              return MenuScreen();
             }
             if (state is AuthenticationUnauthenticated) {
               return LogInScreen();
