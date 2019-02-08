@@ -27,6 +27,15 @@ class SignOut extends AuthenticationEvent {
   String toString() => 'LoggedOut';
 }
 
+class PasswordEvent extends AuthenticationEvent {
+  final String password;
+
+  PasswordEvent(this.password);
+
+  @override
+  String toString() => 'PasswordBuilder';
+}
+
 //Call when user is trying to sign in
 class SignIn extends AuthenticationEvent {
   @override

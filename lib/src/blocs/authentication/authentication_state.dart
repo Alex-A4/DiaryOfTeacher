@@ -23,12 +23,11 @@ class AuthenticationUnauthenticated extends AuthenticationState {
   String toString() => 'AuthenticationUnauthenticated';
 }
 
-//If Loading then need show CircularIndicator
-class AuthenticationLoading extends AuthenticationState {
-  @override
-  String toString() => 'AuthenticationLoading';
-}
+class AuthenticationPassword extends AuthenticationState {
 
+  @override
+  String toString() => 'AuthenticationPasswordBuilder';
+}
 
 //If Error happens then need to show FlutterToast
 class AuthenticationError extends AuthenticationState {

@@ -1,19 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
+import 'package:meta/meta.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserRepository userRepository;
 
-  AuthenticationBloc(this.userRepository);
+  AuthenticationBloc({@required this.userRepository})
+      : assert(userRepository != null);
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
 
   @override
   Stream<AuthenticationState> mapEventToState(
-      AuthenticationState currentState, AuthenticationEvent event) async*{
+      AuthenticationState currentState, AuthenticationEvent event) async* {
     if (event is AppStarted) {
       bool isLogged = await userRepository.isLoggedIn();
 
@@ -30,10 +32,17 @@ class AuthenticationBloc
     if (event is SignIn) {
       try {
         await userRepository.handleSignIn();
-        yield AuthenticationUnauthenticated();
-      } catch(error){
+        yield AuthenticationPassword();
+      } catch (error) {
         yield AuthenticationError(error);
+        yield AuthenticationUninitialized();
       }
+    }
+
+    //Trying to create password
+    if (event is PasswordEvent) {
+      await userRepository.savePassword(event.password);
+      yield AuthenticationUnauthenticated();
     }
 
     //If user trying to log in
@@ -41,8 +50,9 @@ class AuthenticationBloc
       try {
         await userRepository.handleLogin(event.password);
         yield AuthenticationAuthenticated();
-      } catch(error) {
+      } catch (error) {
         yield AuthenticationError(error);
+        yield AuthenticationUnauthenticated();
       }
     }
 
