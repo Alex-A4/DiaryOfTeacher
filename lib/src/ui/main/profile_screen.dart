@@ -1,9 +1,10 @@
 import 'package:diary_of_teacher/src/app.dart';
+import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
-import 'package:diary_of_teacher/src/network/authorization.dart';
 import 'package:diary_of_teacher/src/ui/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -14,9 +15,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isEditing = false;
   final _key = GlobalKey<FormState>();
   FocusNode _focus = FocusNode();
+  AuthenticationBloc _authenticationBloc;
 
   @override
   void initState() {
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     super.initState();
     _controller = TextEditingController(text: User.user.userName);
   }
@@ -37,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
-                handleSignOut(context);
+                _authenticationBloc.dispatch(SignOut());
               },
             )
           ],
