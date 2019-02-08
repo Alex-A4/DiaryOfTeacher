@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 
 class AuthenticationBloc
@@ -33,9 +34,10 @@ class AuthenticationBloc
       try {
         await userRepository.handleSignIn();
         yield AuthenticationPassword();
+        showMessage('Вход выполнен');
       } catch (error) {
-        yield AuthenticationError(error);
         yield AuthenticationUninitialized();
+        showMessage(error.toString());
       }
     }
 
@@ -51,8 +53,8 @@ class AuthenticationBloc
         await userRepository.handleLogin(event.password);
         yield AuthenticationAuthenticated();
       } catch (error) {
-        yield AuthenticationError(error);
         yield AuthenticationUnauthenticated();
+        showMessage(error.toString());
       }
     }
 
@@ -61,5 +63,9 @@ class AuthenticationBloc
       await userRepository.handleSignOut();
       yield AuthenticationUninitialized();
     }
+  }
+
+  void showMessage(String error) {
+    Fluttertoast.showToast(msg: error, gravity: ToastGravity.BOTTOM);
   }
 }

@@ -34,13 +34,3 @@ class AuthenticationPassword extends AuthenticationState {
   @override
   String toString() => 'AuthenticationPasswordBuilder';
 }
-
-//If Error happens then need to show FlutterToast
-class AuthenticationError extends AuthenticationState {
-  final String error;
-
-  AuthenticationError(@required this.error);
-
-  @override
-  String toString() => 'AuthenticationError $error';
-}
