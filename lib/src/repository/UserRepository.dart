@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserRepository {
   ///Trying to sign in with google
   ///returns the FirebaseUser if success
-  Future<FirebaseUser> handleSignIn() async {
+  Future<Null> handleSignIn() async {
     ConnectivityResult res = await Connectivity().checkConnectivity();
     if (res == ConnectivityResult.none) {
       throw 'Отсутствует интернет соединение';
@@ -44,10 +44,8 @@ class UserRepository {
       if (documents.length == 0) {
         String userName = user.displayName ?? 'User';
         // Update data to server if new user
-        Firestore.instance
-            .collection('users')
-            .document(user.uid)
-            .setData({'photoUrl': user.photoUrl, 'id': user.uid, 'userName': userName});
+        Firestore.instance.collection('users').document(user.uid).setData(
+            {'photoUrl': user.photoUrl, 'id': user.uid, 'userName': userName});
 
         // Write data to local
         await prefs.setString('id', user.uid);
@@ -60,7 +58,7 @@ class UserRepository {
         await prefs.setString('photoUrl', documents[0]['photoUrl']);
       }
 
-      return user;
+      return;
     } else {
       throw 'Ошибка входа';
     }
@@ -69,17 +67,11 @@ class UserRepository {
 //Signing out user and clearing password hash
   Future<Null> handleSignOut() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
-
     await FirebaseAuth.instance.signOut();
     await googleSignIn.disconnect();
     await googleSignIn.signOut();
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.remove('passwordHash');
-    });
-    //TODO: replace this logic to AuthBloc
-    //.then((_) => Navigator.of(context).pushAndRemoveUntil(
-//        MaterialPageRoute(builder: (context) => SignIn()),
-//            (Route<dynamic> route) => false));
+    var prefs = await SharedPreferences.getInstance();
+    prefs.remove('passwordHash');
   }
 
 //Trying to login by comparing password's hash
@@ -88,15 +80,10 @@ class UserRepository {
 
     int hash = prefs.getInt('passwordHash');
 
-    //If password if correct
+    //If password is correct
     if (password.hashCode == hash) {
       //Building user singleton
       await User.buildUser();
-
-      //TODO: replace this logic to AuthBloc
-//      Navigator.of(context).pushReplacement(MaterialPageRoute(
-//          builder: (_) =>
-//              ProfileScreen()));
     } else {
       throw 'Пароль неверный';
     }
@@ -111,4 +98,17 @@ class UserRepository {
     return false;
   }
 
+  Future<Null> savePassword(String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Writing hashcode of password to stores
+
+    if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+      Firestore.instance
+          .collection('users')
+          .document(prefs.getString('id'))
+          .updateData({'passwordHash': password.hashCode});
+    }
+
+    prefs.setInt('passwordHash', password.hashCode);
+  }
 }
