@@ -12,19 +12,7 @@ class StudentsRepository {
 
   //Singleton instance of repository
   static StudentsRepository _studentsRepository;
-
-  //TODO: delete temp lists
-  static final List<Student> tempStud = [
-    Student(fio: 'Alex Adrianov', studyingSince: DateTime.now()),
-    Student(fio: 'Nikita Dmitriev', studyingSince: DateTime.now()),
-    Student(fio: 'Alla Manakhova', studyingSince: DateTime(2016, 9, 5)),
-  ];
-
-  final List<Group> tempGr = [
-    Group('IT-22', students: [tempStud[0], tempStud[1]]),
-    Group('IVT-31', students: [tempStud[2]]),
-  ];
-
+  
   List<Group> _groups = [];
 
   List<Group> get groups => _groups;
