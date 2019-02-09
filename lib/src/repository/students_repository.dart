@@ -21,13 +21,16 @@ class StudentsRepository {
   List<Student> get students => _students;
 
   //Getting instance of repository
-  static Future<StudentsRepository> getInstance() async {
+  static StudentsRepository getInstance() {
+    return _studentsRepository;
+  }
+
+  //Building repository after the login
+  static Future buildRepo() async {
     if (_studentsRepository == null) {
       _studentsRepository = StudentsRepository._();
       await _studentsRepository._fromCache();
     }
-
-    return _studentsRepository;
   }
   StudentsRepository._();
 
