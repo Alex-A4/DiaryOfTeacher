@@ -92,5 +92,6 @@ final theme = ThemeData(
         TextStyle(color: Colors.black, fontSize: 18.0, letterSpacing: 0.0),
     //For text in ListTile
     display2: TextStyle(color: Colors.black, fontSize: 17.0),
+    display3: TextStyle(color: Colors.black54, fontSize: 14.0, letterSpacing: 0.0),
   ),
 );
