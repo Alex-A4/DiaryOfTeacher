@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
+import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 
@@ -51,6 +52,7 @@ class AuthenticationBloc
     if (event is LogIn) {
       try {
         await userRepository.handleLogin(event.password);
+        await StudentsRepository.buildRepo();
         yield AuthenticationAuthenticated();
       } catch (error) {
         yield AuthenticationUnauthenticated();
