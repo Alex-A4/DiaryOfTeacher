@@ -16,8 +16,6 @@ class UserRepository {
       throw 'Отсутствует интернет соединение';
     }
 
-    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
-
     //For authentication
     FirebaseAuth _fbAuth = FirebaseAuth.instance;
 
@@ -30,8 +28,11 @@ class UserRepository {
     }
 
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    FirebaseUser user = await _fbAuth.signInWithGoogle(
-        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    FirebaseUser user = await _fbAuth.signInWithCredential(credential);
 
     if (user != null) {
       // Check is already signed up
@@ -74,8 +75,6 @@ class UserRepository {
 
 //Trying to login by comparing password's hash
   Future<Null> handleLogin(String password) async {
-    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     int hash = prefs.getInt('passwordHash');
