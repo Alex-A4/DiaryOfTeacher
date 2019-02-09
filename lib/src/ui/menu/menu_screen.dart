@@ -20,7 +20,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     _menuBloc = MenuBloc();
-    _menuBloc.dispatch(ProfileEvent());
+    _menuBloc.dispatch(LoadingEvent());
     super.initState();
   }
 
@@ -38,6 +38,14 @@ class _MenuScreenState extends State<MenuScreen> {
       child: BlocBuilder(
         bloc: _menuBloc,
         builder: (context, MenuState state) {
+          if (state is LoadingState) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
           if (state is ProfileState) {
             return ProfileScreen();
           }
