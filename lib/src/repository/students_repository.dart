@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
+import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/student.dart';
 import 'dart:convert' show JsonCodec;
 
-
 class StudentsRepository {
   //Instance of Json codec
   static JsonCodec _decoder = JsonCodec();
+
   //Singleton instance of repository
   static StudentsRepository _studentsRepository;
 
@@ -18,15 +21,16 @@ class StudentsRepository {
   ];
 
   final List<Group> tempGr = [
-    Group('IT-22', students: [tempStud[0], tempStud[1]]), Group('IVT-31', students: [tempStud[2]]),
+    Group('IT-22', students: [tempStud[0], tempStud[1]]),
+    Group('IVT-31', students: [tempStud[2]]),
   ];
 
   List<Group> _groups = [];
-  static List<Group> get groups => _studentsRepository._groups;
+
+  List<Group> get groups => _groups;
   List<Student> _students = [];
-  static List<Student> get students => _studentsRepository._students;
 
-
+  List<Student> get students => _students;
 
   //Getting instance of repository
   static Future<StudentsRepository> getInstance() async {
@@ -38,20 +42,17 @@ class StudentsRepository {
     return _studentsRepository;
   }
 
-
   //Read data from cache
   Future _fromCache() async {
     SharedPreferences cache = await SharedPreferences.getInstance();
     //Reading groups from cache
     String groupsRaw = cache.getString('groups');
     print('GROUPS RAW: ${groupsRaw}');
-    if (groupsRaw!= null && groupsRaw.compareTo('[]') != 0){
+    if (groupsRaw != null && groupsRaw.compareTo('[]') != 0) {
       List<dynamic> groups = _decoder.decode(groupsRaw);
       _groups = groups.map((data) => Group.fromJson(data)).toList();
-    }
-    else
+    } else
       _groups = [];
-
 
     //Reading students from cache
     String studentsRaw = cache.getString('students');
@@ -59,53 +60,68 @@ class StudentsRepository {
     if (studentsRaw != null && studentsRaw.compareTo('[]') != 0) {
       List<dynamic> students = _decoder.decode(studentsRaw);
       _students = students.map((data) => Student.fromJson(data)).toList();
-    }
-    else
+    } else
       _students = [];
-
 
     //Distribute students by groups
     _students.forEach((student) {
       _groups.forEach((group) {
-            //If student from that group then move it here
-            if (group.groupId.compareTo(student.groupId) == 0) {
-              group.addStudentToGroup(student);
-              return;
-            }
-          });
+        //If student from that group then move it here
+        if (group.groupId.compareTo(student.groupId) == 0) {
+          group.addStudentToGroup(student);
+          return;
+        }
+      });
     });
 
     print('GROUPS LENGTH: ${_groups.length}');
     print('STUDENTS LENGTH: ${_students.length}');
   }
 
-
   //Saving all data to cache as SharedPreferences
   Future saveToCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Saving groups
+    List<dynamic> groups = convertGroupsToJson();
+    await prefs.setString('groups', _decoder.encode(groups));
 
-    String groups = convertGroupsToJson();
-    await prefs.setString('groups', groups);
-
-    String students = convertStudentsToJson();
-    await prefs.setString('students', students);
+    //Saving students
+    List<dynamic> students = convertStudentsToJson();
+    await prefs.setString('students', _decoder.encode(students));
   }
 
   //Converting list of students to Json string
-  String convertStudentsToJson() {
+  List<dynamic> convertStudentsToJson() {
     List<Map<String, dynamic>> studentsList = [];
     _students.forEach((student) => studentsList.add(student.toJson()));
-
-    return _decoder.encode(studentsList);
+    return studentsList;
   }
-
 
   //Converting list of groups to Json string
-  String convertGroupsToJson() {
+  List<dynamic> convertGroupsToJson() {
     List<Map<String, dynamic>> groupsList = [];
     _groups.forEach((group) => groupsList.add(group.toJson()));
+    return groupsList;
+  }
 
-    return _decoder.encode(groupsList);
+  //Saving data to cloud Firebase
+  Future saveToFirebase() async {
+    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    //Saving groups
+    List<dynamic> groups = convertGroupsToJson();
+    await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .updateData({'groups': groups});
+
+    //Saving students
+    List<dynamic> students = convertStudentsToJson();
+    await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .updateData({'students': students});
   }
 }
-
