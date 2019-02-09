@@ -27,7 +27,7 @@ class _StudentsState extends State<StudentsScreen> {
                 Fluttertoast.showToast(msg: error);
               });
             },
-            icon: Icon(Icons.save_alt),
+            icon: Icon(Icons.cloud_upload),
             tooltip: 'Сохранить на диск',
           ),
         ],
