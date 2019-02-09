@@ -3,6 +3,11 @@ import 'package:equatable/equatable.dart';
 
 abstract class MenuState extends Equatable{}
 
+class LoadingState extends MenuState {
+  @override
+  String toString() => 'LoadingState';
+}
+
 class ProfileState extends MenuState {
   @override
   String toString() => 'ProfileState';

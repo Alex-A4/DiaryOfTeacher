@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'menu.dart';
 
@@ -9,6 +10,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   @override
   Stream<MenuState> mapEventToState(
       MenuState currentState, MenuEvent event) async* {
+    if (event is LoadingEvent) {
+      await StudentsRepository.buildRepo();
+      yield ProfileState();
+    }
+
     //Opening Profile
     if (event is ProfileEvent) {
       yield ProfileState();

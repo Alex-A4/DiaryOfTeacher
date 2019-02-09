@@ -3,6 +3,12 @@ import 'package:equatable/equatable.dart';
 
 abstract class MenuEvent extends Equatable{}
 
+class LoadingEvent extends MenuEvent {
+
+  @override
+  String toString() => 'LoadingEvent';
+}
+
 class ProfileEvent extends MenuEvent {
   @override
   String toString() => 'ProfileEvent';
