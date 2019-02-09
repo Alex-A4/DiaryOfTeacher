@@ -52,11 +52,19 @@ class MenuDrawer extends StatelessWidget {
                 ),
               ),
             ),
+
             SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[
+                  Container(
+                    height: 30.0,
+                    child: Image.asset(
+                      'assets/images/sheepTP.png',
+                      repeat: ImageRepeat.repeat,
+                    ),
+                  ),
                   SizedBox(
-                    height: 25.0,
+                    height: 30.0,
                   ),
                   ListTile(
                     leading: Icon(Icons.event),
