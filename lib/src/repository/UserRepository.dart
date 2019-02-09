@@ -16,6 +16,8 @@ class UserRepository {
       throw 'Отсутствует интернет соединение';
     }
 
+    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
+
     //For authentication
     FirebaseAuth _fbAuth = FirebaseAuth.instance;
 
@@ -72,6 +74,8 @@ class UserRepository {
 
 //Trying to login by comparing password's hash
   Future<Null> handleLogin(String password) async {
+    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     int hash = prefs.getInt('passwordHash');
