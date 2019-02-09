@@ -88,6 +88,7 @@ class StudentsRepository {
     //Saving students
     List<dynamic> students = convertStudentsToJson();
     await prefs.setString('students', _decoder.encode(students));
+    print('Cache saved!');
   }
 
   //Converting list of students to Json string
@@ -123,5 +124,6 @@ class StudentsRepository {
         .collection('users')
         .document(User.user.uid)
         .updateData({'students': students});
+    print('Firebase saved');
   }
 }
