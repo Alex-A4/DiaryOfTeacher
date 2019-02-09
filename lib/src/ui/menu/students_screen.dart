@@ -20,10 +20,10 @@ class _StudentsState extends State<StudentsScreen> {
         title: Text('Ученики'),
         actions: <Widget>[
           IconButton(
-            onPressed: (){
-              _controller.saveDataToFirebase().then((_){
+            onPressed: () {
+              _controller.saveDataToFirebase().then((_) {
                 Fluttertoast.showToast(msg: 'Данные сохранены');
-              }).catchError((error){
+              }).catchError((error) {
                 Fluttertoast.showToast(msg: error);
               });
             },
@@ -55,14 +55,33 @@ class _StudentsState extends State<StudentsScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 IconButton(
+                  tooltip: 'В архив',
                   icon: Icon(Icons.archive),
                   onPressed: () {
+                    acceptAction('Добавить в архив?',
+                        'Вы действительно хотите добавиь ученика в архив?',
+                        () {
+                      _controller.archiveStudent(student).then((_) {
+                        Fluttertoast.showToast(msg: 'Ученик добавлен у архив');
+                        setState(() {});
+                      }).catchError(
+                          (error) => Fluttertoast.showToast(msg: error));
+                    });
                     print('ArchivePressed');
                   },
                 ),
                 IconButton(
+                  tooltip: 'Удалить',
                   icon: Icon(Icons.delete),
                   onPressed: () {
+                    acceptAction('Удалить?',
+                        'Вы действительно хотите удалить этого ученика безвозвратно?', () {
+                      _controller.deleteStudent(student).then((_) {
+                        Fluttertoast.showToast(msg: 'Ученик удален');
+                        setState(() {});
+                      }).catchError(
+                          (error) => Fluttertoast.showToast(msg: error));
+                    });
                     print('Deleted pressed');
                   },
                 ),
@@ -75,11 +94,41 @@ class _StudentsState extends State<StudentsScreen> {
       drawer: MenuDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          _controller.addNewStudent(Student(fio: 'Пупкин Вася Игоревич'));
+          setState(() {});
           print('ADD FAB');
         },
         tooltip: 'Добавить ученика',
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  void acceptAction(String title, String text, Function func) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            title: Text(title),
+            content: Text(text),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Отменить', style: theme.textTheme.body2,),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Принять', style: theme.textTheme.body2,),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  func();
+                },
+              ),
+            ],
+          );
+        });
   }
 }
