@@ -18,8 +18,17 @@ class StudentsRepository {
   static StudentsRepository _studentsRepository;
 
   List<Group> _groups = [];
-
   List<Group> get groups => _groups;
+  Group getGroupById(String id) {
+    Group group;
+    groups.forEach((gr) {
+      if (gr.groupId.compareTo(id) == 0)
+        group = gr;
+    });
+
+    return group;
+  }
+
   List<Student> _students = [];
 
   List<Student> get students => _students;
@@ -124,5 +133,24 @@ class StudentsRepository {
         .updateData({'students': students});
 
     print('Firebase saved');
+  }
+
+  //Add new user to list
+  void addNewStudent(Student student) {
+    _students.add(student);
+  }
+
+  //Delete user from cache and Firebase
+  //Cache will update after dispose menu screen
+  Future deleteStudent(Student student) async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    if (student.groupId != null)
+      getGroupById(student.groupId)?.removeStudentFromGroup(student);
+
+    _students.remove(student);
+
+    await saveToFirebase();
   }
 }

@@ -3,8 +3,6 @@ import 'package:diary_of_teacher/src/models/student.dart';
 
 import '../repository/students_repository.dart';
 
-
-
 //Controller of students
 //Uses in sense of Controller in MVC
 //Needs to flow data between [StudentsRepository] and view
@@ -23,7 +21,6 @@ class StudentsController {
 
   StudentsController._(this._repository);
 
-
   List<Student> get listOfStudents => _repository.students;
 
   List<Group> get listOfGroups => _repository.groups;
@@ -31,9 +28,11 @@ class StudentsController {
   //Getting group name by input id
   String getGroupNameById(String groupId) {
     String name = '';
-    listOfGroups.forEach((group){
-      if (group.groupId.compareTo(groupId) == 0)
-        name = group.name;
+
+    if (groupId == null) return name;
+
+    listOfGroups.forEach((group) {
+      if (group.groupId.compareTo(groupId) == 0) name = group.name;
     });
 
     return name;
@@ -41,9 +40,27 @@ class StudentsController {
 
   //Saving data to Firebase
   Future<bool> saveDataToFirebase() async {
-    await _repository.saveToFirebase().catchError((error){
+    await _repository.saveToFirebase().catchError((error) {
       throw error;
     });
     return true;
+  }
+
+  //Add new user to repository
+  void addNewStudent(Student student) {
+    _repository.addNewStudent(student);
+  }
+
+  //Deleting user from repository
+  Future deleteStudent(Student student) async {
+    print('DELETING STARTED');
+    await _repository
+        .deleteStudent(student)
+        .catchError((error) => throw error);
+  }
+
+  //Add student to archive in firebase
+  Future archiveStudent(student) async {
+    print('ARCHIVE STARTED');
   }
 }
