@@ -44,7 +44,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   @override
   Stream<MenuEvent> transform(Stream<MenuEvent> events) {
     return (events as Observable<MenuEvent>)
-        .debounce(Duration(milliseconds: 500));
+        .debounce(Duration(milliseconds: 300));
   }
 
   //Writing transition to console
