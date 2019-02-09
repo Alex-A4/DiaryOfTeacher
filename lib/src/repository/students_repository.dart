@@ -111,6 +111,8 @@ class StudentsRepository {
     if (connectivity == ConnectivityResult.none)
       throw 'Отсутствует интернет соединение';
 
+    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
+
     //Saving groups
     List<dynamic> groups = convertGroupsToJson();
     await Firestore.instance
@@ -124,6 +126,7 @@ class StudentsRepository {
         .collection('users')
         .document(User.user.uid)
         .updateData({'students': students});
+
     print('Firebase saved');
   }
 }
