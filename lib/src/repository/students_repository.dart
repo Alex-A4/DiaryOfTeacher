@@ -6,6 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/student.dart';
 import 'dart:convert' show JsonCodec;
 
+
+//Repository of students and groups
+//Uses in the sense of Model in MVC
+//Returns data by requests and handle it
 class StudentsRepository {
   //Instance of Json codec
   static JsonCodec _decoder = JsonCodec();

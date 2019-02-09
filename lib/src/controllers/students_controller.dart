@@ -3,6 +3,12 @@ import 'package:diary_of_teacher/src/models/student.dart';
 
 import '../repository/students_repository.dart';
 
+
+
+//Controller of students
+//Uses in sense of Controller in MVC
+//Needs to flow data between [StudentsRepository] and view
+// with the help of callbacks
 class StudentsController {
   static StudentsController _controller;
   StudentsRepository _repository;
