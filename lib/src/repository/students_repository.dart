@@ -12,7 +12,7 @@ class StudentsRepository {
 
   //Singleton instance of repository
   static StudentsRepository _studentsRepository;
-  
+
   List<Group> _groups = [];
 
   List<Group> get groups => _groups;
@@ -23,12 +23,13 @@ class StudentsRepository {
   //Getting instance of repository
   static Future<StudentsRepository> getInstance() async {
     if (_studentsRepository == null) {
-      _studentsRepository = StudentsRepository();
+      _studentsRepository = StudentsRepository._();
       await _studentsRepository._fromCache();
     }
 
     return _studentsRepository;
   }
+  StudentsRepository._();
 
   //Read data from cache
   Future _fromCache() async {
