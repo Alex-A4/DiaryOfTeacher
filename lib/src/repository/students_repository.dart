@@ -22,10 +22,10 @@ class StudentsRepository {
   ];
 
   List<Group> _groups = [];
-  List<Group> get groups => _groups;
-
+  static List<Group> get groups => _studentsRepository._groups;
   List<Student> _students = [];
-  List<Student> get students => _students;
+  static List<Student> get students => _studentsRepository._students;
+
 
 
   //Getting instance of repository
