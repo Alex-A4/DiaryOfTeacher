@@ -21,7 +21,7 @@ class _StudentsState extends State<StudentsScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: (){
-              _controller.saveData().then((_){
+              _controller.saveDataToFirebase().then((_){
                 Fluttertoast.showToast(msg: 'Данные сохранены');
               }).catchError((error){
                 Fluttertoast.showToast(msg: error);

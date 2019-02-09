@@ -40,7 +40,7 @@ class StudentsController {
   }
 
   //Saving data to Firebase
-  Future<bool> saveData() async {
+  Future<bool> saveDataToFirebase() async {
     await _repository.saveToFirebase().catchError((error){
       throw error;
     });
