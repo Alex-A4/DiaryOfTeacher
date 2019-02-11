@@ -6,7 +6,7 @@ class StudentEditor extends StatefulWidget {
  final bool isEditing;
  final Student student;
 
- StudentEditor({Key key, this.isEditing, this.student = null}):super(key: key);
+ StudentEditor({Key key, this.isEditing, this.student}):super(key: key);
 
  _StudentEditorState createState() => _StudentEditorState(isEditing);
 }
@@ -14,7 +14,7 @@ class StudentEditor extends StatefulWidget {
 class _StudentEditorState extends State<StudentEditor> {
   bool _isEditing;
   bool isLoading = false;
-  PageStorageKey key = PageStorageKey();
+  PageStorageKey key = PageStorageKey('StudentKey');
 
   _StudentEditorState(this._isEditing);
 
