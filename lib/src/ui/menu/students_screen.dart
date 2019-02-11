@@ -67,7 +67,6 @@ class _StudentsState extends State<StudentsScreen> {
                       }).catchError(
                           (error) => Fluttertoast.showToast(msg: error));
                     });
-                    print('ArchivePressed');
                   },
                 ),
                 IconButton(
@@ -82,7 +81,6 @@ class _StudentsState extends State<StudentsScreen> {
                       }).catchError(
                           (error) => Fluttertoast.showToast(msg: error));
                     });
-                    print('Deleted pressed');
                   },
                 ),
               ],
