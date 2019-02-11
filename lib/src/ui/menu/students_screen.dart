@@ -41,6 +41,9 @@ class _StudentsState extends State<StudentsScreen> {
           Student student = _controller.listOfStudents[index];
 
           return ListTile(
+            onTap: () {
+              _openStudentEditor(context, false, student: student);
+            },
             leading: CircleAvatar(
               backgroundImage: CachedNetworkImageProvider(student.photoUrl),
             ),
@@ -103,12 +106,14 @@ class _StudentsState extends State<StudentsScreen> {
     );
   }
 
-
   //Open editor to add new student
   //Pass isEditing to allow editing for now
-  _openStudentEditor(context, bool isEdit) async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => StudentEditor(isEditing: true,)));
+  _openStudentEditor(context, bool isEdit, {Student student}) async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => StudentEditor(
+              isEditing: true,
+              student: student,
+            )));
     setState(() {});
   }
 
