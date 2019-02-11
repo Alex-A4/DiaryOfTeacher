@@ -13,6 +13,7 @@ class StudentsScreen extends StatefulWidget {
 
 class _StudentsState extends State<StudentsScreen> {
   StudentsController _controller = StudentsController.getInstance();
+  PageStorageKey _key = PageStorageKey('StudentsListKey');
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,8 @@ class _StudentsState extends State<StudentsScreen> {
           ),
         ],
       ),
-      //TODO: add key for listview
       body: ListView.builder(
+        key: _key,
         itemCount: _controller.listOfStudents.length,
         itemBuilder: (context, index) {
           Student student = _controller.listOfStudents[index];
