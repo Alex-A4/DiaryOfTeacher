@@ -135,14 +135,31 @@ class StudentsRepository {
     print('Firebase saved');
   }
 
-  //Add new user to list
+  //Add new student to list if group not selected then it's null
+  //It could be add later
   void addNewStudent(Student student) {
     _students.add(student);
   }
 
   //Delete user from cache and Firebase
   //Cache will update after dispose menu screen
-  Future deleteStudent(Student student) async {
+  Future deleteStudentAndSaveResult(Student student) async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    if (student.groupId != null)
+      getGroupById(student.groupId)?.removeStudentFromGroup(student);
+
+    _students.remove(student);
+
+    saveToFirebase();
+    await saveToCache();
+  }
+
+  //Add student to archive
+  // by deleting it from both collections
+  // and add user to archive collection
+  Future archiveStudent(Student student) async {
     if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
       throw 'Отсутствует интернет соединение';
 
@@ -152,5 +169,9 @@ class StudentsRepository {
     _students.remove(student);
 
     await saveToFirebase();
+    await Firestore.instance.collection('users').document(User.user.uid)
+      .collection('archive').document('archivedStudents')
+      .setData({student.uid : student.toJson()});
+    await saveToCache();
   }
 }
