@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
+import 'package:diary_of_teacher/src/ui/menu/StudentEditor.dart';
 import 'package:diary_of_teacher/src/ui/menu/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,6 +33,7 @@ class _StudentsState extends State<StudentsScreen> {
           ),
         ],
       ),
+      //TODO: add key for listview
       body: ListView.builder(
         itemCount: _controller.listOfStudents.length,
         itemBuilder: (context, index) {
@@ -59,8 +61,7 @@ class _StudentsState extends State<StudentsScreen> {
                   icon: Icon(Icons.archive),
                   onPressed: () {
                     acceptAction('Добавить в архив?',
-                        'Вы действительно хотите добавиь ученика в архив?',
-                        () {
+                        'Вы действительно хотите добавиь ученика в архив?', () {
                       _controller.archiveStudent(student).then((_) {
                         Fluttertoast.showToast(msg: 'Ученик добавлен у архив');
                         setState(() {});
@@ -74,7 +75,8 @@ class _StudentsState extends State<StudentsScreen> {
                   icon: Icon(Icons.delete),
                   onPressed: () {
                     acceptAction('Удалить?',
-                        'Вы действительно хотите удалить этого ученика безвозвратно?', () {
+                        'Вы действительно хотите удалить этого ученика безвозвратно?',
+                        () {
                       _controller.deleteStudent(student).then((_) {
                         Fluttertoast.showToast(msg: 'Ученик удален');
                         setState(() {});
@@ -92,14 +94,21 @@ class _StudentsState extends State<StudentsScreen> {
       drawer: MenuDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _controller.addNewStudent(Student(fio: 'Пупкин Вася Игоревич'));
-          setState(() {});
-          print('ADD FAB');
+          _openStudentEditor(context, true);
         },
         tooltip: 'Добавить ученика',
         child: Icon(Icons.add),
       ),
     );
+  }
+
+
+  //Open editor to add new student
+  //Pass isEditing to allow editing for now
+  _openStudentEditor(context, bool isEdit) async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => StudentEditor(isEditing: true,)));
+    setState(() {});
   }
 
   void acceptAction(String title, String text, Function func) {
@@ -113,13 +122,19 @@ class _StudentsState extends State<StudentsScreen> {
             content: Text(text),
             actions: <Widget>[
               FlatButton(
-                child: Text('Отменить', style: theme.textTheme.body2,),
+                child: Text(
+                  'Отменить',
+                  style: theme.textTheme.body2,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               FlatButton(
-                child: Text('Принять', style: theme.textTheme.body2,),
+                child: Text(
+                  'Принять',
+                  style: theme.textTheme.body2,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   func();
