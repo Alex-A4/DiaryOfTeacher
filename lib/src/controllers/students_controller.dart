@@ -53,14 +53,17 @@ class StudentsController {
 
   //Deleting user from repository
   Future deleteStudent(Student student) async {
-    print('DELETING STARTED');
     await _repository
-        .deleteStudent(student)
+        .deleteStudentAndSaveResult(student)
         .catchError((error) => throw error);
   }
 
   //Add student to archive in firebase
   Future archiveStudent(student) async {
-    print('ARCHIVE STARTED');
+    await _repository.archiveStudent(student);
+  }
+
+  Future<Null> saveDataToCache() async {
+    _repository.saveToCache();
   }
 }
