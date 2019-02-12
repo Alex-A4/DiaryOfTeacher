@@ -1,3 +1,4 @@
+import 'package:flutter_date_picker/flutter_date_picker.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
@@ -18,30 +19,42 @@ class _StudentEditorState extends State<StudentEditor> {
   StudentsController _repository = StudentsController.getInstance();
   bool _isEditing;
   bool _isLoading = false;
+  PageStorageKey key = PageStorageKey('StudentKey');
 
   String photoUrl;
+  String groupId;
   String groupName;
-  PageStorageKey key = PageStorageKey('StudentKey');
   TextEditingController _fioController;
   TextEditingController _courseController;
   TextEditingController _characteristicController;
   DateTime _dateSince;
   DateTime _dateTo;
 
+  final textTheme =
+      TextStyle(color: Colors.black, fontSize: 15.0, letterSpacing: 0.0);
+
+  //Initializing all variables based on widget.student param
   @override
   void initState() {
     super.initState();
     photoUrl = widget.student?.photoUrl ?? Student.defaultPhotoUrl;
+
     _fioController = TextEditingController(text: widget.student?.fio ?? '');
+
     _courseController =
         TextEditingController(text: widget.student?.course ?? '');
+
     _characteristicController =
         TextEditingController(text: widget.student?.characteristic ?? '');
+
     _dateTo = widget.student?.studyingTo ?? DateTime.now().toUtc();
+
     _dateSince = widget.student?.studyingSince ?? DateTime.now().toUtc();
+
     groupName = widget.student?.groupId != null
         ? _repository.getGroupNameById(widget.student.groupId)
-        : 'Группа указывается в специальном разделе';
+        : 'Укажите группу';
+    groupId = widget.student?.groupId;
   }
 
   _StudentEditorState(this._isEditing);
@@ -67,19 +80,25 @@ class _StudentEditorState extends State<StudentEditor> {
                     height: 200.0,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(photoUrl),
-                              child: IconButton(
-                                  icon: Icon(Icons.camera_alt),
-                                  onPressed: _isEditing ? () {} : null),
-                              radius: 50.0,
-                            ),
-                          ],
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundImage:
+                                    CachedNetworkImageProvider(photoUrl),
+                                child: IconButton(
+                                    iconSize: 30.0,
+                                    color: Colors.white,
+                                    icon: Icon(Icons.camera_alt),
+                                    onPressed: _isEditing ? () {} : null),
+                                radius: 50.0,
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.only(right: 8.0),
                         ),
                         Expanded(
                           child: Column(
@@ -87,59 +106,61 @@ class _StudentEditorState extends State<StudentEditor> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               //FIO field
-                            Expanded(
-                              child: TextField(
-                                enabled: _isEditing,
-                                controller: _fioController,
-                                decoration: InputDecoration(hintText: 'ФИО ученика'),
-                                style: theme.textTheme.body1,
+                              Expanded(
+                                child: TextField(
+                                  enabled: _isEditing,
+                                  controller: _fioController,
+                                  decoration:
+                                      InputDecoration(hintText: 'ФИО ученика'),
+                                  style: textTheme,
+                                ),
                               ),
-                            ),
+
                               //Group field
                               Text(
                                 groupName,
                                 softWrap: true,
                                 style: theme.textTheme.display3,
                               ),
+
                               //Date field
                               Row(
                                 mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    'С  ',
+                                    'С',
                                     style: theme.textTheme.display4,
                                   ),
-                                  GestureDetector(
-                                    onTap: _isEditing
-                                        ? () {
-                                      print('DateSince Pressed');
-                                    }
+                                  FlatButton(
+                                    onPressed: _isEditing
+                                        ? () async {
+                                            _dateSince = await selectDate(
+                                                context, _dateSince);
+                                            setState(() {});
+                                          }
                                         : null,
                                     child: Text(
-                                      _dateSince.toLocal().toString(),
+                                      getStringDate(_dateSince),
                                       softWrap: true,
                                       style: theme.textTheme.display4,
                                     ),
                                   ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
                                   Text(
-                                    'До  ',
+                                    'До',
                                     style: theme.textTheme.display4,
                                   ),
-                                  GestureDetector(
-                                    onTap: _isEditing
-                                        ? () {
-                                      print('DateTo Pressed');
-                                    }
+                                  FlatButton(
+                                    onPressed: _isEditing
+                                        ? () async {
+                                            _dateTo = await selectDate(
+                                                context, _dateTo);
+                                            setState(() {});
+                                          }
                                         : null,
                                     child: Text(
-                                      _dateTo.toLocal().toString(),
+                                      getStringDate(_dateTo),
                                       softWrap: true,
                                       style: theme.textTheme.display4,
                                     ),
@@ -148,15 +169,15 @@ class _StudentEditorState extends State<StudentEditor> {
                               ),
 
                               //Course field
-                            Expanded(
-                              child: TextField(
-                                enabled: _isEditing,
-                                decoration:
-                                InputDecoration(hintText: 'Название курса'),
-                                controller: _courseController,
-                                style: theme.textTheme.body1,
+                              Expanded(
+                                child: TextField(
+                                  enabled: _isEditing,
+                                  decoration: InputDecoration(
+                                      hintText: 'Название курса'),
+                                  controller: _courseController,
+                                  style: textTheme,
+                                ),
                               ),
-                            ),
                             ],
                           ),
                         ),
@@ -168,15 +189,17 @@ class _StudentEditorState extends State<StudentEditor> {
                   Container(
                     padding:
                         EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                    height: 200.0,
+                    height: 300.0,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Flexible(
                           child: TextField(
+                            maxLines: 50,
+                            keyboardType: TextInputType.multiline,
                             enabled: _isEditing,
-                            style: theme.textTheme.body1,
+                            style: textTheme,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6.0)),
@@ -218,7 +241,7 @@ class _StudentEditorState extends State<StudentEditor> {
 
     Student newStudent = Student(
         photoUrl: photoUrl,
-        groupId: widget.student?.groupId,
+        groupId: groupId,
         fio: _fioController.text,
         course: _courseController.text,
         characteristic: _characteristicController.text,
@@ -246,5 +269,19 @@ class _StudentEditorState extends State<StudentEditor> {
     setState(() {
       _isEditing = true;
     });
+  }
+
+  Future<DateTime> selectDate(context, DateTime currentDate) async {
+    var date = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(currentDate.year - 10, 1, 1),
+        lastDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 1));
+    return date ?? currentDate;
+  }
+
+  //Convert date to comfortable string
+  String getStringDate(DateTime date) {
+    return '${date.day}.${date.month}.${date.year}';
   }
 }
