@@ -57,6 +57,7 @@ class _StudentEditorState extends State<StudentEditor> {
   }
 
   _StudentEditorState(this._isEditing);
+
   //TODO: add Form wrap around the elements
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,7 @@ class _StudentEditorState extends State<StudentEditor> {
                   Container(
                     padding:
                         EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-                    height: 200.0,
+                    height: 120.0,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,55 +117,11 @@ class _StudentEditorState extends State<StudentEditor> {
                               ),
 
                               //Group field
+                              //TODO: add pop-up menu to select group
                               Text(
                                 groupName,
                                 softWrap: true,
                                 style: theme.textTheme.display3,
-                              ),
-
-                              //Date field
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    'С',
-                                    style: theme.textTheme.display4,
-                                  ),
-                                  FlatButton(
-                                    onPressed: _isEditing
-                                        ? () async {
-                                            _dateSince = await selectDate(
-                                                context, _dateSince);
-                                            setState(() {});
-                                          }
-                                        : null,
-                                    child: Text(
-                                      getStringDate(_dateSince),
-                                      softWrap: true,
-                                      style: theme.textTheme.display4,
-                                    ),
-                                  ),
-                                  Text(
-                                    'До',
-                                    style: theme.textTheme.display4,
-                                  ),
-                                  FlatButton(
-                                    onPressed: _isEditing
-                                        ? () async {
-                                            _dateTo = await selectDate(
-                                                context, _dateTo);
-                                            setState(() {});
-                                          }
-                                        : null,
-                                    child: Text(
-                                      getStringDate(_dateTo),
-                                      softWrap: true,
-                                      style: theme.textTheme.display4,
-                                    ),
-                                  ),
-                                ],
                               ),
 
                               //Course field
@@ -179,6 +136,63 @@ class _StudentEditorState extends State<StudentEditor> {
                               ),
                             ],
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //Date field
+                  Container(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 5.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          'Срок обучения:',
+                          style: theme.textTheme.display4,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'С',
+                              style: theme.textTheme.display4,
+                            ),
+                            FlatButton(
+                              onPressed: _isEditing
+                                  ? () async {
+                                _dateSince =
+                                await selectDate(context, _dateSince);
+                                setState(() {});
+                              }
+                                  : null,
+                              child: Text(
+                                getStringDate(_dateSince),
+                                softWrap: true,
+                                style: theme.textTheme.display4,
+                              ),
+                            ),
+                            Text(
+                              'До',
+                              style: theme.textTheme.display4,
+                            ),
+                            FlatButton(
+                              onPressed: _isEditing
+                                  ? () async {
+                                _dateTo = await selectDate(context, _dateTo);
+                                setState(() {});
+                              }
+                                  : null,
+                              child: Text(
+                                getStringDate(_dateTo),
+                                softWrap: true,
+                                style: theme.textTheme.display4,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -279,6 +293,6 @@ class _StudentEditorState extends State<StudentEditor> {
 
   //Convert date to comfortable string
   String getStringDate(DateTime date) {
-    return '${date.day}.${date.month}.${date.year}';
+    return '${date.day < 10 ? '0' : ''}${date.day}.${date.month < 10 ? '0' : ''}${date.month}.${date.year}';
   }
 }
