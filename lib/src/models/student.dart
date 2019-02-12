@@ -1,7 +1,5 @@
 import 'package:uuid/uuid.dart';
 
-
-
 //Class describes one student which can be serialized
 class Student {
   static const String defaultPhotoUrl =
@@ -35,8 +33,11 @@ class Student {
     this.photoUrl = data['photoUrl'] ?? defaultPhotoUrl;
     this.characteristic = data['characteristic'];
     this.course = data['cource'];
-    this.studyingSince = data['studyingSince'] != null ? DateTime.parse(data['studyingSince']) : null;
-    this.studyingTo = data['studyingTo'] != null ? DateTime.parse(data['studyingTo']) : null;
+    this.studyingSince = data['studyingSince'] != null
+        ? DateTime.parse(data['studyingSince'])
+        : null;
+    this.studyingTo =
+        data['studyingTo'] != null ? DateTime.parse(data['studyingTo']) : null;
   }
 
   //Converting student to JSON
@@ -54,4 +55,16 @@ class Student {
 
   @override
   String toString() => 'UID: $uid, GROUPID: $groupId';
+
+
+  //Update data of current student by new data
+  void updateData(Student newData) {
+    this.fio = newData.fio;
+    this.photoUrl = newData.photoUrl;
+    this.course = newData.course;
+    this.characteristic = newData.characteristic;
+    this.groupId = newData.groupId;
+    this.studyingSince = newData.studyingSince;
+    this.studyingTo = newData.studyingTo;
+  }
 }
