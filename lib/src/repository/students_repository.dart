@@ -72,9 +72,11 @@ class StudentsRepository {
     _students.forEach((student) {
       _groups.forEach((group) {
         //If student from that group then move it here
-        if (group.groupId.compareTo(student.groupId) == 0) {
-          group.addStudentToGroup(student);
-          return;
+        if (group.groupId != null && student.groupId != null) {
+          if (group.groupId.compareTo(student.groupId) == 0) {
+            group.addStudentToGroup(student);
+            return;
+          }
         }
       });
     });
