@@ -99,7 +99,6 @@ final theme = ThemeData(
     display4: TextStyle(
         color: Colors.black,
         fontSize: 15.0,
-        letterSpacing: 0.0,
-        decoration: TextDecoration.underline),
+        letterSpacing: 0.0),
   ),
 );
