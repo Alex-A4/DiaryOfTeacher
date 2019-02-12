@@ -16,7 +16,7 @@ class StudentEditor extends StatefulWidget {
 }
 
 class _StudentEditorState extends State<StudentEditor> {
-  StudentsController _repository = StudentsController.getInstance();
+  StudentsController _controller = StudentsController.getInstance();
   bool _isEditing;
   bool _isLoading = false;
   PageStorageKey key = PageStorageKey('StudentKey');
@@ -52,7 +52,7 @@ class _StudentEditorState extends State<StudentEditor> {
     _dateSince = widget.student?.studyingSince ?? DateTime.now().toUtc();
 
     groupName = widget.student?.groupId != null
-        ? _repository.getGroupNameById(widget.student.groupId)
+        ? _controller.getGroupNameById(widget.student.groupId)
         : 'Укажите группу';
     groupId = widget.student?.groupId;
   }
@@ -252,10 +252,10 @@ class _StudentEditorState extends State<StudentEditor> {
     if (widget.student != null) {
       widget.student.updateData(newStudent);
     } else {
-      _repository.addNewStudent(newStudent);
+      _controller.addNewStudent(newStudent);
     }
 
-    await _repository.saveDataToCache();
+    await _controller.saveDataToCache();
 
     setState(() {
       _isLoading = false;
