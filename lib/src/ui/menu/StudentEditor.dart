@@ -57,7 +57,7 @@ class _StudentEditorState extends State<StudentEditor> {
   }
 
   _StudentEditorState(this._isEditing);
-
+  //TODO: add Form wrap around the elements
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +75,7 @@ class _StudentEditorState extends State<StudentEditor> {
                 <Widget>[
                   Container(
                     padding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
                     height: 200.0,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -233,7 +233,6 @@ class _StudentEditorState extends State<StudentEditor> {
 
   //Update old or add new student to collection
   Future saveStudent() async {
-    print('SAVING STARTED');
     setState(() {
       _isLoading = true;
     });
@@ -261,7 +260,6 @@ class _StudentEditorState extends State<StudentEditor> {
     });
 
     Fluttertoast.showToast(msg: 'Изменения сохранены');
-    print('SAVING FINISHED');
   }
 
   void startEdit() {
