@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
-import 'package:diary_of_teacher/src/ui/menu/menu_screens/drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
