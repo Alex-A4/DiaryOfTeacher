@@ -43,94 +43,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
         drawer: MenuDrawer(),
         body: Container(
             child: ListView(
+          children: <Widget>[
+            Stack(
               children: <Widget>[
-                Stack(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          height: 232.0,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                          child: Center(
-                            child: CircleAvatar(
-                              backgroundImage:
+                    Container(
+                      height: 232.0,
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: Center(
+                        child: CircleAvatar(
+                          backgroundImage:
                               CachedNetworkImageProvider(User.user.photoUrl),
-                              radius: 100,
-                              child: Center(
-                                child: IconButton(
-                                  onPressed: () {
-                                    tryToUpdateImage();
-                                    print('Button tapped');
-                                  },
-                                  iconSize: 80.0,
-                                  color: Colors.white70,
-                                  icon: Icon(Icons.camera_alt),
+                          radius: 100,
+                          child: Center(
+                            child: _isLoading
+                                ? CircularProgressIndicator()
+                                : IconButton(
+                                    onPressed: () {
+                                      tryToUpdateImage();
+                                    },
+                                    iconSize: 80.0,
+                                    color: Colors.white70,
+                                    icon: Icon(Icons.camera_alt),
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 50.0, right: 30.0, top: 30.0, bottom: 10.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Expanded(
+                            child: Form(
+                              key: _key,
+                              child: TextFormField(
+                                focusNode: _focus,
+                                textAlign: TextAlign.center,
+                                controller: _controller,
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
+                                  hintText: 'Введите имя',
                                 ),
+                                enabled: isEditing,
+                                style: theme.textTheme.body1,
+                                validator: (value) {
+                                  if (value.length == 0)
+                                    return 'Имя не должно быть пустым';
+                                },
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          padding:
-                          EdgeInsets.only(left: 50.0, right: 30.0, top: 30.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Expanded(
-                                child: Form(
-                                  key: _key,
-                                  child: TextFormField(
-                                    focusNode: _focus,
-                                    textAlign: TextAlign.center,
-                                    controller: _controller,
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 20.0),
-                                      hintText: 'Введите имя',
-                                    ),
-                                    enabled: isEditing,
-                                    style: theme.textTheme.body1,
-                                    validator: (value) {
-                                      if (value.length == 0)
-                                        return 'Имя не должно быть пустым';
-                                    },
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                color: Color(0xFFb4e99b),
-                                icon: Icon(isEditing ? Icons.done : Icons.edit),
-                                onPressed: () {
-                                  if (isEditing && validate()) {
-                                    setState(() {
-                                      isEditing = !isEditing;
-                                    });
-                                    return;
-                                  }
-                                  if (!isEditing) {
-                                    startEdit();
-                                    return;
-                                  }
-                                },
-                              ),
-                            ],
+                          IconButton(
+                            color: Color(0xFFb4e99b),
+                            icon: Icon(isEditing ? Icons.done : Icons.edit),
+                            onPressed: () {
+                              if (isEditing && validate()) {
+                                setState(() {
+                                  isEditing = !isEditing;
+                                });
+                                return;
+                              }
+                              if (!isEditing) {
+                                startEdit();
+                                return;
+                              }
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                    _isLoading
-                        ? Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
+                        ],
                       ),
-                    )
-                        : Container(),
+                    ),
                   ],
                 ),
               ],
-            )));
+            ),
+          ],
+        )));
   }
 
   //Validate the user name
@@ -164,13 +158,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void startLoading() =>
-      setState(() {
+  void startLoading() => setState(() {
         _isLoading = true;
       });
 
-  void finishLoading() =>
-      setState(() {
+  void finishLoading() => setState(() {
         _isLoading = false;
       });
 }
