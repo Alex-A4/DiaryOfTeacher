@@ -95,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFFb4e99b),
                                 icon: Icon(isEditing ? Icons.done : Icons.edit),
                                 onPressed: () {
-                                  if (isEditing && complete()) {
+                                  if (isEditing && validate()) {
                                     setState(() {
                                       isEditing = !isEditing;
                                     });
@@ -103,9 +103,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   }
                                   if (!isEditing) {
                                     startEdit();
-                                    setState(() {
-                                      isEditing = !isEditing;
-                                    });
                                     return;
                                   }
                                 },
@@ -121,12 +118,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )));
   }
 
-  bool complete() {
+  //Validate the user name
+  bool validate() {
     if (_key.currentState.validate()) return true;
     return false;
   }
 
+
+  //Start editing and put focus to TextField for name
   void startEdit() {
     FocusScope.of(context).requestFocus(_focus);
+    setState(() {
+      isEditing = !isEditing;
+    });
   }
 }
