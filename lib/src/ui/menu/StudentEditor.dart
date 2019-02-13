@@ -20,6 +20,8 @@ class _StudentEditorState extends State<StudentEditor> {
   bool _isLoading = false;
   PageStorageKey key = PageStorageKey('StudentKey');
 
+  bool _isStudentExist = false;
+
   String photoUrl;
   String groupId;
   String groupName;
@@ -54,6 +56,8 @@ class _StudentEditorState extends State<StudentEditor> {
         ? _controller.getGroupNameById(widget.student.groupId)
         : 'Укажите группу';
     groupId = widget.student?.groupId;
+
+    if (widget.student != null) _isStudentExist = true;
   }
 
   _StudentEditorState(this._isEditing);
@@ -143,7 +147,8 @@ class _StudentEditorState extends State<StudentEditor> {
 
                   //Date field
                   Container(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 5.0),
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, top: 5.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,10 +169,10 @@ class _StudentEditorState extends State<StudentEditor> {
                             FlatButton(
                               onPressed: _isEditing
                                   ? () async {
-                                _dateSince =
-                                await selectDate(context, _dateSince);
-                                setState(() {});
-                              }
+                                      _dateSince =
+                                          await selectDate(context, _dateSince);
+                                      setState(() {});
+                                    }
                                   : null,
                               child: Text(
                                 getStringDate(_dateSince),
@@ -182,9 +187,10 @@ class _StudentEditorState extends State<StudentEditor> {
                             FlatButton(
                               onPressed: _isEditing
                                   ? () async {
-                                _dateTo = await selectDate(context, _dateTo);
-                                setState(() {});
-                              }
+                                      _dateTo =
+                                          await selectDate(context, _dateTo);
+                                      setState(() {});
+                                    }
                                   : null,
                               child: Text(
                                 getStringDate(_dateTo),
@@ -232,9 +238,10 @@ class _StudentEditorState extends State<StudentEditor> {
             ],
           ),
           _isLoading
-              ? Center(
+              ? Container(
+                  child: Center(
                   child: CircularProgressIndicator(),
-                )
+                ))
               : Container(),
         ],
       ),
@@ -247,6 +254,11 @@ class _StudentEditorState extends State<StudentEditor> {
 
   //Update old or add new student to collection
   Future saveStudent() async {
+    if (!validateStudent()) {
+      Fluttertoast.showToast(
+          msg: 'Дата начала обучения должна быть меньше даты окончания');
+      return;
+    }
     setState(() {
       _isLoading = true;
     });
@@ -261,7 +273,8 @@ class _StudentEditorState extends State<StudentEditor> {
         studyingSince: _dateSince);
 
     //Update or add student
-    if (widget.student != null) {
+    //If student of current session exist then update data otherwise add new
+    if (_isStudentExist) {
       widget.student.updateData(newStudent);
     } else {
       _controller.addNewStudent(newStudent);
@@ -269,19 +282,24 @@ class _StudentEditorState extends State<StudentEditor> {
 
     await _controller.saveDataToCache();
 
+    _isStudentExist = true;
+
     setState(() {
       _isLoading = false;
+      _isEditing = false;
     });
 
     Fluttertoast.showToast(msg: 'Изменения сохранены');
   }
 
+  //Start editing and update state
   void startEdit() {
     setState(() {
       _isEditing = true;
     });
   }
 
+  //Show dialog to choose the date
   Future<DateTime> selectDate(context, DateTime currentDate) async {
     var date = await showDatePicker(
         context: context,
@@ -289,6 +307,12 @@ class _StudentEditorState extends State<StudentEditor> {
         firstDate: DateTime(currentDate.year - 10, 1, 1),
         lastDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 1));
     return date ?? currentDate;
+  }
+
+  //Simple validate of dates
+  bool validateStudent() {
+    if (_dateSince.compareTo(_dateTo) != -1) return false;
+    return true;
   }
 
   //Convert date to comfortable string
