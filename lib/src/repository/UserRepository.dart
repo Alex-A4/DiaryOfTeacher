@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -96,6 +99,7 @@ class UserRepository {
     return false;
   }
 
+  //Save password hash to local storage
   Future<Null> savePassword(String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Writing hashcode of password to stores
@@ -108,5 +112,35 @@ class UserRepository {
     }
 
     prefs.setInt('passwordHash', password.hashCode);
+  }
+
+  //Save specified string value to local storage
+  static Future saveStringToLocal(String keyName, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(keyName, value);
+  }
+
+  //Upload user image to cloud storage
+  static Future uploadUserImage(File imageFile) async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    StorageReference reference =
+        FirebaseStorage.instance.ref().child(User.user.uid);
+    StorageUploadTask uploadTask = reference.putFile(imageFile);
+
+    try {
+      StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+      String url = await storageTaskSnapshot.ref.getDownloadURL();
+
+      User.user.photoUrl = url;
+      await saveStringToLocal('photoUrl', url);
+      await Firestore.instance
+          .collection('users')
+          .document(User.user.uid)
+          .updateData({'photoUrl': url});
+    } catch (err) {
+      throw err;
+    }
   }
 }
