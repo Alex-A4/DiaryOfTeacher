@@ -125,16 +125,16 @@ class UserRepository {
     if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
       throw 'Отсутствует интернет соединение';
 
-    StorageReference reference =
-        FirebaseStorage.instance.ref().child(User.user.uid);
-    StorageUploadTask uploadTask = reference.putFile(imageFile);
-
     try {
+      StorageReference reference =
+          FirebaseStorage.instance.ref().child(User.user.uid);
+      StorageUploadTask uploadTask = reference.putFile(imageFile);
+
       StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
       String url = await storageTaskSnapshot.ref.getDownloadURL();
 
-      User.user.photoUrl = url;
-      await saveStringToLocal('photoUrl', url);
+      User.user.photoUrl = url.toString();
+      await saveStringToLocal('photoUrl', url.toString());
       await Firestore.instance
           .collection('users')
           .document(User.user.uid)
