@@ -35,7 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         drawer: MenuDrawer(),
         body: Container(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
             child: ListView(
               children: <Widget>[
                 Stack(
@@ -44,7 +43,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          height: 200.0,
+                          height: 232.0,
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
                           child: Center(
                             child: CircleAvatar(
                               backgroundImage: CachedNetworkImageProvider(
