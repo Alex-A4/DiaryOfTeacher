@@ -19,6 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _key = GlobalKey<FormState>();
   FocusNode _focus = FocusNode();
 
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,87 +43,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
         drawer: MenuDrawer(),
         body: Container(
             child: ListView(
-          children: <Widget>[
-            Stack(
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                Stack(
                   children: <Widget>[
-                    Container(
-                      height: 232.0,
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Center(
-                        child: CircleAvatar(
-                          backgroundImage:
-                              CachedNetworkImageProvider(User.user.photoUrl),
-                          radius: 100,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: 232.0,
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
                           child: Center(
-                            child: IconButton(
-                              onPressed: () {
-                                tryToUpdateImage();
-                                print('Button tapped');
-                              },
-                              iconSize: 80.0,
-                              color: Colors.white70,
-                              icon: Icon(Icons.camera_alt),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.only(left: 50.0, right: 30.0, top: 30.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: Form(
-                              key: _key,
-                              child: TextFormField(
-                                focusNode: _focus,
-                                textAlign: TextAlign.center,
-                                controller: _controller,
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 20.0),
-                                  hintText: 'Введите имя',
+                            child: CircleAvatar(
+                              backgroundImage:
+                              CachedNetworkImageProvider(User.user.photoUrl),
+                              radius: 100,
+                              child: Center(
+                                child: IconButton(
+                                  onPressed: () {
+                                    tryToUpdateImage();
+                                    print('Button tapped');
+                                  },
+                                  iconSize: 80.0,
+                                  color: Colors.white70,
+                                  icon: Icon(Icons.camera_alt),
                                 ),
-                                enabled: isEditing,
-                                style: theme.textTheme.body1,
-                                validator: (value) {
-                                  if (value.length == 0)
-                                    return 'Имя не должно быть пустым';
-                                },
                               ),
                             ),
                           ),
-                          IconButton(
-                            color: Color(0xFFb4e99b),
-                            icon: Icon(isEditing ? Icons.done : Icons.edit),
-                            onPressed: () {
-                              if (isEditing && validate()) {
-                                setState(() {
-                                  isEditing = !isEditing;
-                                });
-                                return;
-                              }
-                              if (!isEditing) {
-                                startEdit();
-                                return;
-                              }
-                            },
+                        ),
+                        Container(
+                          padding:
+                          EdgeInsets.only(left: 50.0, right: 30.0, top: 30.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child: Form(
+                                  key: _key,
+                                  child: TextFormField(
+                                    focusNode: _focus,
+                                    textAlign: TextAlign.center,
+                                    controller: _controller,
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
+                                      hintText: 'Введите имя',
+                                    ),
+                                    enabled: isEditing,
+                                    style: theme.textTheme.body1,
+                                    validator: (value) {
+                                      if (value.length == 0)
+                                        return 'Имя не должно быть пустым';
+                                    },
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                color: Color(0xFFb4e99b),
+                                icon: Icon(isEditing ? Icons.done : Icons.edit),
+                                onPressed: () {
+                                  if (isEditing && validate()) {
+                                    setState(() {
+                                      isEditing = !isEditing;
+                                    });
+                                    return;
+                                  }
+                                  if (!isEditing) {
+                                    startEdit();
+                                    return;
+                                  }
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    _isLoading
+                        ? Container(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                        : Container(),
                   ],
                 ),
               ],
-            ),
-          ],
-        )));
+            )));
   }
 
   //Validate the user name
@@ -138,16 +147,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-
   //Update the image by picking from gallery
   Future tryToUpdateImage() async {
     File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
 
+    startLoading();
+
     if (imageFile != null) {
       UserRepository.uploadUserImage(imageFile).then((_) {
         Fluttertoast.showToast(msg: 'Фотография изменена успешно');
-        setState(() {});
-      }).catchError((err) => Fluttertoast.showToast(msg: err));
+        finishLoading();
+      }).catchError((err) {
+        Fluttertoast.showToast(msg: err);
+        finishLoading();
+      });
     }
   }
+
+  void startLoading() =>
+      setState(() {
+        _isLoading = true;
+      });
+
+  void finishLoading() =>
+      setState(() {
+        _isLoading = false;
+      });
 }
