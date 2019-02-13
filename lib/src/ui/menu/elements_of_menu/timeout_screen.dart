@@ -1,4 +1,4 @@
-import 'package:diary_of_teacher/src/ui/menu/drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/menu_screens/drawer.dart';
 import 'package:flutter/material.dart';
 
 class TimeoutScreen extends StatefulWidget{

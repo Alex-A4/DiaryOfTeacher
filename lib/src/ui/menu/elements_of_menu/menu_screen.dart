@@ -1,10 +1,10 @@
 import 'package:diary_of_teacher/src/blocs/menu/menu.dart';
-import 'package:diary_of_teacher/src/ui/menu/lessons_screen.dart';
-import 'package:diary_of_teacher/src/ui/menu/profile_screen.dart';
-import 'package:diary_of_teacher/src/ui/menu/schedule_screen.dart';
-import 'package:diary_of_teacher/src/ui/menu/settings_screen.dart';
-import 'package:diary_of_teacher/src/ui/menu/students_screen.dart';
-import 'package:diary_of_teacher/src/ui/menu/timeout_screen.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/lessons_screen.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/profile_screen.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/schedule_screen.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/settings_screen.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/students_screen.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/timeout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

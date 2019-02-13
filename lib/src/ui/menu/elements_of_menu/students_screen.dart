@@ -3,7 +3,7 @@ import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
 import 'package:diary_of_teacher/src/ui/menu/StudentEditor.dart';
-import 'package:diary_of_teacher/src/ui/menu/drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/menu_screens/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
