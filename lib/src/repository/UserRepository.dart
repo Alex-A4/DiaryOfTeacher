@@ -140,7 +140,7 @@ class UserRepository {
           .document(User.user.uid)
           .updateData({'photoUrl': url});
     } catch (err) {
-      throw err;
+      throw 'Ошибка загрузки';
     }
   }
 }
