@@ -154,5 +154,7 @@ class UserRepository {
         .updateData({'userName': userName});
 
     await saveStringToLocal('userName', userName);
+
+    User.user.userName = userName;
   }
 }
