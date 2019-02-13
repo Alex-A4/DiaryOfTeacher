@@ -14,7 +14,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="diary_of_teacher"
+        android:label="@string/appName"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name="com.alexa4.diary_of_teacher.MainActivity"
