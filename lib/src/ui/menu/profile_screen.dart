@@ -19,7 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _key = GlobalKey<FormState>();
   FocusNode _focus = FocusNode();
 
-  bool _isLoading = false;
+  bool _isLoadingImage = false;
+  bool _isLoadingName = false;
 
   @override
   void initState() {
@@ -58,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CachedNetworkImageProvider(User.user.photoUrl),
                           radius: 100,
                           child: Center(
-                            child: _isLoading
+                            child: _isLoadingImage
                                 ? CircularProgressIndicator()
                                 : IconButton(
                                     onPressed: () {
@@ -100,22 +101,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
-                          IconButton(
-                            color: Color(0xFFb4e99b),
-                            icon: Icon(isEditing ? Icons.done : Icons.edit),
-                            onPressed: () {
-                              if (isEditing && validate()) {
-                                setState(() {
-                                  isEditing = !isEditing;
-                                });
-                                return;
-                              }
-                              if (!isEditing) {
-                                startEdit();
-                                return;
-                              }
-                            },
-                          ),
+                          _isLoadingName
+                              ? CircularProgressIndicator()
+                              : IconButton(
+                                  color: Color(0xFFb4e99b),
+                                  icon:
+                                      Icon(isEditing ? Icons.done : Icons.edit),
+                                  onPressed: () {
+                                    if (isEditing && validate()) {
+                                      setState(() {
+                                        isEditing = !isEditing;
+                                      });
+                                      tryToUpdateName();
+                                      return;
+                                    }
+                                    if (!isEditing) {
+                                      startEdit();
+                                      return;
+                                    }
+                                  },
+                                ),
                         ],
                       ),
                     ),
@@ -141,28 +146,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  Future tryToUpdateName() async {
+    String userName = _controller.text;
+
+    startLoadingName();
+
+    UserRepository.uploadUserName(userName).then((_){
+      Fluttertoast.showToast(msg: 'Имя обновлено');
+      finishLoadingName();
+    }).catchError((er){
+      Fluttertoast.showToast(msg: er.toString());
+      finishLoadingName();
+    });
+  }
+
+
   //Update the image by picking from gallery
   Future tryToUpdateImage() async {
     File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-    startLoading();
+    startLoadingImage();
 
     if (imageFile != null) {
       UserRepository.uploadUserImage(imageFile).then((_) {
         Fluttertoast.showToast(msg: 'Фотография изменена успешно');
-        finishLoading();
+        finishLoadingImage();
       }).catchError((err) {
         Fluttertoast.showToast(msg: err);
-        finishLoading();
+        finishLoadingImage();
       });
     }
   }
 
-  void startLoading() => setState(() {
-        _isLoading = true;
+  //Start loading of user name
+  void startLoadingName() => setState(() {
+    _isLoadingName = true;
+  });
+
+  //Finish loading of user name
+  void finishLoadingName() => setState(() {
+    _isLoadingName = false;
+  });
+
+  //Start loading of image
+  void startLoadingImage() => setState(() {
+        _isLoadingImage = true;
       });
 
-  void finishLoading() => setState(() {
-        _isLoading = false;
+  //Stop loading of image
+  void finishLoadingImage() => setState(() {
+        _isLoadingImage = false;
       });
 }
