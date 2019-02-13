@@ -143,4 +143,16 @@ class UserRepository {
       throw 'Ошибка загрузки';
     }
   }
+
+  static Future uploadUserName(String userName) async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .updateData({'userName': userName});
+
+    await saveStringToLocal('userName', userName);
+  }
 }
