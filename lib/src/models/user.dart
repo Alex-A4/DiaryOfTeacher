@@ -3,12 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 //Singleton instance of user data
 class User {
   static User _user;
+
   static User get user => _user;
 
   String _uid;
   String _photoUrl;
   String _userName;
-
 
   //Building user data from cache
   static Future<Null> buildUser() async {
@@ -28,4 +28,8 @@ class User {
   String get photoUrl => _photoUrl;
 
   String get uid => _uid;
+
+  set userName(String value) => _userName = value;
+
+  set photoUrl(String value) => _photoUrl = value;
 }
