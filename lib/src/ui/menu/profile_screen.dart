@@ -64,8 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 30.0),
+                          padding: EdgeInsets.only(left: 50.0, right: 30.0, top: 30.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
