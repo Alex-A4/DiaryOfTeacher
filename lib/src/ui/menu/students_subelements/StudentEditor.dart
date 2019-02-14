@@ -1,5 +1,6 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
+import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -122,11 +123,17 @@ class _StudentEditorState extends State<StudentEditor> {
                               ),
 
                               //Group field
-                              //TODO: add pop-up menu to select group
-                              Text(
-                                groupName,
-                                softWrap: true,
-                                style: theme.textTheme.display3,
+                              //TODO: Test this menu
+                              PopupMenuButton<Group>(
+                                onSelected: (Group group) {groupId = group.groupId;},
+                                itemBuilder: (context) {
+                                  return _controller.listOfGroups.map((group){
+                                    return PopupMenuItem<Group>(
+                                      value: group,
+                                      child: Text(group.name, style: theme.textTheme.display3),
+                                    );
+                                  }).toList();
+                                },
                               ),
 
                               //Course field
