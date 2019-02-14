@@ -45,6 +45,8 @@ class _StudentsState extends State<StudentsScreen> with SingleTickerProviderStat
         bottom: TabBar(
           tabs: _tabs.map((tab) => Tab(text: tab,)).toList(),
           controller: _tabController,
+          labelStyle: TextStyle(fontSize: 18.0, color: Colors.black, fontWeight: FontWeight.w700),
+          unselectedLabelStyle: TextStyle(fontSize: 18.0, color: Colors.black26),
         ),
       ),
       body: TabBarView(
