@@ -19,6 +19,7 @@ class _StudentEditorState extends State<StudentEditor> {
   StudentsController _controller = StudentsController.getInstance();
 
   _StudentEditorState(this._isEditing);
+
   bool _isEditing;
 
   bool _isLoading = false;
@@ -123,17 +124,26 @@ class _StudentEditorState extends State<StudentEditor> {
                               ),
 
                               //Group field
-                              //TODO: Test this menu
                               PopupMenuButton<Group>(
-                                onSelected: (Group group) {groupId = group.groupId;},
+                                onSelected: (Group group) {
+                                  setState(() {
+                                    groupId = group.groupId;
+                                  });
+                                },
                                 itemBuilder: (context) {
-                                  return _controller.listOfGroups.map((group){
+                                  return _controller.listOfGroups.map((group) {
                                     return PopupMenuItem<Group>(
                                       value: group,
-                                      child: Text(group.name, style: theme.textTheme.display3),
+                                      child: Text(group.name,
+                                          style: theme.textTheme.display3),
                                     );
                                   }).toList();
                                 },
+                                child: Row(children: <Widget>[
+                                  Text(_controller.getGroupNameById(groupId), style: theme.textTheme.display4,),
+                                  Icon(Icons.arrow_drop_down),
+                                ],),
+//                                initialValue: , //Add this
                               ),
 
                               //Course field
@@ -209,7 +219,7 @@ class _StudentEditorState extends State<StudentEditor> {
                                       ),
                                     )
                                   : Text(
-                                      'Учится..',
+                                      ' Ещё учится..',
                                       style: theme.textTheme.display4,
                                     ),
                               //Show dialog to choose still student studying or not
@@ -327,8 +337,10 @@ class _StudentEditorState extends State<StudentEditor> {
   }
 
   //Simple validate of dates
+  //Check is dateSince lowest then dateTo
   bool validateStudent() {
-    if (_dateSince.compareTo(_dateTo) != -1) return false;
+    if (_dateTo != null) if (_dateSince.compareTo(_dateTo) != -1) return false;
+
     return true;
   }
 
@@ -336,7 +348,6 @@ class _StudentEditorState extends State<StudentEditor> {
   String getStringDate(DateTime date) {
     return '${date.day < 10 ? '0' : ''}${date.day}.${date.month < 10 ? '0' : ''}${date.month}.${date.year}';
   }
-
 
   //TODO: test this method
   //Show dialog and choose still student is studying
@@ -349,7 +360,10 @@ class _StudentEditorState extends State<StudentEditor> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('Ученик ещё обучается?', style: theme.textTheme.body1,),
+                Text(
+                  'Ученик ещё обучается?',
+                  style: theme.textTheme.body1,
+                ),
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pop();
