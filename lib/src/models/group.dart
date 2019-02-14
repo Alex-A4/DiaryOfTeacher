@@ -36,7 +36,15 @@ class Group {
 
   //Add student to that group
   void addStudentToGroup(Student student) {
-    _students.add(student);
+    ///Check is student already added
+    bool isContains = false;
+    _students.forEach((stud) {
+      if (stud.uid == student.uid)
+        isContains = true;
+    });
+    if (!isContains)
+      _students.add(student);
+
     student.groupId = _groupId;
   }
 
