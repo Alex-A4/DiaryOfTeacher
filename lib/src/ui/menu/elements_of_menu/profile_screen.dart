@@ -175,6 +175,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Fluttertoast.showToast(msg: err);
         finishLoadingImage();
       });
+    } else {
+      finishLoadingImage();
     }
   }
 
