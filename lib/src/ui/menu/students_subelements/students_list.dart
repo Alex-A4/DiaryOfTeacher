@@ -103,6 +103,8 @@ class _StudentsListViewState extends State<StudentsListView> {
     setState(() {});
   }
 
+
+  //Accept user action
   void acceptAction(String title, String text, Function func) {
     showDialog(
         context: context,
