@@ -58,6 +58,11 @@ class StudentsController {
         .catchError((error) => throw error);
   }
 
+  //Add new group to repository
+  void addNewGroup(Group group) {
+    _repository.addNewGroup(group);
+  }
+
   //Add student to archive in firebase
   Future archiveStudent(student) async {
     await _repository.archiveStudent(student);

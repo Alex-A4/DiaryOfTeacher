@@ -181,4 +181,12 @@ class StudentsRepository {
       .setData({student.uid : student.toJson()});
     await saveToCache();
   }
+
+
+  //Add new group to list and save data to cache
+  void addNewGroup(Group group) {
+    _groups.add(group);
+
+    saveToCache();
+  }
 }
