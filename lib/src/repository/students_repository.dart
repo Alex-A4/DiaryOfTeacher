@@ -141,6 +141,11 @@ class StudentsRepository {
   //It could be add later
   void addNewStudent(Student student) {
     _students.add(student);
+
+    //Distribute student and group
+    if (student.groupId != null) {
+      getGroupById(student.groupId).addStudentToGroup(student);
+    }
   }
 
   //Delete user from cache and Firebase
