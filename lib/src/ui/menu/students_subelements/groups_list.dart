@@ -61,6 +61,8 @@ class _GroupsListViewState extends State<GroupsListView> {
                                 .addNewGroup(Group(_groupNameController.text));
                             _groupNameController.clear();
                             Navigator.of(context).pop();
+                            setState(() {
+                            });
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(7.0)),
