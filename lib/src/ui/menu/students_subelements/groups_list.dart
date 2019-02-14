@@ -30,58 +30,60 @@ class _GroupsListViewState extends State<GroupsListView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: Container(
-                    height: 150.0,
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Введите название группы',
-                          style: theme.textTheme.display2,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            controller: _groupNameController,
-                            maxLength: 20,
-                            style: theme.textTheme.body2,
-                          ),
-                        ),
-                        RaisedButton(
-                          onPressed: () {
-                            StudentsController.getInstance()
-                                .addNewGroup(Group(_groupNameController.text));
-                            _groupNameController.clear();
-                            Navigator.of(context).pop();
-                            setState(() {
-                            });
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.0)),
-                          elevation: 6.0,
-                          highlightColor: theme.primaryColor,
-                          child: Text(
-                            'Создать',
-                            style: theme.textTheme.display2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              });
-        },
+        onPressed: showGroupNamePicker,
         tooltip: 'Создать группу',
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  void showGroupNamePicker() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: Container(
+              height: 180.0,
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Введите название группы',
+                    style: theme.textTheme.display2,
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: _groupNameController,
+                      maxLength: 20,
+                      style: theme.textTheme.body2,
+                    ),
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      StudentsController.getInstance()
+                          .addNewGroup(Group(_groupNameController.text));
+                      _groupNameController.clear();
+                      Navigator.of(context).pop();
+                      setState(() {
+                      });
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7.0)),
+                    elevation: 6.0,
+                    highlightColor: theme.primaryColor,
+                    child: Text(
+                      'Создать',
+                      style: theme.textTheme.display2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
