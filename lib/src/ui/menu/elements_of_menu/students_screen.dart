@@ -1,8 +1,7 @@
-import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
-import 'package:diary_of_teacher/src/models/student.dart';
-import 'package:diary_of_teacher/src/ui/menu/students_subelements/StudentEditor.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/students_subelements/groups_list.dart';
+import 'package:diary_of_teacher/src/ui/menu/students_subelements/students_list.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -15,6 +14,8 @@ class _StudentsState extends State<StudentsScreen> with SingleTickerProviderStat
   StudentsController _controller = StudentsController.getInstance();
 
   static const List<String> _tabs = ['Ученики', 'Группы'];
+
+  List<Widget> _lists = [StudentsListView(), GroupsListView()];
 
 
   @override
@@ -47,7 +48,8 @@ class _StudentsState extends State<StudentsScreen> with SingleTickerProviderStat
         ),
       ),
       body: TabBarView(
-        //Add students list or groups list
+        controller: _tabController,
+        children: _lists.map((element) => element).toList(),
       ),
 
       drawer: MenuDrawer(),
