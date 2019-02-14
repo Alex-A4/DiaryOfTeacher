@@ -10,7 +10,7 @@ class Group {
 
   List<Student> _students = [];
 
-  Group(this._name, {List<Student> students = const[]}):
+  Group(this._name):
       this._groupId = Uuid().v1();
 
   Group.fromJson(Map<String, dynamic> data) :
