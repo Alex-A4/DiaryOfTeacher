@@ -48,7 +48,7 @@ class _StudentEditorState extends State<StudentEditor> {
     _characteristicController =
         TextEditingController(text: widget.student?.characteristic ?? '');
 
-    _dateTo = widget.student?.studyingTo ?? DateTime.now().toUtc();
+    _dateTo = widget.student?.studyingTo;
 
     _dateSince = widget.student?.studyingSince ?? DateTime.now().toUtc();
 
@@ -62,7 +62,6 @@ class _StudentEditorState extends State<StudentEditor> {
 
   _StudentEditorState(this._isEditing);
 
-  //TODO: add Form wrap around the elements
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,19 +183,28 @@ class _StudentEditorState extends State<StudentEditor> {
                               'До',
                               style: theme.textTheme.display4,
                             ),
-                            FlatButton(
-                              onPressed: _isEditing
-                                  ? () async {
-                                      _dateTo =
-                                          await selectDate(context, _dateTo);
-                                      setState(() {});
-                                    }
-                                  : null,
-                              child: Text(
-                                getStringDate(_dateTo),
-                                softWrap: true,
-                                style: theme.textTheme.display4,
-                              ),
+                            GestureDetector(
+                              child: _dateTo != null
+                                  ? FlatButton(
+                                      onPressed: _isEditing
+                                          ? () async {
+                                              _dateTo = await selectDate(
+                                                  context, _dateTo);
+                                              setState(() {});
+                                            }
+                                          : null,
+                                      child: Text(
+                                        getStringDate(_dateTo),
+                                        softWrap: true,
+                                        style: theme.textTheme.display4,
+                                      ),
+                                    )
+                                  : Text(
+                                      'Учится..',
+                                      style: theme.textTheme.display4,
+                                    ),
+                              //Show dialog to choose still student studying or not
+                              onLongPress: selectToDateStatus,
                             ),
                           ],
                         ),
@@ -318,5 +326,47 @@ class _StudentEditorState extends State<StudentEditor> {
   //Convert date to comfortable string
   String getStringDate(DateTime date) {
     return '${date.day < 10 ? '0' : ''}${date.day}.${date.month < 10 ? '0' : ''}${date.month}.${date.year}';
+  }
+
+
+  //Show dialog and choose still student is studying
+  Future selectToDateStatus() async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Ученик ещё обучается?', style: theme.textTheme.body1,),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _dateTo = null;
+                  },
+                  child: Text(
+                    'Да',
+                    style: theme.textTheme.body1,
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _dateTo = DateTime.now();
+                  },
+                  child: Text(
+                    'Нет',
+                    style: theme.textTheme.body1,
+                  ),
+                ),
+              ],
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+          );
+        });
+
+    setState(() {});
   }
 }
