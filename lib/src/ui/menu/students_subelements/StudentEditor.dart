@@ -16,12 +16,15 @@ class StudentEditor extends StatefulWidget {
 
 class _StudentEditorState extends State<StudentEditor> {
   StudentsController _controller = StudentsController.getInstance();
+
+  _StudentEditorState(this._isEditing);
   bool _isEditing;
+
   bool _isLoading = false;
+
   PageStorageKey key = PageStorageKey('StudentKey');
 
   bool _isStudentExist = false;
-
   String photoUrl;
   String groupId;
   String groupName;
@@ -29,6 +32,7 @@ class _StudentEditorState extends State<StudentEditor> {
   TextEditingController _courseController;
   TextEditingController _characteristicController;
   DateTime _dateSince;
+
   DateTime _dateTo;
 
   final textTheme =
@@ -59,8 +63,6 @@ class _StudentEditorState extends State<StudentEditor> {
 
     if (widget.student != null) _isStudentExist = true;
   }
-
-  _StudentEditorState(this._isEditing);
 
   @override
   Widget build(BuildContext context) {
@@ -329,6 +331,7 @@ class _StudentEditorState extends State<StudentEditor> {
   }
 
 
+  //TODO: test this method
   //Show dialog and choose still student is studying
   Future selectToDateStatus() async {
     await showDialog(
