@@ -1,3 +1,4 @@
+import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:uuid/uuid.dart';
 
 //Class describes one student which can be serialized
@@ -63,8 +64,18 @@ class Student {
     this.photoUrl = newData.photoUrl;
     this.course = newData.course;
     this.characteristic = newData.characteristic;
-    this.groupId = newData.groupId;
+    updateGroupId(newData.groupId);
     this.studyingSince = newData.studyingSince;
     this.studyingTo = newData.studyingTo;
+  }
+
+  //Update groupId and bind student with group if need
+  void updateGroupId(String id) {
+    if (this.groupId != id) {
+      this.groupId = id;
+      var group = StudentsRepository.getInstance().getGroupById(id);
+      group.addStudentToGroup(this);
+      print('Student: ${this}\nGroup:${group}');
+    }
   }
 }
