@@ -143,10 +143,15 @@ class _StudentEditorState extends State<StudentEditor> {
                                     );
                                   }).toList();
                                 },
-                                child: Row(children: <Widget>[
-                                  Text(_controller.getGroupNameById(groupId), style: theme.textTheme.display4,),
-                                  Icon(Icons.arrow_drop_down),
-                                ],),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      _controller.getGroupNameById(groupId),
+                                      style: theme.textTheme.display4,
+                                    ),
+                                    Icon(Icons.arrow_drop_down),
+                                  ],
+                                ),
 //                                initialValue: , //Add this
                               ),
 
@@ -222,8 +227,12 @@ class _StudentEditorState extends State<StudentEditor> {
                                     )
                                   : Text(
                                       'Ещё учится',
-                                      style: TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: Colors.black,
-                                      decoration: TextDecoration.underline, fontWeight: FontWeight.w900),
+                                      style: TextStyle(
+                                          fontSize: 15.0,
+                                          letterSpacing: 0.0,
+                                          color: Colors.black,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.w900),
                                     ),
                               //Show dialog to choose still student studying or not
                               onLongPress: selectToDateStatus,
@@ -276,8 +285,10 @@ class _StudentEditorState extends State<StudentEditor> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _isEditing ? saveStudent : startEdit,
-        child: Icon(_isEditing ? Icons.check : Icons.edit),
+        onPressed: _isLoading ? null : _isEditing ? saveStudent : startEdit,
+        child: _isLoading
+            ? CircularProgressIndicator()
+            : Icon(_isEditing ? Icons.check : Icons.edit),
       ),
     );
   }
