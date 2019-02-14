@@ -124,6 +124,10 @@ class _StudentEditorState extends State<StudentEditor> {
                               ),
 
                               //Group field
+                              SizedBox(
+                                height: 10.0,
+                              ),
+
                               PopupMenuButton<Group>(
                                 onSelected: (Group group) {
                                   setState(() {
@@ -194,12 +198,11 @@ class _StudentEditorState extends State<StudentEditor> {
                                   : null,
                               child: Text(
                                 getStringDate(_dateSince),
-                                softWrap: true,
                                 style: theme.textTheme.display4,
                               ),
                             ),
                             Text(
-                              'До',
+                              'До ',
                               style: theme.textTheme.display4,
                             ),
                             GestureDetector(
@@ -214,13 +217,13 @@ class _StudentEditorState extends State<StudentEditor> {
                                           : null,
                                       child: Text(
                                         getStringDate(_dateTo),
-                                        softWrap: true,
                                         style: theme.textTheme.display4,
                                       ),
                                     )
                                   : Text(
-                                      ' Ещё учится..',
-                                      style: theme.textTheme.display4,
+                                      'Ещё учится',
+                                      style: TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: Colors.black,
+                                      decoration: TextDecoration.underline, fontWeight: FontWeight.w900),
                                     ),
                               //Show dialog to choose still student studying or not
                               onLongPress: selectToDateStatus,
