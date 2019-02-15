@@ -71,4 +71,11 @@ class StudentsController {
   Future<Null> saveDataToCache() async {
     _repository.saveToCache();
   }
+
+  //Delete group from repository
+  Future deleteGroup(Group group) async {
+    await _repository
+        .deleteGroupAndSaveResult(group)
+        .catchError((error) => throw error);
+  }
 }

@@ -189,4 +189,18 @@ class StudentsRepository {
 
     saveToCache();
   }
+
+
+  //Delete group and all links from students
+  //Save result to firebase and to cache
+  Future deleteGroupAndSaveResult(Group group) async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    group.deleteAllStudents();
+    _groups.remove(group);
+
+    await saveToFirebase();
+    await saveToCache();
+  }
 }
