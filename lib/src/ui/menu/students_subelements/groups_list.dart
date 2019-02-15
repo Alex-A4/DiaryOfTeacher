@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 class GroupsListView extends StatefulWidget {
   @override
   _GroupsListViewState createState() => _GroupsListViewState();
+
+  GroupsListView({Key key}) : super(key: key);
 }
 
 class _GroupsListViewState extends State<GroupsListView> {

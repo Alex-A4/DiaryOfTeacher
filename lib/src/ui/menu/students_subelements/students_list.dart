@@ -6,10 +6,11 @@ import 'package:diary_of_teacher/src/ui/menu/students_subelements/StudentEditor.
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class StudentsListView extends StatefulWidget {
   @override
   _StudentsListViewState createState() => _StudentsListViewState();
+
+  StudentsListView({Key key}) : super(key: key);
 }
 
 class _StudentsListViewState extends State<StudentsListView> {
@@ -51,12 +52,12 @@ class _StudentsListViewState extends State<StudentsListView> {
                   onPressed: () {
                     acceptAction('Добавить в архив?',
                         'Вы действительно хотите добавиь ученика в архив?', () {
-                          _controller.archiveStudent(student).then((_) {
-                            Fluttertoast.showToast(msg: 'Ученик добавлен у архив');
-                            setState(() {});
-                          }).catchError(
-                                  (error) => Fluttertoast.showToast(msg: error));
-                        });
+                      _controller.archiveStudent(student).then((_) {
+                        Fluttertoast.showToast(msg: 'Ученик добавлен у архив');
+                        setState(() {});
+                      }).catchError(
+                          (error) => Fluttertoast.showToast(msg: error));
+                    });
                   },
                 ),
                 IconButton(
@@ -65,13 +66,13 @@ class _StudentsListViewState extends State<StudentsListView> {
                   onPressed: () {
                     acceptAction('Удалить?',
                         'Вы действительно хотите удалить этого ученика безвозвратно?',
-                            () {
-                          _controller.deleteStudent(student).then((_) {
-                            Fluttertoast.showToast(msg: 'Ученик удален');
-                            setState(() {});
-                          }).catchError(
-                                  (error) => Fluttertoast.showToast(msg: error));
-                        });
+                        () {
+                      _controller.deleteStudent(student).then((_) {
+                        Fluttertoast.showToast(msg: 'Ученик удален');
+                        setState(() {});
+                      }).catchError(
+                          (error) => Fluttertoast.showToast(msg: error));
+                    });
                   },
                 ),
               ],
@@ -80,7 +81,6 @@ class _StudentsListViewState extends State<StudentsListView> {
         },
         padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _openStudentEditor(context, true);
@@ -91,18 +91,16 @@ class _StudentsListViewState extends State<StudentsListView> {
     );
   }
 
-
   //Open editor to add new student
   //Pass isEditing to allow editing for now
   _openStudentEditor(context, bool isEdit, {Student student}) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => StudentEditor(
-          isEditing: true,
-          student: student,
-        )));
+              isEditing: true,
+              student: student,
+            )));
     setState(() {});
   }
-
 
   //Accept user action
   void acceptAction(String title, String text, Function func) {
