@@ -50,4 +50,11 @@ class Group {
     _students.remove(student);
     student.groupId = null;
   }
+
+  //First delete links to group at all students
+  //Then clear _students list
+  void deleteAllStudents() {
+    _students.forEach((stud) => stud.groupId = null);
+    _students = null;
+  }
 }
