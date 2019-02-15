@@ -72,6 +72,10 @@ class Student {
   //Update groupId and bind student with group if need
   void updateGroupId(String id) {
     if (this.groupId != id) {
+      //Delete student from previous group
+      var oldGroup = StudentsRepository.getInstance().getGroupById(this.groupId);
+      oldGroup.deleteOneStudent(this);
+      
       this.groupId = id;
       var group = StudentsRepository.getInstance().getGroupById(id);
       group.addStudentToGroup(this);
