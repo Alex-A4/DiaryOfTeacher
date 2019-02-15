@@ -23,6 +23,8 @@ class Group {
 
   set name(String value) => _name = value;
 
+  List<Student> get students => _students;
+
   String get name => _name;
 
   String get groupId => _groupId;
