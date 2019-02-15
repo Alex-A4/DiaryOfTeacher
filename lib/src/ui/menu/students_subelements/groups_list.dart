@@ -17,6 +17,7 @@ class _GroupsListViewState extends State<GroupsListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         key: _key,
         itemCount: _controller.listOfGroups.length,
         itemBuilder: (context, index) {
