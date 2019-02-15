@@ -45,7 +45,7 @@ class _GroupsListViewState extends State<GroupsListView> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              height: 180.0,
+              height: 200.0,
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
