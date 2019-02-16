@@ -1,6 +1,7 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
+import 'package:diary_of_teacher/src/ui/menu/students_subelements/GroupEditor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -26,8 +27,12 @@ class _GroupsListViewState extends State<GroupsListView> {
         itemBuilder: (context, index) {
           var group = _controller.listOfGroups[index];
           return ListTile(
-            onTap: () {
-              print(group.name);
+            onTap: () async {
+              await Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) {
+                return GroupEditor(group: group);
+              }));
+              setState(() {});
             },
             title: Text(group.name, style: theme.textTheme.body1),
             trailing: IconButton(
