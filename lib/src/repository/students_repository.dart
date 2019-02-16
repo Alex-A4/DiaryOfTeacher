@@ -19,6 +19,7 @@ class StudentsRepository {
 
   List<Group> _groups = [];
   List<Group> get groups => _groups;
+  //Get group by id. id must not be null
   Group getGroupById(String id) {
     Group group;
     groups.forEach((gr) {
