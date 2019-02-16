@@ -41,10 +41,10 @@ class _GroupEditorState extends State<GroupEditor> {
       appBar: AppBar(
         title: Text('Группа ${widget.group.name}'),
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
               padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0, bottom: 16.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -67,23 +67,22 @@ class _GroupEditorState extends State<GroupEditor> {
                   _isLoading
                       ? CircularProgressIndicator()
                       : IconButton(
-                          onPressed: updateName,
-                          icon: Icon(Icons.update),
-                        ),
+                    onPressed: updateName,
+                    icon: Icon(Icons.update),
+                  ),
                 ],
               ),
             ),
+          ),
 
-            Container(
-              child: ListView(
-                shrinkWrap: true,
-                children: widget.group.students
-                    .map((stud) => getStudentElement(stud))
-                    .toList(),
-              ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              widget.group.students
+                  .map((stud) => getStudentElement(stud))
+                  .toList(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
