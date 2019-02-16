@@ -71,15 +71,20 @@ class Student {
 
   //Update groupId and bind student with group if need
   void updateGroupId(String id) {
-    if (this.groupId != id && id != null) {
+    if (this.groupId != id) {
       //Delete student from previous group
-      var oldGroup = StudentsRepository.getInstance().getGroupById(this.groupId);
-      oldGroup.removeStudentFromGroup(this);
+      if (this.groupId != null) {
+        var oldGroup = StudentsRepository.getInstance().getGroupById(
+            this.groupId);
+        oldGroup.removeStudentFromGroup(this);
+      }
 
       this.groupId = id;
-      var group = StudentsRepository.getInstance().getGroupById(id);
-      group.addStudentToGroup(this);
-      print('Student: ${this}\nGroup:${group}');
+      if (this.groupId != null) {
+        var group = StudentsRepository.getInstance().getGroupById(id);
+        group.addStudentToGroup(this);
+        print('Student: ${this}\nGroup:${group}');
+      }
     }
   }
 }
