@@ -42,38 +42,45 @@ class _GroupEditorState extends State<GroupEditor> {
         title: Text('Группа ${widget.group.name}'),
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
         child: Column(
           children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Название группы',
-                      border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(6.0)),
-                    ),
-                    maxLength: 20,
-                    controller: _nameController,
-                    style: theme.textTheme.body2,
-                  ),
-                ),
-                _isLoading
-                    ? CircularProgressIndicator()
-                    : IconButton(
-                        onPressed: updateName,
-                        icon: Icon(Icons.update),
+            Container(
+              padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0, bottom: 16.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Flexible(
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: 'Название группы',
+                        border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(6.0)),
                       ),
-              ],
+                      maxLength: 20,
+                      controller: _nameController,
+                      style: theme.textTheme.body2,
+                    ),
+                    fit: FlexFit.loose,
+                  ),
+                  _isLoading
+                      ? CircularProgressIndicator()
+                      : IconButton(
+                          onPressed: updateName,
+                          icon: Icon(Icons.update),
+                        ),
+                ],
+              ),
             ),
-            ListView(
-              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-              children: widget.group.students
-                  .map((stud) => getStudentElement(stud))
-                  .toList(),
+
+            Container(
+              child: ListView(
+                shrinkWrap: true,
+                children: widget.group.students
+                    .map((stud) => getStudentElement(stud))
+                    .toList(),
+              ),
             ),
           ],
         ),
@@ -83,14 +90,16 @@ class _GroupEditorState extends State<GroupEditor> {
 
   //Update name asynchronously and show toast
   void updateName() {
-    widget.group.updateName('');
+    widget.group.updateName(_nameController.text);
     setState(() => _isLoading = true);
     _controller.saveDataToCache().then((_) {
       Fluttertoast.showToast(msg: 'Название успешно изменено');
       setState(() => _isLoading = false);
-    }).catchError((error) => Fluttertoast.showToast(msg: error));
+    }).catchError((error) {
+      Fluttertoast.showToast(msg: error);
+      setState(() => _isLoading = false);
+    });
   }
-
 
   //Get student representation
   Widget getStudentElement(Student stud) {
@@ -121,10 +130,12 @@ class _GroupEditorState extends State<GroupEditor> {
   void removeStudent(Student stud) {
     widget.group.removeStudentFromGroup(stud);
 
-
     _controller.saveDataToCache().then((_) {
       Fluttertoast.showToast(msg: 'Ученик удален из группы');
       setState(() => _isLoading = false);
-    }).catchError((error) => Fluttertoast.showToast(msg: error));
+    }).catchError((error) {
+      Fluttertoast.showToast(msg: error);
+      setState(() => _isLoading = false);
+    });
   }
 }
