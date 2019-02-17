@@ -75,6 +75,10 @@ class _GroupEditorState extends State<GroupEditor> {
             ),
           ),
 
+          SliverToBoxAdapter(
+            child: Divider(height: 3.0,),
+          ),
+
           SliverList(
             delegate: SliverChildListDelegate(
               widget.group.students
