@@ -17,6 +17,7 @@ class _StudentsState extends State<StudentsScreen> with SingleTickerProviderStat
 
   List<Widget> _lists = [StudentsListView(), GroupsListView()];
 
+  //TODO: add button to look at archived students
 
   @override
   void initState() {
