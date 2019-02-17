@@ -43,7 +43,7 @@ class AuthenticationBloc
 
     //Trying to create password
     if (event is PasswordEvent) {
-      await userRepository.savePassword(event.password);
+      await UserRepository.savePassword(event.password);
       yield AuthenticationUnauthenticated();
     }
 
