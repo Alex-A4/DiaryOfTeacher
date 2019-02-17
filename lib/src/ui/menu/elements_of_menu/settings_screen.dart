@@ -1,8 +1,10 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
+import 'package:diary_of_teacher/src/repository/UserRepository.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -12,9 +14,10 @@ class SettingsScreen extends StatefulWidget {
 class SettingsScreenState extends State<SettingsScreen> {
   AuthenticationBloc _authenticationBloc;
 
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
+
   TextEditingController _oldPassword = TextEditingController();
   TextEditingController _newPassword = TextEditingController();
-
 
   @override
   void dispose() {
@@ -43,6 +46,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           Divider(),
+
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text(
@@ -60,8 +64,8 @@ class SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-
-  //TODO: add mehtod to change password
+  //TODO: add method to change password
+  //TODO: change underline color at textField
   //Show dialog to user to change password
   Future showDialogToChangePassword(BuildContext context) async {
     _newPassword.clear();
@@ -76,42 +80,16 @@ class SettingsScreenState extends State<SettingsScreen> {
             title: Text('Сменить пароль'),
             content: Container(
               height: 100.0,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      controller: _oldPassword,
-                      obscureText: true,
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      maxLength: 6,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        hintText: 'Старый пароль',
-                        hintStyle: textHintTheme,
-                      ),
-                      style: textInputTheme,
-                    ),
-                  ),
-
-                  Expanded(
-                    child: TextField(
-                      controller: _newPassword,
-                      keyboardType: TextInputType.number,
-                      obscureText: true,
-                      textAlign: TextAlign.center,
-                      maxLength: 6,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        hintText: 'Новый пароль',
-                        hintStyle: textHintTheme,
-                      ),
-                      style: textInputTheme,
-                    ),
-                  ),
-                ],
+              child: Form(
+                key: _key,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    getPasswordField('Старый пароль', _oldPassword),
+                    getPasswordField('Новый пароль', _newPassword),
+                  ],
+                ),
               ),
             ),
             actions: <Widget>[
@@ -124,7 +102,9 @@ class SettingsScreenState extends State<SettingsScreen> {
                     style: buttonTheme,
                   )),
               FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_key.currentState.validate()) tryToChangePassword();
+                  },
                   child: Text(
                     'Сменить',
                     style: buttonTheme,
@@ -132,6 +112,42 @@ class SettingsScreenState extends State<SettingsScreen> {
             ],
           );
         });
+  }
+
+  //Get TextFormField for passwords
+  Widget getPasswordField(String hintText, TextEditingController controller) {
+    return Expanded(
+      child: TextFormField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        obscureText: true,
+        textAlign: TextAlign.center,
+        maxLength: 6,
+        maxLines: 1,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: textHintTheme,
+        ),
+        style: textInputTheme,
+        validator: (text) {
+          if (text.length != 6) return 'Длина пароля не равна 6';
+        },
+      ),
+    );
+  }
+
+  //Firstly check correct of old password and if it's right
+  // then create new password
+  Future tryToChangePassword() async {
+    if (await UserRepository.checkPasswordCorrect(_oldPassword.text)) {
+      //Change password in store
+      await UserRepository.savePassword(_newPassword.text);
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(msg: 'Пароль успешно изменён');
+    } else {
+      //Show TextFormFiled error programmatically
+//      _key.currentState.
+    }
   }
 
   final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38);
