@@ -41,47 +41,47 @@ class _GroupEditorState extends State<GroupEditor> {
       appBar: AppBar(
         title: Text('Группа ${widget.group.name}'),
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0, bottom: 16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Flexible(
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        hintText: 'Название группы',
-                        border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(6.0)),
-                      ),
-                      maxLength: 20,
-                      controller: _nameController,
-                      style: theme.textTheme.body2,
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            //TODO: add bottom border or divider
+            alignment: AlignmentDirectional.topCenter,
+            padding: const EdgeInsets.only(
+                top: 16.0, left: 24.0, right: 24.0, bottom: 16.0),
+            height: 70.0,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Flexible(
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      hintText: 'Название группы',
+                      border: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0)),
                     ),
-                    fit: FlexFit.loose,
+                    maxLength: 20,
+                    controller: _nameController,
+                    style: theme.textTheme.body2,
                   ),
-                  _isLoading
-                      ? CircularProgressIndicator()
-                      : IconButton(
-                    onPressed: updateName,
-                    icon: Icon(Icons.update),
-                  ),
-                ],
-              ),
+                  fit: FlexFit.loose,
+                ),
+                _isLoading
+                    ? CircularProgressIndicator()
+                    : IconButton(
+                        onPressed: updateName,
+                        icon: Icon(Icons.update),
+                      ),
+              ],
             ),
           ),
-
-          SliverToBoxAdapter(
-            child: Divider(height: 3.0,),
-          ),
-
-          SliverList(
-            delegate: SliverChildListDelegate(
-              widget.group.students
+          Container(
+            padding: const EdgeInsets.only(top: 90.0),
+            child: ListView(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              children: widget.group.students
                   .map((stud) => getStudentElement(stud))
                   .toList(),
             ),
