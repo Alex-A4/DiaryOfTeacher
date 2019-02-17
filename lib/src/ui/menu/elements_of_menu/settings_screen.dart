@@ -46,7 +46,6 @@ class SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           Divider(),
-
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text(
@@ -64,7 +63,6 @@ class SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  //TODO: add method to change password
   //TODO: change underline color at textField
   //Show dialog to user to change password
   Future showDialogToChangePassword(BuildContext context) async {
@@ -87,6 +85,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     getPasswordField('Старый пароль', _oldPassword),
+
                     getPasswordField('Новый пароль', _newPassword),
                   ],
                 ),
@@ -145,8 +144,7 @@ class SettingsScreenState extends State<SettingsScreen> {
       Navigator.of(context).pop();
       Fluttertoast.showToast(msg: 'Пароль успешно изменён');
     } else {
-      //Show TextFormFiled error programmatically
-//      _key.currentState.
+      Fluttertoast.showToast(msg: 'Пароль неверный');
     }
   }
 
