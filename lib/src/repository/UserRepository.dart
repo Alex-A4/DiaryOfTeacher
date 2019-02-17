@@ -82,16 +82,23 @@ class UserRepository {
 
 //Trying to login by comparing password's hash
   Future<Null> handleLogin(String password) async {
+    //If password is correct build user and start work
+    if (await checkPasswordCorrect(password))
+      await User.buildUser();
+    else throw 'Пароль неверный';
+  }
+
+  //Check password correctness and return true if ok and false if not
+  Future<bool> checkPasswordCorrect(String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     int hash = prefs.getInt('passwordHash');
 
     //If password is correct
     if (password.hashCode == hash) {
-      //Building user singleton
-      await User.buildUser();
+      return true;
     } else {
-      throw 'Пароль неверный';
+      return false;;
     }
   }
 
