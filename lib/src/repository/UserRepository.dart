@@ -69,11 +69,15 @@ class UserRepository {
 
 //Signing out user and clearing password hash
   Future<Null> handleSignOut() async {
-    await FirebaseAuth.instance.signOut();
-    await googleSignIn.disconnect();
-    await googleSignIn.signOut();
-    var prefs = await SharedPreferences.getInstance();
-    prefs.remove('passwordHash');
+    try {
+      await FirebaseAuth.instance.signOut();
+      await googleSignIn.disconnect();
+      await googleSignIn.signOut();
+      var prefs = await SharedPreferences.getInstance();
+      prefs.remove('passwordHash');
+    } catch (e) {
+      throw 'Ошибка выхода. Проверьте интернет соединение и попробуйте ещё раз';
+    }
   }
 
 //Trying to login by comparing password's hash

@@ -60,8 +60,13 @@ class AuthenticationBloc
 
     //If user trying to sign out
     if (event is SignOut) {
-      await userRepository.handleSignOut();
-      yield AuthenticationUninitialized();
+      try {
+        await userRepository.handleSignOut();
+        yield AuthenticationUninitialized();
+      } catch (e) {
+        showMessage(e);
+        yield AuthenticationAuthenticated();
+      }
     }
   }
 
