@@ -126,9 +126,7 @@ class SettingsScreenState extends State<SettingsScreen> {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: textHintTheme,
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black12),
-          ),
+          disabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)),
         ),
         style: textInputTheme,
         validator: (text) {
