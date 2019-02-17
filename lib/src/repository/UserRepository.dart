@@ -116,6 +116,7 @@ class UserRepository {
     //Writing hashcode of password to stores
 
     if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+      await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
       Firestore.instance
           .collection('users')
           .document(prefs.getString('id'))
@@ -146,6 +147,7 @@ class UserRepository {
 
       User.user.photoUrl = url.toString();
       await saveStringToLocal('photoUrl', url.toString());
+      await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
       await Firestore.instance
           .collection('users')
           .document(User.user.uid)
@@ -158,7 +160,7 @@ class UserRepository {
   static Future uploadUserName(String userName) async {
     if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
       throw 'Отсутствует интернет соединение';
-
+    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
     await Firestore.instance
         .collection('users')
         .document(User.user.uid)
