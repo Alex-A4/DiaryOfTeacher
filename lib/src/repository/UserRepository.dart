@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  static final String userPhoto =
+      'https://firebasestorage.googleapis.com/v0/b/diary-of-teacher-46bf7.appspot.com/o/login_picture.png?alt=media&token=876dc4f6-e42e-4a90-a812-d09ed6ccedbe';
 
   ///Trying to sign in with google
   ///returns the FirebaseUser if success
@@ -47,6 +49,7 @@ class UserRepository {
       final List<DocumentSnapshot> documents = result.documents;
       if (documents.length == 0) {
         String userName = user.displayName ?? 'User';
+        String photoUrl = user.photoUrl ?? userPhoto;
         // Update data to server if new user
         Firestore.instance.collection('users').document(user.uid).setData(
             {'photoUrl': user.photoUrl, 'id': user.uid, 'userName': userName});
@@ -86,7 +89,8 @@ class UserRepository {
     //If password is correct build user and start work
     if (await checkPasswordCorrect(password))
       await User.buildUser();
-    else throw 'Пароль неверный';
+    else
+      throw 'Пароль неверный';
   }
 
   //Check password correctness and return true if ok and false if not
@@ -99,7 +103,8 @@ class UserRepository {
     if (password.hashCode == hash) {
       return true;
     } else {
-      return false;;
+      return false;
+      ;
     }
   }
 
