@@ -50,30 +50,38 @@ class _GroupEditorState extends State<GroupEditor> {
             padding: const EdgeInsets.only(
                 top: 16.0, left: 24.0, right: 24.0, bottom: 16.0),
             height: 70.0,
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Flexible(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: 'Название группы',
-                      border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(6.0)),
-                    ),
-                    maxLength: 20,
-                    controller: _nameController,
-                    style: theme.textTheme.body2,
-                  ),
-                  fit: FlexFit.loose,
-                ),
-                _isLoading
-                    ? CircularProgressIndicator()
-                    : IconButton(
-                        onPressed: updateName,
-                        icon: Icon(Icons.update),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Flexible(
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: 'Название группы',
+                          border: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(6.0)),
+                        ),
+                        maxLength: 20,
+                        controller: _nameController,
+                        style: theme.textTheme.body2,
                       ),
+                      fit: FlexFit.loose,
+                    ),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : IconButton(
+                            onPressed: updateName,
+                            icon: Icon(Icons.update),
+                          ),
+                  ],
+                ),
+
+                Divider(),
               ],
             ),
           ),
