@@ -45,10 +45,9 @@ class _GroupEditorState extends State<GroupEditor> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            //TODO: add bottom border or divider
             alignment: AlignmentDirectional.topCenter,
             padding: const EdgeInsets.only(
-                top: 16.0, left: 24.0, right: 24.0, bottom: 16.0),
+                top: 16.0, left: 24.0, right: 24.0),
             height: 70.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,12 +80,12 @@ class _GroupEditorState extends State<GroupEditor> {
                   ],
                 ),
 
-                Divider(),
+                Divider(color: Colors.black45,),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(top: 90.0),
+            padding: const EdgeInsets.only(top: 100.0),
             child: ListView(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               children: widget.group.students
