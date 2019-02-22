@@ -35,5 +35,5 @@ class Lesson {
         groupToStudy = data['groupToStudy'],
         theme = data['theme'],
         homeWork = data['homeWork'],
-        earnedMoney = data['earnedMoney'];
+        earnedMoney = Decimal.parse(data['earnedMoney']);
 }
