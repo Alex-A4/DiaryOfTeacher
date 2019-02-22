@@ -3,6 +3,7 @@ import 'package:decimal/decimal.dart';
 import 'package:meta/meta.dart';
 
 //Class that describes one lesson
+//That could be convert to/from Json
 class Lesson {
   DateTime lessonTime;
   Group groupToStudy;
@@ -10,6 +11,7 @@ class Lesson {
   String homeWork;
   Decimal earnedMoney;
 
+  //All fields are required
   Lesson(
       {@required this.lessonTime,
       @required this.groupToStudy,
