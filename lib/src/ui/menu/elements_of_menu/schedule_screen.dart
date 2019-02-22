@@ -1,4 +1,5 @@
 import 'package:diary_of_teacher/src/app.dart';
+import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +12,13 @@ class ScheduleScreen extends StatefulWidget {
 
 class _ScheduleState extends State<ScheduleScreen> {
   DateTime _selected;
-//  Map<DateTime, List<Lesson>> events = {};
-//  EventList list;
-
-
+  LessonController _controller;
+  EventList<Lesson> _eventList;
   @override
   void initState() {
     super.initState();
+    _controller = LessonController.getInstance();
+    _eventList = EventList<Lesson>(events: _controller.events);
   }
 
 
@@ -52,7 +53,7 @@ class _ScheduleState extends State<ScheduleScreen> {
                 weekdayTextStyle: TextStyle(color: Colors.black),
                 iconColor: Colors.green[400],
 
-//                markedDatesMap: list,
+                markedDatesMap: _eventList,
                 markedDateIconMaxShown: 1,
                 markedDateShowIcon: true,
                 markedDateIconBuilder: (lesson){
