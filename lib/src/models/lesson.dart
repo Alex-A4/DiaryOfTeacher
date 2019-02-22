@@ -17,4 +17,23 @@ class Lesson {
       @required this.homeWork,
       @required this.earnedMoney});
 
+
+  //Convert lesson object to Json data
+  Map<String, dynamic> toJson() {
+    return {
+      'lessonTime': lessonTime.toString(),
+      'groupToStudy': groupToStudy.groupId,
+      'theme': theme,
+      'homeWork': homeWork,
+      'earnedMoney': earnedMoney.toString()
+    };
+  }
+
+  //Create lesson object from Json data
+  Lesson.fromJson(Map<String, dynamic> data)
+      : lessonTime = data['lessonTime'],
+        groupToStudy = data['groupToStudy'],
+        theme = data['theme'],
+        homeWork = data['homeWork'],
+        earnedMoney = data['earnedMoney'];
 }
