@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -87,8 +88,10 @@ class UserRepository {
 //Trying to login by comparing password's hash
   Future<Null> handleLogin(String password) async {
     //If password is correct build user and start work
-    if (await checkPasswordCorrect(password))
+    if (await checkPasswordCorrect(password)) {
       await User.buildUser();
+      await LessonController.buildController();
+    }
     else
       throw 'Пароль неверный';
   }
