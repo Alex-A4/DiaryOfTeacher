@@ -38,4 +38,7 @@ class Lesson {
         theme = data['theme'],
         homeWork = data['homeWork'],
         earnedMoney = Decimal.parse(data['earnedMoney']);
+
+  @override
+  String toString() => 'Lesson: $groupToStudy, ${lessonTime.toString()}';
 }
