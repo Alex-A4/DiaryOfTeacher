@@ -35,6 +35,11 @@ class LessonController {
 
   //Add lesson to specified date
   void addLessonForDate(DateTime date, Lesson lesson) {
+    if (!_events.containsKey(lesson.lessonTime)) {
+      _events[lesson.lessonTime] = [lesson];
+      return;
+    }
+
     _events.keys.forEach((eventDate) {
       if (isDatesEquals(eventDate, date)) {
         _events[eventDate].add(lesson);
@@ -57,8 +62,11 @@ class LessonController {
   //Restore events from local cache
   Future _fromCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringEvents = prefs.getString('events');
+    if (stringEvents == null)
+      return;
 
-    List<dynamic> listOfEvents = _decoder.decode(prefs.getString('events'));
+    List<dynamic> listOfEvents = _decoder.decode(stringEvents);
 
     print('EVENTS: $listOfEvents');
 
