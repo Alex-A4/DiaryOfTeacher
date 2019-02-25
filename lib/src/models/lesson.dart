@@ -14,12 +14,11 @@ class Lesson {
 
   //All fields are required
   Lesson(
-      {@required this.weekDay,
-      @required this.lessonTime,
+      {@required this.lessonTime,
       @required this.groupToStudy,
       @required this.theme,
       @required this.homeWork,
-      @required this.earnedMoney});
+      @required this.earnedMoney}) : weekDay = lessonTime.weekday;
 
   //Convert lesson object to Json data
   Map<String, dynamic> toJson() {
@@ -43,5 +42,6 @@ class Lesson {
         earnedMoney = Decimal.parse(data['earnedMoney']);
 
   @override
-  String toString() => 'Lesson: $groupToStudy, weekDay: $weekDay, ${lessonTime.toString()}';
+  String toString() =>
+      'Lesson: $groupToStudy, weekDay: $weekDay, ${lessonTime.toString()}';
 }
