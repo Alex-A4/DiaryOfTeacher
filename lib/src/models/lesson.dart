@@ -18,7 +18,8 @@ class Lesson {
       @required this.groupToStudy,
       @required this.theme,
       @required this.homeWork,
-      @required this.earnedMoney}) : weekDay = lessonTime.weekday;
+      @required this.earnedMoney})
+      : weekDay = lessonTime.weekday;
 
   //Convert lesson object to Json data
   Map<String, dynamic> toJson() {
@@ -44,4 +45,14 @@ class Lesson {
   @override
   String toString() =>
       'Lesson: $groupToStudy, weekDay: $weekDay, ${lessonTime.toString()}';
+
+  //Update data
+  void updateData(Decimal earnedMoney, Group group, String hw,
+      DateTime lessonTime, String studyTheme) {
+    this.earnedMoney = earnedMoney;
+    this.lessonTime = lessonTime;
+    this.groupToStudy = group;
+    this.homeWork = hw;
+    this.theme = studyTheme;
+  }
 }
