@@ -1,7 +1,11 @@
+import 'dart:math';
+
+import 'package:decimal/decimal.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/LessonsEditor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -14,6 +18,7 @@ class _ScheduleState extends State<ScheduleScreen> {
   DateTime _selected;
   LessonController _controller;
   EventList<Lesson> _eventList;
+
   @override
   void initState() {
     super.initState();
@@ -21,8 +26,6 @@ class _ScheduleState extends State<ScheduleScreen> {
     _eventList = EventList<Lesson>(events: _controller.events);
   }
 
-
-  //
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +33,7 @@ class _ScheduleState extends State<ScheduleScreen> {
         title: Text('Расписание'),
       ),
       body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
@@ -52,41 +54,40 @@ class _ScheduleState extends State<ScheduleScreen> {
                 headerTitleTouchable: true,
                 weekdayTextStyle: TextStyle(color: Colors.black),
                 iconColor: Colors.green[400],
-
                 markedDatesMap: _eventList,
                 markedDateIconMaxShown: 1,
                 markedDateShowIcon: true,
-                markedDateIconBuilder: (lesson){
+                markedDateIconBuilder: (lesson) {
                   return Container(
                     padding: const EdgeInsets.only(top: 15.0, left: 15.0),
                     child: Icon(Icons.school),
                   );
                 },
-
                 selectedDayButtonColor: theme.accentColor,
                 selectedDayBorderColor: theme.accentColor,
                 selectedDateTime: _selected,
-
                 todayBorderColor: theme.buttonColor,
                 todayTextStyle: TextStyle(color: Colors.black),
                 todayButtonColor: theme.primaryColor,
               ),
             ),
-
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 FlatButton(
-                  onPressed: (){
-
+                  onPressed: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                      return LessonsEditor(lesson: null,);
+                    }));
+                    setState(() {});
                   },
                   child: Text('Добавить занятие', style: style),
                 ),
                 FlatButton(
-                  onPressed: (){
-
+                  onPressed: () async {
+                    //Add lessons viewer
+                    printEvents();
                   },
                   child: Text('Посмотреть занятия', style: style),
                 ),
@@ -98,6 +99,11 @@ class _ScheduleState extends State<ScheduleScreen> {
       drawer: MenuDrawer(),
     );
   }
+
+  void printEvents() {
+    print(_eventList.events);
+  }
 }
 
-final TextStyle style = TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: theme.accentColor);
+final TextStyle style =
+    TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: theme.accentColor);
