@@ -38,6 +38,19 @@ class StudentsController {
     return name;
   }
 
+
+  //Get group by specified Id
+  Group getGroupById(String groupId) {
+    if (groupId == null) return null;
+
+    Group groupRet;
+    listOfGroups.forEach((group){
+      if (group.groupId.compareTo(groupId) == 0) groupRet = group;
+    });
+
+    return groupRet;
+  }
+
   //Saving data to Firebase
   Future<bool> saveDataToFirebase() async {
     await _repository.saveToFirebase().catchError((error) {
