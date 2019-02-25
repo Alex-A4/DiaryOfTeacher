@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/models/user.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/lesson.dart';
-
 
 //Singleton controller of lessons
 //It can save/restore data to/from cache.
@@ -17,7 +19,6 @@ class LessonController {
 
   Map<DateTime, List<Lesson>> get events => _events;
 
-
   static LessonController getInstance() {
     return _controller;
   }
@@ -31,7 +32,6 @@ class LessonController {
 
   //Private constructor to block local instances
   LessonController._();
-
 
   //Add lesson to specified date
   void addLessonForDate(DateTime date, Lesson lesson) {
@@ -58,13 +58,11 @@ class LessonController {
         date1.minute == date2.minute;
   }
 
-
   //Restore events from local cache
   Future _fromCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringEvents = prefs.getString('events');
-    if (stringEvents == null)
-      return;
+    if (stringEvents == null) return;
 
     List<dynamic> listOfEvents = _decoder.decode(stringEvents);
 
@@ -88,6 +86,22 @@ class LessonController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('events', _decoder.encode(convertEventsToJson()));
     print('Lessons saved to cache!');
+  }
+
+
+  //Save all lessons to cloud firestore
+  Future saveToFirestore() async {
+    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .collection('lessons')
+        .document('events')
+        .updateData({'events': convertEventsToJson()});
+    print('Lessons saved to cache');
   }
 
   //Convert events to dynamic list to save to cache
