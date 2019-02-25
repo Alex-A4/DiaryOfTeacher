@@ -63,6 +63,10 @@ class _LessonsEditorState extends State<LessonsEditor> {
             },
           ),
 
+          SizedBox(
+            height: 16.0,
+          ),
+
           //Lesson group
           PopupMenuButton<Group>(
             onSelected: (Group group) {
@@ -89,25 +93,48 @@ class _LessonsEditorState extends State<LessonsEditor> {
             ),
           ),
 
+          SizedBox(
+            height: 16.0,
+          ),
+
           //Theme field
-          Expanded(
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(),
+          ),
+
+          SizedBox(
+            height: 16.0,
           ),
 
           //Money field
           Container(
-            width: 100.0,
-            child: Expanded(
-              child: TextField(),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: <Widget>[
+                Text('Доход:'),
+                Container(
+                  padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+                  width: 100.0,
+                  child: TextField(
+                    maxLength: 5,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                Text('руб.'),
+              ],
             ),
           ),
 
-          //Homework field
-          Expanded(
-            child: TextField(
+          SizedBox(
+            height: 16.0,
+          ),
 
-            ),
-          )
+          //Homework field
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextField(),
+          ),
         ],
       )),
       floatingActionButton: FloatingActionButton(
