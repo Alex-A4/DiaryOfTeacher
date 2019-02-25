@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 //Class that describes one lesson
 //That could be convert to/from Json
 class Lesson {
+  int weekDay;
   DateTime lessonTime;
   Group groupToStudy;
   String theme;
@@ -13,16 +14,17 @@ class Lesson {
 
   //All fields are required
   Lesson(
-      {@required this.lessonTime,
+      {@required this.weekDay,
+      @required this.lessonTime,
       @required this.groupToStudy,
       @required this.theme,
       @required this.homeWork,
       @required this.earnedMoney});
 
-
   //Convert lesson object to Json data
   Map<String, dynamic> toJson() {
     return {
+      'weekDay': weekDay,
       'lessonTime': lessonTime.toString(),
       'groupToStudy': groupToStudy.groupId,
       'theme': theme,
@@ -34,11 +36,12 @@ class Lesson {
   //Create lesson object from Json data
   Lesson.fromJson(Map<String, dynamic> data)
       : lessonTime = data['lessonTime'],
+        weekDay = data['weekDay'],
         groupToStudy = data['groupToStudy'],
         theme = data['theme'],
         homeWork = data['homeWork'],
         earnedMoney = Decimal.parse(data['earnedMoney']);
 
   @override
-  String toString() => 'Lesson: $groupToStudy, ${lessonTime.toString()}';
+  String toString() => 'Lesson: $groupToStudy, weekDay: $weekDay, ${lessonTime.toString()}';
 }
