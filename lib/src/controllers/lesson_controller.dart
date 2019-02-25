@@ -35,6 +35,9 @@ class LessonController {
 
   //Add lesson to specified date
   void addLessonForDate(DateTime date, Lesson lesson) {
+    if (date == null || lesson == null)
+      throw 'Trying to add null value to list';
+    
     if (!_events.containsKey(lesson.lessonTime)) {
       _events[lesson.lessonTime] = [lesson];
       return;
