@@ -228,6 +228,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
       return;
     }
 
+    //If lesson not exist, then create it and add to events
     if (lesson == null) {
       widget.lesson = Lesson(
           earnedMoney: earnedMoney,
@@ -235,13 +236,14 @@ class _LessonsEditorState extends State<LessonsEditor> {
           homeWork: hw,
           lessonTime: lessonTime,
           theme: studyTheme);
+
+      _lessonController.addLessonForDate(lesson.lessonTime, lesson);
     } else
       lesson.updateData(earnedMoney, _studentsController.getGroupById(groupId),
           hw, lessonTime, studyTheme);
 
     print(lesson);
 
-    _lessonController.addLessonForDate(lesson.lessonTime, lesson);
     _lessonController.saveToCache().then((_) {
       Fluttertoast.showToast(msg: 'Сохранение успешно');
     }).catchError((_) {
