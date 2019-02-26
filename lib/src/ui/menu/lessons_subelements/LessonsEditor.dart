@@ -9,8 +9,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class LessonsEditor extends StatefulWidget {
-  LessonsEditor({Key key, @required this.lesson}) : super(key: key);
+  LessonsEditor({Key key, @required this.date, @required this.lesson}) : super(key: key);
 
+  DateTime date;
   Lesson lesson;
 
   @override
@@ -239,6 +240,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
       _lessonController.addLessonForDate(lesson.lessonTime, lesson);
     } else
+      //TODO: fix updating if date was changed
       lesson.updateData(earnedMoney, _studentsController.getGroupById(groupId),
           hw, lessonTime, studyTheme);
 
