@@ -242,8 +242,6 @@ class _LessonsEditorState extends State<LessonsEditor> {
       lesson.updateData(earnedMoney, _studentsController.getGroupById(groupId),
           hw, lessonTime, studyTheme);
 
-    print(lesson);
-
     _lessonController.saveToCache().then((_) {
       Fluttertoast.showToast(msg: 'Сохранение успешно');
     }).catchError((_) {
