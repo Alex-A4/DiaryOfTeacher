@@ -45,7 +45,6 @@ class _LessonsEditorState extends State<LessonsEditor> {
     _hwController = TextEditingController(text: hw);
   }
 
-
   @override
   void dispose() {
     _moneyController.dispose();
@@ -135,7 +134,10 @@ class _LessonsEditorState extends State<LessonsEditor> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
               children: <Widget>[
-                Text('Доход:', style: theme.textTheme.display4,),
+                Text(
+                  'Доход:',
+                  style: theme.textTheme.display4,
+                ),
                 Container(
                   padding: const EdgeInsets.only(right: 16.0, left: 16.0),
                   width: 100.0,
@@ -165,7 +167,6 @@ class _LessonsEditorState extends State<LessonsEditor> {
                 hintText: 'Домашнее задание',
               ),
               maxLines: 30,
-
             ),
           ),
         ],
@@ -188,8 +189,34 @@ class _LessonsEditorState extends State<LessonsEditor> {
   //Show two dialogs:
   // First to pick date of lesson
   // Second to pick time of lesson
+  // Then build new DateTime based on above values
   Future getDateAndTime() async {
-    print('GetDateAndTime');
+    //Get user date
+    DateTime date = await showDatePicker(
+        context: context,
+        initialDate: lessonTime ?? DateTime.now(),
+        firstDate: DateTime(2010, 1),
+        lastDate: DateTime(DateTime.now().year + 2, 12));
+    if (date == null) {
+      Fluttertoast.showToast(msg: 'Дата не указана');
+      return;
+    }
+
+    //Get user time
+    TimeOfDay time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(lessonTime ?? DateTime.now()),
+    );
+    if (time == null) {
+      Fluttertoast.showToast(msg: 'Время не указано');
+      return;
+    }
+
+    //Build new date
+    lessonTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+
+    setState(() {});
   }
 
   //Save lesson to local cache:
