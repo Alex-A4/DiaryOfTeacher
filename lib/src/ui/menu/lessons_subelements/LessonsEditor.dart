@@ -140,6 +140,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
           //Money field
           Container(
+            padding: const EdgeInsets.only(bottom: 16.0, top: 16.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -151,8 +152,10 @@ class _LessonsEditorState extends State<LessonsEditor> {
                   padding: const EdgeInsets.only(right: 16.0, left: 16.0),
                   width: 100.0,
                   child: TextField(
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(bottom: 0.0)
+                    ),
                     controller: _moneyController,
-                    maxLength: 5,
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -270,6 +273,5 @@ class _LessonsEditorState extends State<LessonsEditor> {
         _moneyController.text.isEmpty ? '0' : _moneyController.text);
     hw = _hwController.text;
     studyTheme = _themeController.text;
-    setState(() {});
   }
 }
