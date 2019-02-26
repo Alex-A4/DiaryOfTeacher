@@ -33,16 +33,18 @@ class LessonController {
   //Private constructor to block local instances
   LessonController._();
 
-  //Add lesson to specified date
+  //Add lesson to events by specified date
   void addLessonForDate(DateTime date, Lesson lesson) {
     if (date == null || lesson == null)
       throw 'Trying to add null value to list';
-    
-    if (!_events.containsKey(lesson.lessonTime)) {
-      _events[lesson.lessonTime] = [lesson];
+
+    //Add lesson and date if it was not exist before
+    if (!isEventsContainsDate(date)) {
+      _events[date] = [lesson];
       return;
     }
 
+    //Add lesson to date if it was exist
     _events.keys.forEach((eventDate) {
       if (isDatesEquals(eventDate, date)) {
         _events[eventDate].add(lesson);
@@ -50,6 +52,21 @@ class LessonController {
         return;
       }
     });
+
+    print(events.toString());
+  }
+
+  //Custom check is events map contains [date]
+  bool isEventsContainsDate(DateTime date) {
+    bool isContains = false;
+    events.keys.forEach((d) {
+      if (isDatesEquals(date, d)) {
+        isContains = true;
+        return;
+      }
+    });
+
+    return isContains;
   }
 
   //Checks is dates equals to the minutes
@@ -90,7 +107,6 @@ class LessonController {
     await prefs.setString('events', _decoder.encode(convertEventsToJson()));
     print('Lessons saved to cache!');
   }
-
 
   //Save all lessons to cloud firestore
   Future saveToFirestore() async {
