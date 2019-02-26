@@ -68,7 +68,7 @@ class LessonController {
     return isContains;
   }
 
-  //Checks is dates equals to the minutes
+  //Checks is dates equals to day
   bool isDatesEquals(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&
         date1.month == date2.month &&
@@ -83,8 +83,6 @@ class LessonController {
 
     List<dynamic> listOfEvents = _decoder.decode(stringEvents);
 
-    print('EVENTS: $listOfEvents');
-
     listOfEvents.forEach((listOfLessons) {
       List<Lesson> newLessons = [];
       listOfLessons.forEach((lesson) {
@@ -94,6 +92,8 @@ class LessonController {
       if (newLessons.length != 0)
         _events[newLessons[0].lessonTime] = newLessons;
     });
+
+    print('EVENTS: ${events.toString()}');
   }
 
   //Save lessons to local cache
