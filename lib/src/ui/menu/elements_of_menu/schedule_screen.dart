@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:decimal/decimal.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
@@ -77,16 +74,20 @@ class _ScheduleState extends State<ScheduleScreen> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 FlatButton(
-                  onPressed: () async {
-                    await Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return LessonsEditor(
-                        lesson: null,
-                      );
-                    }));
-                    setState(() {});
-                  },
-                  child: Text('Добавить занятие', style: style),
+                  onPressed: _selected == null
+                      ? null
+                      : () async {
+                          await Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return LessonsEditor(
+                              date: _selected,
+                              lesson: null,
+                            );
+                          }));
+                          setState(() {});
+                        },
+                  child: Text('Добавить занятие',
+                      style: _selected == null ? disabledStyle : style),
                 ),
                 FlatButton(
                   onPressed: () async {
@@ -112,5 +113,7 @@ class _ScheduleState extends State<ScheduleScreen> {
   }
 }
 
+final TextStyle disabledStyle =
+    TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: Colors.grey[300]);
 final TextStyle style =
     TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: theme.accentColor);
