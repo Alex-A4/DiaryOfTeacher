@@ -363,7 +363,6 @@ class _StudentEditorState extends State<StudentEditor> {
     return '${date.day < 10 ? '0' : ''}${date.day}.${date.month < 10 ? '0' : ''}${date.month}.${date.year}';
   }
 
-  //TODO: test this method
   //Show dialog and choose still student is studying
   Future selectToDateStatus() async {
     await showDialog(
