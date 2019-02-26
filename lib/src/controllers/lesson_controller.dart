@@ -48,7 +48,6 @@ class LessonController {
     _events.keys.forEach((eventDate) {
       if (isDatesEquals(eventDate, date)) {
         _events[eventDate].add(lesson);
-        lesson.lessonTime = eventDate;
         return;
       }
     });
@@ -73,9 +72,7 @@ class LessonController {
   bool isDatesEquals(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&
         date1.month == date2.month &&
-        date1.day == date2.day &&
-        date1.hour == date2.hour &&
-        date1.minute == date2.minute;
+        date1.day == date2.day;
   }
 
   //Restore events from local cache
