@@ -9,7 +9,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class LessonsEditor extends StatefulWidget {
-  LessonsEditor({Key key, @required this.date, @required this.lesson}) : super(key: key);
+  LessonsEditor({Key key, @required this.date, @required this.lesson})
+      : super(key: key);
 
   DateTime date;
   Lesson lesson;
@@ -27,7 +28,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
   String groupId;
   String studyTheme;
   String hw;
-  DateTime lessonTime;
+  TimeOfDay lessonTime;
 
   TextEditingController _moneyController;
   TextEditingController _themeController;
@@ -118,8 +119,8 @@ class _LessonsEditorState extends State<LessonsEditor> {
                         return _studentsController.listOfGroups.map((group) {
                           return PopupMenuItem<Group>(
                             value: group,
-                            child:
-                                Text(group.name, style: theme.textTheme.display3),
+                            child: Text(group.name,
+                                style: theme.textTheme.display3),
                           );
                         }).toList();
                       },
@@ -153,9 +154,10 @@ class _LessonsEditorState extends State<LessonsEditor> {
                               hintStyle: hintStyle,
                               hintText: '0',
                               suffixText: 'руб.',
-                              suffixStyle:
-                                  TextStyle(color: Colors.black, fontSize: 15.0),
-                              contentPadding: const EdgeInsets.only(bottom: 0.0)),
+                              suffixStyle: TextStyle(
+                                  color: Colors.black, fontSize: 15.0),
+                              contentPadding:
+                                  const EdgeInsets.only(bottom: 0.0)),
                           controller: _moneyController,
                           keyboardType: TextInputType.number,
                         ),
@@ -199,21 +201,21 @@ class _LessonsEditorState extends State<LessonsEditor> {
   String getDateToShow() {
     if (lessonTime == null) return null;
 
-    return '${lessonTime.day}.${lessonTime.month}.${lessonTime.year},  ${lessonTime.hour}:${lessonTime.minute}';
+    return '${widget.date.day}.${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:${lessonTime.minute}';
   }
 
   //Show dialog to pick date and time
   Future getDateAndTime() async {
     //Get user date
-    DatePicker.showDateTimePicker(context,
+    DatePicker.showTimePicker(context,
         currentTime: lessonTime ?? DateTime.now(),
         locale: LocaleType.ru,
         showTitleActions: true,
         theme: DatePickerTheme(
             doneStyle:
                 TextStyle(color: theme.primaryColorDark, fontSize: 17.0)),
-        onConfirm: (date) {
-      lessonTime = date;
+        onConfirm: (time) {
+      lessonTime = TimeOfDay(hour: time.hour, minute: time.minute);
       setState(() {});
     });
   }
@@ -232,15 +234,15 @@ class _LessonsEditorState extends State<LessonsEditor> {
     //If lesson not exist, then create it and add to events
     if (lesson == null) {
       widget.lesson = Lesson(
+          lessonDate: widget.date,
           earnedMoney: earnedMoney,
           groupToStudy: _studentsController.getGroupById(groupId),
           homeWork: hw,
           lessonTime: lessonTime,
           theme: studyTheme);
 
-      _lessonController.addLessonForDate(lesson.lessonTime, lesson);
+      _lessonController.addLessonForDate(widget.date, lesson);
     } else
-      //TODO: fix updating if date was changed
       lesson.updateData(earnedMoney, _studentsController.getGroupById(groupId),
           hw, lessonTime, studyTheme);
 
