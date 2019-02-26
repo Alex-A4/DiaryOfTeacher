@@ -1,3 +1,4 @@
+import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:decimal/decimal.dart';
 import 'package:meta/meta.dart';
@@ -37,7 +38,7 @@ class Lesson {
   Lesson.fromJson(Map<String, dynamic> data)
       : lessonTime = data['lessonTime'],
         weekDay = data['weekDay'],
-        groupToStudy = data['groupToStudy'],
+        groupToStudy = StudentsController.getInstance().getGroupById(data['groupToStudy']),
         theme = data['theme'],
         homeWork = data['homeWork'],
         earnedMoney = Decimal.parse(data['earnedMoney']);
