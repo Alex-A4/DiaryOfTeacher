@@ -91,8 +91,7 @@ class LessonController {
     listOfEvents.forEach((listOfLessons) {
       List<Lesson> newLessons = [];
       listOfLessons.forEach((lesson) {
-        Lesson.fromJson(lesson);
-        newLessons.add(lesson);
+        newLessons.add(Lesson.fromJson(lesson));
       });
 
       if (newLessons.length != 0)
