@@ -6,6 +6,7 @@ import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class LessonsEditor extends StatefulWidget {
   LessonsEditor({Key key, @required this.lesson}) : super(key: key);
@@ -130,6 +131,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
               controller: _themeController,
               decoration: InputDecoration(
                 hintText: 'Тема занятия',
+                hintStyle: hintStyle,
               ),
             ),
           ),
@@ -150,16 +152,18 @@ class _LessonsEditorState extends State<LessonsEditor> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                  width: 100.0,
+                  width: 120.0,
                   child: TextField(
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(bottom: 0.0)
-                    ),
+                        hintStyle: hintStyle,
+                        hintText: '0',
+                        suffixText: 'руб.',
+                        suffixStyle: TextStyle(color: Colors.black, fontSize: 15.0),
+                        contentPadding: const EdgeInsets.only(bottom: 0.0)),
                     controller: _moneyController,
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                Text('руб.', style: theme.textTheme.display4),
               ],
             ),
           ),
@@ -170,7 +174,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
           //Homework field
           Container(
-            height: 250.0,
+            height: 150.0,
             child: TextField(
               controller: _hwController,
               keyboardType: TextInputType.multiline,
@@ -178,10 +182,13 @@ class _LessonsEditorState extends State<LessonsEditor> {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0)),
                 hintText: 'Домашнее задание',
+                hintStyle: hintStyle,
               ),
               maxLines: 30,
             ),
           ),
+
+          //TODO: add list of images which could be downloaded with ImagePicker
         ],
       )),
       floatingActionButton: FloatingActionButton(
@@ -199,38 +206,20 @@ class _LessonsEditorState extends State<LessonsEditor> {
     return '${lessonTime.day}.${lessonTime.month}.${lessonTime.year},  ${lessonTime.hour}:${lessonTime.minute}';
   }
 
-  //Show two dialogs:
-  // First to pick date of lesson
-  // Second to pick time of lesson
-  // Then build new DateTime based on above values
-  //TODO: fix time picker. Minutes not picked
+  //Show dialog to pick date and time
   Future getDateAndTime() async {
     //Get user date
-    DateTime date = await showDatePicker(
-        context: context,
-        initialDate: lessonTime ?? DateTime.now(),
-        firstDate: DateTime(2010, 1),
-        lastDate: DateTime(DateTime.now().year + 2, 12));
-    if (date == null) {
-      Fluttertoast.showToast(msg: 'Дата не указана');
-      return;
-    }
-
-    //Get user time
-    TimeOfDay time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(lessonTime ?? DateTime.now()),
-    );
-    if (time == null) {
-      Fluttertoast.showToast(msg: 'Время не указано');
-      return;
-    }
-
-    //Build new date
-    lessonTime =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
-
-    setState(() {});
+    DatePicker.showDateTimePicker(context,
+        currentTime: lessonTime ?? DateTime.now(),
+        locale: LocaleType.ru,
+        showTitleActions: true,
+        theme: DatePickerTheme(
+            doneStyle:
+                TextStyle(color: theme.primaryColorDark, fontSize: 17.0)),
+        onConfirm: (date) {
+      lessonTime = date;
+      setState(() {});
+    });
   }
 
   //Save lesson to local cache:
@@ -274,4 +263,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
     hw = _hwController.text;
     studyTheme = _themeController.text;
   }
+
+  TextStyle hintStyle =
+      TextStyle(fontSize: 15.0, color: Colors.black26, letterSpacing: 1.0);
 }
