@@ -6,6 +6,7 @@ import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/LessonsEditor.dart';
+import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/lessons_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -77,8 +78,11 @@ class _ScheduleState extends State<ScheduleScreen> {
               children: <Widget>[
                 FlatButton(
                   onPressed: () async {
-                    await Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                      return LessonsEditor(lesson: null,);
+                    await Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return LessonsEditor(
+                        lesson: null,
+                      );
                     }));
                     setState(() {});
                   },
@@ -87,7 +91,14 @@ class _ScheduleState extends State<ScheduleScreen> {
                 FlatButton(
                   onPressed: () async {
                     //Add lessons viewer
-                    printEvents();
+                    await Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return LessonsList();
+                    }));
+
+                    print('События по дням: ${_eventList.events}');
+
+                    setState(() {});
                   },
                   child: Text('Посмотреть занятия', style: style),
                 ),
@@ -98,10 +109,6 @@ class _ScheduleState extends State<ScheduleScreen> {
       ),
       drawer: MenuDrawer(),
     );
-  }
-
-  void printEvents() {
-    print(_eventList.events);
   }
 }
 
