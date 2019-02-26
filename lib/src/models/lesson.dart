@@ -36,7 +36,7 @@ class Lesson {
 
   //Create lesson object from Json data
   Lesson.fromJson(Map<String, dynamic> data)
-      : lessonTime = data['lessonTime'],
+      : lessonTime = DateTime.parse(data['lessonTime']),
         weekDay = data['weekDay'],
         groupToStudy = StudentsController.getInstance().getGroupById(data['groupToStudy']),
         theme = data['theme'],
