@@ -34,6 +34,7 @@ class LessonController {
   LessonController._();
 
   //Add lesson to events by specified date
+  //TODO: fix situation when user change date at existing lesson
   void addLessonForDate(DateTime date, Lesson lesson) {
     if (date == null || lesson == null)
       throw 'Trying to add null value to list';
