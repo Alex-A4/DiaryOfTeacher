@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
+import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -90,6 +91,7 @@ class UserRepository {
     //If password is correct build user and start work
     if (await checkPasswordCorrect(password)) {
       await User.buildUser();
+      await StudentsRepository.buildRepo();
       await LessonController.buildController();
     }
     else

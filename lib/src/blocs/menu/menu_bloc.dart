@@ -11,7 +11,6 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   Stream<MenuState> mapEventToState(
       MenuState currentState, MenuEvent event) async* {
     if (event is LoadingEvent) {
-      await StudentsRepository.buildRepo();
       yield ProfileState();
     }
 
