@@ -111,8 +111,9 @@ class _LessonsEditorState extends State<LessonsEditor> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
               children: <Widget>[
-                Text('Доход:'),
+                Text('Доход:', style: theme.textTheme.display4,),
                 Container(
                   padding: const EdgeInsets.only(right: 16.0, left: 16.0),
                   width: 100.0,
@@ -121,7 +122,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                Text('руб.'),
+                Text('руб.', style: theme.textTheme.display4),
               ],
             ),
           ),
