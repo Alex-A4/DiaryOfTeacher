@@ -223,6 +223,8 @@ class _LessonsEditorState extends State<LessonsEditor> {
   // Firstly update data at lesson or create new
   // Secondly save data
   void saveLesson() {
+    updateValues();
+
     if (lesson == null) {
       widget.lesson = Lesson(
           earnedMoney: earnedMoney,
@@ -244,5 +246,14 @@ class _LessonsEditorState extends State<LessonsEditor> {
     }).catchError((_) {
       Fluttertoast.showToast(msg: 'Ошибка сохранения');
     });
+  }
+
+  //Update values of variables before saving it
+  //  groupId updates when group selected
+  //  lessonTime updates when user pick DateTime
+  void updateValues() {
+    earnedMoney = Decimal.parse(_moneyController.text);
+    hw = _hwController.text;
+    studyTheme = _themeController.text;
   }
 }
