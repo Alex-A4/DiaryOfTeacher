@@ -34,7 +34,7 @@ class LessonController {
   LessonController._();
 
   //Add lesson to events by specified date
-  //TODO: fix situation when user change date at existing lesson
+  // Date of lesson could not be changed. User can change only time
   void addLessonForDate(DateTime date, Lesson lesson) {
     if (date == null || lesson == null)
       throw 'Trying to add null value to list';
@@ -91,7 +91,7 @@ class LessonController {
       });
 
       if (newLessons.length != 0)
-        _events[newLessons[0].lessonTime] = newLessons;
+        _events[newLessons[0].lessonDate] = newLessons;
     });
 
     print('EVENTS: ${events.toString()}');

@@ -64,7 +64,7 @@ class _LessonsListState extends State<LessonsList> {
               Divider(),
               Column(
                 children: _controller.events[date]
-                    .map((lesson) => getLessonItem(lesson))
+                    .map((lesson) => getLessonItem(lesson, date))
                     .toList(),
               ),
             ],
@@ -81,12 +81,13 @@ class _LessonsListState extends State<LessonsList> {
   }
 
   //Get item which contains info about one lesson
-  Widget getLessonItem(Lesson lesson) {
+  Widget getLessonItem(Lesson lesson, DateTime date) {
     return Container(
       child: ListTile(
         onTap: () async {
           await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return LessonsEditor(
+              date: date,
               lesson: lesson,
             );
           }));
@@ -103,7 +104,7 @@ class _LessonsListState extends State<LessonsList> {
   }
 
   //Get time to show like hh:mm
-  String getStringTime(DateTime time) {
+  String getStringTime(TimeOfDay time) {
     if (time == null) return 'Время не указано';
     return '${time.hour}:${time.minute}';
   }
