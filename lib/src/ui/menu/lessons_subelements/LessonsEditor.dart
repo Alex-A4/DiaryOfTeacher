@@ -60,73 +60,12 @@ class _LessonsEditorState extends State<LessonsEditor> {
       appBar: AppBar(
         title: Text('Редактор уроков'),
       ),
-      body: Container(
-          child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
         children: <Widget>[
-          //Lesson date
-          GestureDetector(
-            child: Text(
-              getDateToShow() ?? 'Укажите дату',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.black,
-                letterSpacing: 0.0,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-            onTap: () {
-              getDateAndTime();
-            },
-          ),
-
-          SizedBox(
-            height: 16.0,
-          ),
-
-          //Lesson group
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: Text(
-                    'Группа:',
-                    style: theme.textTheme.display4,
-                  )),
-              PopupMenuButton<Group>(
-                onSelected: (Group group) {
-                  setState(() {
-                    groupId = group.groupId;
-                  });
-                },
-                itemBuilder: (context) {
-                  return _studentsController.listOfGroups.map((group) {
-                    return PopupMenuItem<Group>(
-                      value: group,
-                      child: Text(group.name, style: theme.textTheme.display3),
-                    );
-                  }).toList();
-                },
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      _studentsController.getGroupNameById(groupId),
-                      style: theme.textTheme.display4,
-                    ),
-                    Icon(Icons.arrow_drop_down),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(
-            height: 16.0,
-          ),
-
           //Theme field
           Container(
+            padding: const EdgeInsets.only(bottom: 24.0),
             child: TextField(
               controller: _themeController,
               decoration: InputDecoration(
@@ -136,44 +75,100 @@ class _LessonsEditorState extends State<LessonsEditor> {
             ),
           ),
 
-          SizedBox(
-            height: 16.0,
-          ),
-
-          //Money field
           Container(
-            padding: const EdgeInsets.only(bottom: 16.0, top: 16.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            height: 100.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  'Доход:',
-                  style: theme.textTheme.display4,
+                //Lesson date
+                GestureDetector(
+                  child: Text(
+                    getDateToShow() ?? 'Укажите дату',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                      letterSpacing: 0.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  onTap: () {
+                    getDateAndTime();
+                  },
                 ),
+
+                //Lesson group
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Text(
+                          'Группа:',
+                          style: theme.textTheme.display4,
+                        )),
+                    PopupMenuButton<Group>(
+                      onSelected: (Group group) {
+                        setState(() {
+                          groupId = group.groupId;
+                        });
+                      },
+                      itemBuilder: (context) {
+                        return _studentsController.listOfGroups.map((group) {
+                          return PopupMenuItem<Group>(
+                            value: group,
+                            child:
+                                Text(group.name, style: theme.textTheme.display3),
+                          );
+                        }).toList();
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            _studentsController.getGroupNameById(groupId),
+                            style: theme.textTheme.display4,
+                          ),
+                          Icon(Icons.arrow_drop_down),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                //Money field
                 Container(
-                  padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                  width: 120.0,
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintStyle: hintStyle,
-                        hintText: '0',
-                        suffixText: 'руб.',
-                        suffixStyle: TextStyle(color: Colors.black, fontSize: 15.0),
-                        contentPadding: const EdgeInsets.only(bottom: 0.0)),
-                    controller: _moneyController,
-                    keyboardType: TextInputType.number,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Доход:',
+                        style: theme.textTheme.display4,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+                        width: 120.0,
+                        child: TextField(
+                          decoration: InputDecoration(
+                              hintStyle: hintStyle,
+                              hintText: '0',
+                              suffixText: 'руб.',
+                              suffixStyle:
+                                  TextStyle(color: Colors.black, fontSize: 15.0),
+                              contentPadding: const EdgeInsets.only(bottom: 0.0)),
+                          controller: _moneyController,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
 
-          SizedBox(
-            height: 16.0,
-          ),
-
           //Homework field
           Container(
+            padding: const EdgeInsets.only(top: 32.0),
             height: 150.0,
             child: TextField(
               controller: _hwController,
@@ -190,7 +185,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
           //TODO: add list of images which could be downloaded with ImagePicker
         ],
-      )),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: saveLesson,
         child: Icon(Icons.save_alt),
