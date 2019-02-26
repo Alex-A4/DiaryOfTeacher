@@ -27,6 +27,10 @@ class _LessonsEditorState extends State<LessonsEditor> {
   String hw;
   DateTime lessonTime;
 
+  TextEditingController _moneyController;
+  TextEditingController _themeController;
+  TextEditingController _hwController;
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +39,19 @@ class _LessonsEditorState extends State<LessonsEditor> {
     studyTheme = lesson?.theme ?? '';
     hw = lesson?.homeWork ?? '';
     lessonTime = lesson?.lessonTime;
+
+    _moneyController = TextEditingController(text: earnedMoney.toString());
+    _themeController = TextEditingController(text: studyTheme);
+    _hwController = TextEditingController(text: hw);
+  }
+
+
+  @override
+  void dispose() {
+    _moneyController.dispose();
+    _themeController.dispose();
+    _hwController.dispose();
+    super.dispose();
   }
 
   @override
@@ -100,7 +117,12 @@ class _LessonsEditorState extends State<LessonsEditor> {
           //Theme field
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: TextField(),
+            child: TextField(
+              controller: _themeController,
+              decoration: InputDecoration(
+                hintText: 'Тема занятия',
+              ),
+            ),
           ),
 
           SizedBox(
@@ -118,6 +140,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
                   padding: const EdgeInsets.only(right: 16.0, left: 16.0),
                   width: 100.0,
                   child: TextField(
+                    controller: _moneyController,
                     maxLength: 5,
                     keyboardType: TextInputType.number,
                   ),
@@ -133,8 +156,17 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
           //Homework field
           Container(
+            height: 250.0,
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: TextField(),
+            child: TextField(
+              controller: _hwController,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                hintText: 'Домашнее задание',
+              ),
+              maxLines: 30,
+
+            ),
           ),
         ],
       )),
