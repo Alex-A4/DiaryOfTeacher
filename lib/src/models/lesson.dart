@@ -26,7 +26,7 @@ class Lesson {
     return {
       'weekDay': weekDay,
       'lessonTime': lessonTime.toString(),
-      'groupToStudy': groupToStudy.groupId,
+      'groupToStudy': groupToStudy?.groupId,
       'theme': theme,
       'homeWork': homeWork,
       'earnedMoney': earnedMoney.toString()
