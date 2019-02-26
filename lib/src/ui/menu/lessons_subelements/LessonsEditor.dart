@@ -61,7 +61,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
       ),
       body: Container(
           child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
         children: <Widget>[
           //Lesson date
           GestureDetector(
@@ -84,29 +84,40 @@ class _LessonsEditorState extends State<LessonsEditor> {
           ),
 
           //Lesson group
-          PopupMenuButton<Group>(
-            onSelected: (Group group) {
-              setState(() {
-                groupId = group.groupId;
-              });
-            },
-            itemBuilder: (context) {
-              return _studentsController.listOfGroups.map((group) {
-                return PopupMenuItem<Group>(
-                  value: group,
-                  child: Text(group.name, style: theme.textTheme.display3),
-                );
-              }).toList();
-            },
-            child: Row(
-              children: <Widget>[
-                Text(
-                  _studentsController.getGroupNameById(groupId),
-                  style: theme.textTheme.display4,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: Text(
+                    'Группа:',
+                    style: theme.textTheme.display4,
+                  )),
+              PopupMenuButton<Group>(
+                onSelected: (Group group) {
+                  setState(() {
+                    groupId = group.groupId;
+                  });
+                },
+                itemBuilder: (context) {
+                  return _studentsController.listOfGroups.map((group) {
+                    return PopupMenuItem<Group>(
+                      value: group,
+                      child: Text(group.name, style: theme.textTheme.display3),
+                    );
+                  }).toList();
+                },
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      _studentsController.getGroupNameById(groupId),
+                      style: theme.textTheme.display4,
+                    ),
+                    Icon(Icons.arrow_drop_down),
+                  ],
                 ),
-                Icon(Icons.arrow_drop_down),
-              ],
-            ),
+              ),
+            ],
           ),
 
           SizedBox(
@@ -115,7 +126,6 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
           //Theme field
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(
               controller: _themeController,
               decoration: InputDecoration(
@@ -130,9 +140,8 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
           //Money field
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
                   'Доход:',
@@ -159,11 +168,12 @@ class _LessonsEditorState extends State<LessonsEditor> {
           //Homework field
           Container(
             height: 250.0,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(
               controller: _hwController,
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
                 hintText: 'Домашнее задание',
               ),
               maxLines: 30,
@@ -190,6 +200,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
   // First to pick date of lesson
   // Second to pick time of lesson
   // Then build new DateTime based on above values
+  //TODO: fix time picker. Minutes not picked
   Future getDateAndTime() async {
     //Get user date
     DateTime date = await showDatePicker(
@@ -225,6 +236,11 @@ class _LessonsEditorState extends State<LessonsEditor> {
   void saveLesson() {
     updateValues();
 
+    if (lessonTime == null) {
+      Fluttertoast.showToast(msg: 'Не указана дата');
+      return;
+    }
+
     if (lesson == null) {
       widget.lesson = Lesson(
           earnedMoney: earnedMoney,
@@ -236,10 +252,8 @@ class _LessonsEditorState extends State<LessonsEditor> {
       lesson.updateData(earnedMoney, _studentsController.getGroupById(groupId),
           hw, lessonTime, studyTheme);
 
-    if (lesson.lessonTime == null) {
-      Fluttertoast.showToast(msg: 'Не указана дата');
-      return;
-    }
+    print(lesson);
+
     _lessonController.addLessonForDate(lesson.lessonTime, lesson);
     _lessonController.saveToCache().then((_) {
       Fluttertoast.showToast(msg: 'Сохранение успешно');
@@ -252,8 +266,10 @@ class _LessonsEditorState extends State<LessonsEditor> {
   //  groupId updates when group selected
   //  lessonTime updates when user pick DateTime
   void updateValues() {
-    earnedMoney = Decimal.parse(_moneyController.text);
+    earnedMoney = Decimal.parse(
+        _moneyController.text.isEmpty ? '0' : _moneyController.text);
     hw = _hwController.text;
     studyTheme = _themeController.text;
+    setState(() {});
   }
 }
