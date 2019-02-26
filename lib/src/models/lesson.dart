@@ -44,7 +44,7 @@ class Lesson {
 
   @override
   String toString() =>
-      'Lesson: $groupToStudy, ${lessonTime.toString()}, hw ${homeWork}, theme ${theme}, money ${earnedMoney}';
+      'Lesson: ${groupToStudy.groupId}, ${lessonTime.toString()}, hw ${homeWork}, theme ${theme}, money ${earnedMoney}';
 
   //Update data
   void updateData(Decimal earnedMoney, Group group, String hw,
