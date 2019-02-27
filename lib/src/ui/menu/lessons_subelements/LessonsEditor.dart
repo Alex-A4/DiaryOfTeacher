@@ -140,7 +140,9 @@ class _LessonsEditorState extends State<LessonsEditor> {
                       padding: const EdgeInsets.only(left: 50.0),
                       alignment: AlignmentDirectional.centerEnd,
                       icon: Icon(
-                        Icons.remove_red_eye,
+                        groupId == null
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: theme.accentColor,
                       ),
                       tooltip: 'Посмотреть группу',
