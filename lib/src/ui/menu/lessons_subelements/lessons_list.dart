@@ -81,7 +81,12 @@ class _LessonsListState extends State<LessonsList> {
   //Get date to show like dd.mm.yyyy
   String getDateToShow(DateTime date) {
     if (date == null) return 'Дата не указана';
-    return 'Дата занятий: ${date.day}.${date.month}.${date.year}';
+    String dayZero = '';
+    String monthZero = '';
+    if (date.day < 10) dayZero = '0';
+    if (date.month < 10) monthZero = '0';
+    
+    return 'Дата занятий: $dayZero${date.day}.$monthZero${date.month}.${date.year}';
   }
 
   //Get item which contains info about one lesson
