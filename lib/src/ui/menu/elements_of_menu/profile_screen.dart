@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onPressed: () {
                                       tryToUpdateImage();
                                     },
-                                    iconSize: 80.0,
+                                    iconSize: 60.0,
                                     color: Colors.white70,
                                     icon: Icon(Icons.camera_alt),
                                   ),
@@ -104,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _isLoadingName
                               ? CircularProgressIndicator()
                               : IconButton(
-                                  color: Color(0xFFb4e99b),
+                                  color: theme.accentColor,
                                   icon:
                                       Icon(isEditing ? Icons.done : Icons.edit),
                                   onPressed: () {
