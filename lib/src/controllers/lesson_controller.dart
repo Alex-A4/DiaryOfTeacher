@@ -186,7 +186,7 @@ class LessonController {
     if (snapshot == null) throw 'В облаке нет данных';
 
     var dynamicData = snapshot['events'];
-    
+
     _events.clear();
 
     //Build lessons from dynamic data
@@ -201,5 +201,7 @@ class LessonController {
         _events[DateTime.parse(date)] = newLessons;
       }
     });
+
+    await saveToCache();
   }
 }

@@ -146,6 +146,8 @@ class StudentsRepository {
     _students = students.map((data) => Student.fromJson(data)).toList();
 
     distributeStudentsByGroup();
+
+    await saveToCache();
   }
 
   //Add new student to list if group not selected then it's null
