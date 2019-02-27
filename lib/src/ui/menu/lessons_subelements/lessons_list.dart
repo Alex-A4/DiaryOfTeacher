@@ -106,7 +106,7 @@ class _LessonsListState extends State<LessonsList> {
         child: Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: Icon(
-            Icons.delete,
+            Icons.delete_sweep,
             color: Colors.white70,
           ),
         ),
