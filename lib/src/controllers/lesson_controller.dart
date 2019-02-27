@@ -52,8 +52,6 @@ class LessonController {
         return;
       }
     });
-
-    print(events.toString());
   }
 
 
@@ -81,8 +79,6 @@ class LessonController {
         return;
       }
     }
-
-    print(events.toString());
   }
 
   //Custom check is events map contains [date]
@@ -122,8 +118,6 @@ class LessonController {
       if (newLessons.length != 0)
         _events[newLessons[0].lessonDate] = newLessons;
     });
-
-    print('EVENTS: ${events.toString()}');
   }
 
   //Save lessons to local cache

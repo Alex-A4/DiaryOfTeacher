@@ -97,8 +97,6 @@ class _ScheduleState extends State<ScheduleScreen> {
                       return LessonsList();
                     }));
 
-                    print('События по дням: ${_eventList.events}');
-
                     setState(() {});
                   },
                   child: Text('Посмотреть занятия', style: style),
