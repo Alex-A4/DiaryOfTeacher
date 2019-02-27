@@ -52,7 +52,7 @@ class _LessonsListState extends State<LessonsList> {
     return Container(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Card(
-        color: theme.primaryColor,
+        color: theme.primaryColorDark,
         elevation: 5.0,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),

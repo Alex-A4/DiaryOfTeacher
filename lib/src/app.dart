@@ -76,12 +76,12 @@ class _AppState extends State<App> {
 }
 
 final theme = ThemeData(
-  primaryColor: Color(0xFFd2f4c2),
+  primaryColor: Color(0xFFAFf4AF),
   accentColor: Color(0xFF5F5FFF),
   cursorColor: Color(0xFF9FDFDF),
   textSelectionColor: Color(0xFF9FDFDF),
   buttonColor: Color(0xFFb4e99b),
-  primaryColorDark: Color(0xFF92f462),
+  primaryColorDark: Color(0xFF9FFF9F),
   hintColor: Colors.black,
   textTheme: TextTheme(
     //For TextField
