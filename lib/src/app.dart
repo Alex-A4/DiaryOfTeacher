@@ -85,11 +85,12 @@ final theme = ThemeData(
   primaryColorDark: Color(0xCFBFFFBF),
   hintColor: Colors.black,
   dividerColor: Colors.grey[500],
+  fontFamily: 'Roboto',
   textTheme: TextTheme(
     //For TextField
     body1: TextStyle(color: Colors.black, fontSize: 23.0, letterSpacing: 0.0),
     //For button's text
-    body2: TextStyle(color: Colors.black, fontSize: 18.0, letterSpacing: 1.0),
+    body2: TextStyle(color: Colors.black, fontSize: 18.0, letterSpacing: 0.0),
     //For Text widgets in menu
     display1:
         TextStyle(color: Colors.black, fontSize: 18.0, letterSpacing: 0.0),
