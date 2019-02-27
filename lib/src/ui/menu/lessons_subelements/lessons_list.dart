@@ -119,6 +119,7 @@ class _LessonsListState extends State<LessonsList> {
         title: Text('Группа ${lesson.groupToStudy?.name ?? 'не указана'}'),
         subtitle: Text(
           'Тема: ${lesson.theme}',
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(fontSize: 15.0, color: Colors.black38),
         ),
       ),
