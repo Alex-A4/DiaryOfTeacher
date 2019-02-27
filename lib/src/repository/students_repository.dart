@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/student.dart';
 import 'dart:convert' show JsonCodec;
 
-
 //Repository of students and groups
 //Uses in the sense of Model in MVC
 //Returns data by requests and handle it
@@ -18,13 +17,14 @@ class StudentsRepository {
   static StudentsRepository _studentsRepository;
 
   List<Group> _groups = [];
+
   List<Group> get groups => _groups;
+
   //Get group by id. id must not be null
   Group getGroupById(String id) {
     Group group;
     groups.forEach((gr) {
-      if (gr.groupId.compareTo(id) == 0)
-        group = gr;
+      if (gr.groupId.compareTo(id) == 0) group = gr;
     });
 
     return group;
@@ -46,6 +46,7 @@ class StudentsRepository {
       await _studentsRepository._fromCache();
     }
   }
+
   StudentsRepository._();
 
   //Read data from cache
@@ -69,18 +70,7 @@ class StudentsRepository {
     } else
       _students = [];
 
-    //Distribute students by groups
-    _students.forEach((student) {
-      _groups.forEach((group) {
-        //If student from that group then move it here
-        if (group.groupId != null && student.groupId != null) {
-          if (group.groupId.compareTo(student.groupId) == 0) {
-            group.addStudentToGroup(student);
-            return;
-          }
-        }
-      });
-    });
+    distributeStudentsByGroup();
 
     print('GROUPS LENGTH: ${_groups.length}');
     print('STUDENTS LENGTH: ${_students.length}');
@@ -119,7 +109,6 @@ class StudentsRepository {
     if (connectivity == ConnectivityResult.none)
       throw 'Отсутствует интернет соединение';
 
-
     //Saving groups
     List<dynamic> groups = convertGroupsToJson();
     await Firestore.instance
@@ -135,6 +124,28 @@ class StudentsRepository {
         .updateData({'students': students});
 
     print('Firebase saved');
+  }
+
+
+  //Restore all data from cloud firestore
+  //WARNING: all existing data will be rewritten
+  Future restoreFromFirebase() async {
+    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .get();
+    if (snapshot == null) throw 'Нет данных в облаке';
+
+    List<dynamic> groups = snapshot.data['groups'];
+    List<dynamic> students = snapshot.data['students'];
+
+    _groups = groups.map((data) => Group.fromJson(data)).toList();
+    _students = students.map((data) => Student.fromJson(data)).toList();
+
+    distributeStudentsByGroup();
   }
 
   //Add new student to list if group not selected then it's null
@@ -176,12 +187,14 @@ class StudentsRepository {
     _students.remove(student);
 
     await saveToFirebase();
-    await Firestore.instance.collection('users').document(User.user.uid)
-      .collection('archive').document('archivedStudents')
-      .setData({student.uid : student.toJson()});
+    await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .collection('archive')
+        .document('archivedStudents')
+        .setData({student.uid: student.toJson()});
     await saveToCache();
   }
-
 
   //Add new group to list and save data to cache
   void addNewGroup(Group group) {
@@ -189,7 +202,6 @@ class StudentsRepository {
 
     saveToCache();
   }
-
 
   //Delete group and all links from students
   //Save result to firebase and to cache
@@ -202,5 +214,21 @@ class StudentsRepository {
 
     await saveToFirebase();
     await saveToCache();
+  }
+
+  //Distribute students by groups
+  //Bind connections between groups and students
+  void distributeStudentsByGroup() {
+    _students.forEach((student) {
+      _groups.forEach((group) {
+        //If student from that group then move it here
+        if (group.groupId != null && student.groupId != null) {
+          if (group.groupId.compareTo(student.groupId) == 0) {
+            group.addStudentToGroup(student);
+            return;
+          }
+        }
+      });
+    });
   }
 }
