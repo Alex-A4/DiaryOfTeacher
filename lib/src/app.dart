@@ -77,7 +77,7 @@ class _AppState extends State<App> {
 
 final theme = ThemeData(
   primaryColor: Color(0xFFd2f4c2),
-  accentColor: Color(0xFFB2B7FF),
+  accentColor: Color(0xFF5F5FFF),
   cursorColor: Color(0xFF9FDFDF),
   textSelectionColor: Color(0xFF9FDFDF),
   buttonColor: Color(0xFFb4e99b),

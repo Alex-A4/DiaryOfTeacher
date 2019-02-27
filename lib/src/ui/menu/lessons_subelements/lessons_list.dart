@@ -63,7 +63,7 @@ class _LessonsListState extends State<LessonsList> {
             children: <Widget>[
               Text(
                 getDateToShow(date),
-                style: theme.textTheme.display4,
+                style: TextStyle(color: theme.accentColor, fontSize: 17.0),
               ),
               Divider(),
               Column(
@@ -85,7 +85,7 @@ class _LessonsListState extends State<LessonsList> {
     String monthZero = '';
     if (date.day < 10) dayZero = '0';
     if (date.month < 10) monthZero = '0';
-    
+
     return 'Дата занятий: $dayZero${date.day}.$monthZero${date.month}.${date.year}';
   }
 
