@@ -40,7 +40,7 @@ class Lesson {
   }
 
   //Create lesson object from Json data
-  Lesson.fromJson(Map<String, dynamic> data)
+  Lesson.fromJson(Map<dynamic, dynamic> data)
       : lessonDate = DateTime.parse(data['lessonDate']),
         weekDay = data['weekDay'],
         groupToStudy =
