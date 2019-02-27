@@ -186,18 +186,19 @@ class LessonController {
     if (snapshot == null) throw 'В облаке нет данных';
 
     var dynamicData = snapshot['events'];
+    
+    _events.clear();
 
     //Build lessons from dynamic data
     dynamicData.forEach((date, lessonsList) {
       if (lessonsList.length > 0) {
-        lessonsList.forEach((listOfLessons) {
-          List<Lesson> newLessons = [];
-          listOfLessons.forEach((lesson) {
-            newLessons.add(Lesson.fromJson(lesson));
-          });
+        List<Lesson> newLessons = [];
 
-          _events[DateTime.parse(date)] = newLessons;
+        lessonsList.forEach((lesson) {
+          newLessons.add(Lesson.fromJson(lesson));
         });
+
+        _events[DateTime.parse(date)] = newLessons;
       }
     });
   }
