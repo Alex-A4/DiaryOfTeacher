@@ -28,7 +28,6 @@ class SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
-  //TODO: add button to restore data from cloud firestore
   @override
   Widget build(BuildContext context) {
     _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
@@ -41,16 +40,12 @@ class SettingsScreenState extends State<SettingsScreen> {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.cloud_download),
-            title: Text('Восстановить данные из облака', style: theme.textTheme.display1,),
-            onTap: () async {
-              try {
-                await StudentsRepository.getInstance().restoreFromFirebase();
-                await LessonController.getInstance().restoreLessonsFromFirestore();
-              } catch (error) {
-                Fluttertoast.showToast(msg: error);
-                return;
-              }
-              Fluttertoast.showToast(msg: 'Данные восстановлены');
+            title: Text(
+              'Восстановить данные из облака',
+              style: theme.textTheme.display1,
+            ),
+            onTap: () {
+              showDialogToAcceptRestore();
             },
           ),
           Divider(),
@@ -60,7 +55,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               style: theme.textTheme.display1,
             ),
             onTap: () {
-              showDialogToChangePassword(context);
+              showDialogToChangePassword();
             },
           ),
           Divider(),
@@ -81,8 +76,61 @@ class SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+
+  //Show dialog with warning that user must accept or deny
+  Future showDialogToAcceptRestore() async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'ВНИМАНИЕ!',
+                  style: TextStyle(color: Colors.red[400], fontSize: 17.0),
+                ),
+                Icon(
+                  Icons.warning,
+                  color: Colors.red[400],
+                ),
+              ],
+            ),
+            content: Container(
+              child: Text(
+                'Все несохранённые данные будут перезаписаны.\nПродолжить?',
+                maxLines: 2,
+                style: theme.textTheme.display4,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Нет',
+                  style: TextStyle(color: theme.accentColor, fontSize: 16.0),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                onPressed: () {
+                  restoreDataFromFirestore();
+                },
+                child: Text('Да',
+                    style: TextStyle(color: theme.accentColor, fontSize: 16.0)),
+              )
+            ],
+          );
+        });
+  }
+
   //Show dialog to user to change password
-  Future showDialogToChangePassword(BuildContext context) async {
+  Future showDialogToChangePassword() async {
     _newPassword.clear();
     _oldPassword.clear();
 
@@ -102,7 +150,6 @@ class SettingsScreenState extends State<SettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     getPasswordField('Старый пароль', _oldPassword),
-
                     getPasswordField('Новый пароль', _newPassword),
                   ],
                 ),
@@ -143,7 +190,8 @@ class SettingsScreenState extends State<SettingsScreen> {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: textHintTheme,
-          disabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black12)),
+          disabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black12)),
         ),
         style: textInputTheme,
         validator: (text) {
@@ -166,7 +214,19 @@ class SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38);
+  //Restore all data from the firestore and notify user about complete or error
+  Future restoreDataFromFirestore() async {
+    await StudentsRepository.getInstance()
+        .restoreFromFirebase()
+        .catchError((error) => Fluttertoast.showToast(msg: error));
+    await LessonController.getInstance()
+        .restoreLessonsFromFirestore()
+        .catchError((error) => Fluttertoast.showToast(msg: error));
+
+    Fluttertoast.showToast(msg: 'Данные восстановлены');
+  }
+
   final textInputTheme = TextStyle(fontSize: 20.0, color: Colors.black);
+  final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38);
   final buttonTheme = TextStyle(fontSize: 20.0, color: theme.buttonColor);
 }
