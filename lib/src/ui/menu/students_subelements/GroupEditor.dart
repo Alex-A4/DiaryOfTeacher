@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
@@ -132,9 +133,13 @@ class _GroupEditorState extends State<GroupEditor> {
         removeStudent(stud);
       },
       child: ListTile(
+        leading: CircleAvatar(
+          backgroundImage: CachedNetworkImageProvider(stud.photoUrl),
+          radius: 20.0,
+        ),
         title: Text(
           stud.fio,
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
           style: theme.textTheme.display4,
         ),
         onTap: () async {
