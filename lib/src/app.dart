@@ -81,7 +81,7 @@ final theme = ThemeData(
   cursorColor: Color(0xFF9FDFDF),
   textSelectionColor: Color(0xFF9FDFDF),
   buttonColor: Color(0xFFb4e99b),
-  primaryColorDark: Color(0xFF9FFF9F),
+  primaryColorDark: Color(0xFFAFDFAF),
   hintColor: Colors.black,
   dividerColor: Colors.grey[500],
   textTheme: TextTheme(
