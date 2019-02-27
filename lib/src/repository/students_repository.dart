@@ -91,14 +91,14 @@ class StudentsRepository {
 
   //Converting list of students to Json string
   List<dynamic> convertStudentsToJson() {
-    List<Map<String, dynamic>> studentsList = [];
+    List<dynamic> studentsList = [];
     _students.forEach((student) => studentsList.add(student.toJson()));
     return studentsList;
   }
 
   //Converting list of groups to Json string
   List<dynamic> convertGroupsToJson() {
-    List<Map<String, dynamic>> groupsList = [];
+    List<dynamic> groupsList = [];
     _groups.forEach((group) => groupsList.add(group.toJson()));
     return groupsList;
   }
