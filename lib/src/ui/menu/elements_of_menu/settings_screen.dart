@@ -50,6 +50,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           Divider(),
           ListTile(
+            leading: Icon(Icons.autorenew),
             title: Text(
               'Сменить пароль',
               style: theme.textTheme.display1,
@@ -90,7 +91,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'ВНИМАНИЕ!',
+                  'ВНИМАНИЕ!  ',
                   style: TextStyle(color: Colors.red[400], fontSize: 17.0),
                 ),
                 Icon(
@@ -101,9 +102,9 @@ class SettingsScreenState extends State<SettingsScreen> {
             ),
             content: Container(
               child: Text(
-                'Все несохранённые данные будут перезаписаны.\nПродолжить?',
-                maxLines: 2,
-                style: theme.textTheme.display4,
+                'Все несохранённые данные будут перезаписаны.\n\nПродолжить?',
+                maxLines: 4,
+                style: theme.textTheme.display2,
                 textAlign: TextAlign.center,
               ),
             ),
