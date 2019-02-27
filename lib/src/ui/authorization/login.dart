@@ -70,9 +70,10 @@ class _LogIn extends State<LogInScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0)),
                 color: theme.buttonColor,
+                padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  'Войти',
-                  style: theme.textTheme.body2,
+                  ' Войти ',
+                  style: TextStyle(fontSize: 20.0, letterSpacing: 1.0, color: Colors.black),
                 ),
                 onPressed: (){
                   if (_formKey.currentState.validate()) {
