@@ -26,6 +26,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
+  //TODO: add button to restore data from cloud firestore
   @override
   Widget build(BuildContext context) {
     _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
@@ -63,7 +64,6 @@ class SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  //TODO: change underline color at textField
   //Show dialog to user to change password
   Future showDialogToChangePassword(BuildContext context) async {
     _newPassword.clear();
