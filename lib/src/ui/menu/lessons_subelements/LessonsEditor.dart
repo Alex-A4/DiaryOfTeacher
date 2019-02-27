@@ -139,15 +139,20 @@ class _LessonsEditorState extends State<LessonsEditor> {
                     IconButton(
                       padding: const EdgeInsets.only(left: 50.0),
                       alignment: AlignmentDirectional.centerEnd,
-                      icon: Icon(Icons.remove_red_eye, color: theme.accentColor,),
+                      icon: Icon(
+                        Icons.remove_red_eye,
+                        color: theme.accentColor,
+                      ),
                       tooltip: 'Посмотреть группу',
-                      onPressed: () async {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => GroupEditor(
-                                  group: StudentsController.getInstance()
-                                      .getGroupById(groupId),
-                                )));
-                      },
+                      onPressed: groupId == null
+                          ? null
+                          : () async {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => GroupEditor(
+                                        group: StudentsController.getInstance()
+                                            .getGroupById(groupId),
+                                      )));
+                            },
                     ),
                   ],
                 ),
@@ -219,10 +224,12 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
     String dayZero = '';
     String monthZero = '';
+    String minuteZero = '';
     if (widget.date.day < 10) dayZero = '0';
     if (widget.date.month < 10) monthZero = '0';
+    if (lessonTime.minute < 10) minuteZero = '0';
 
-    return '$dayZero${widget.date.day}.$monthZero${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:${lessonTime.minute}';
+    return '$dayZero${widget.date.day}.$monthZero${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:$minuteZero${lessonTime.minute}';
   }
 
   //Show dialog to pick date and time
