@@ -77,7 +77,6 @@ class SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-
   //Show dialog with warning that user must accept or deny
   Future showDialogToAcceptRestore() async {
     await showDialog(
@@ -230,6 +229,6 @@ class SettingsScreenState extends State<SettingsScreen> {
   }
 
   final textInputTheme = TextStyle(fontSize: 20.0, color: Colors.black);
-  final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38);
+  final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38, letterSpacing: 1.0);
   final buttonTheme = TextStyle(fontSize: 18.0, color: theme.accentColor);
 }
