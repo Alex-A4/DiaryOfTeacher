@@ -83,6 +83,7 @@ final theme = ThemeData(
   buttonColor: Color(0xFFb4e99b),
   primaryColorDark: Color(0xFF9FFF9F),
   hintColor: Colors.black,
+  dividerColor: Colors.grey[500],
   textTheme: TextTheme(
     //For TextField
     body1: TextStyle(color: Colors.black, fontSize: 23.0, letterSpacing: 0.0),
