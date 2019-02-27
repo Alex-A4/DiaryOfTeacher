@@ -37,8 +37,11 @@ class _StudentEditorState extends State<StudentEditor> {
 
   DateTime _dateTo;
 
-  final textTheme =
-      TextStyle(color: Colors.black, fontSize: 15.0, letterSpacing: 0.0);
+  final textTheme = TextStyle(
+      fontFamily: 'Neucha',
+      fontSize: 18.0,
+      letterSpacing: 0.0,
+      color: Colors.black);
 
   //Initializing all variables based on widget.student param
   @override

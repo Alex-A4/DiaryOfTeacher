@@ -93,7 +93,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   hintText: 'Введите имя',
                                 ),
                                 enabled: isEditing,
-                                style: theme.textTheme.body1,
+                                style: TextStyle(
+                                    fontFamily: 'Neucha',
+                                    fontSize: 25.0,
+                                    letterSpacing: 0.0,
+                                    color: Colors.black),
                                 validator: (value) {
                                   if (value.length == 0)
                                     return 'Имя не должно быть пустым';
@@ -151,15 +155,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     startLoadingName();
 
-    UserRepository.uploadUserName(userName).then((_){
+    UserRepository.uploadUserName(userName).then((_) {
       Fluttertoast.showToast(msg: 'Имя обновлено');
       finishLoadingName();
-    }).catchError((er){
+    }).catchError((er) {
       Fluttertoast.showToast(msg: er.toString());
       finishLoadingName();
     });
   }
-
 
   //Update the image by picking from gallery
   Future tryToUpdateImage() async {
@@ -182,13 +185,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   //Start loading of user name
   void startLoadingName() => setState(() {
-    _isLoadingName = true;
-  });
+        _isLoadingName = true;
+      });
 
   //Finish loading of user name
   void finishLoadingName() => setState(() {
-    _isLoadingName = false;
-  });
+        _isLoadingName = false;
+      });
 
   //Start loading of image
   void startLoadingImage() => setState(() {

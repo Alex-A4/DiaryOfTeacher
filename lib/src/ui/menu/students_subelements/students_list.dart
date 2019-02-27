@@ -36,7 +36,7 @@ class _StudentsListViewState extends State<StudentsListView> {
             title: Text(
               student.fio,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.display2,
+              style: TextStyle(fontFamily: 'Neucha', fontSize: 17.0, letterSpacing: 0.0),
             ),
             subtitle: Text(
               _controller.getGroupNameById(student.groupId),

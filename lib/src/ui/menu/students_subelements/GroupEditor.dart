@@ -140,7 +140,7 @@ class _GroupEditorState extends State<GroupEditor> {
         title: Text(
           stud.fio,
           textAlign: TextAlign.start,
-          style: theme.textTheme.display4,
+          style: TextStyle(fontFamily: 'Neucha', fontSize: 18.0, letterSpacing: 0.0),
         ),
         onTap: () async {
           await Navigator.of(context).push(MaterialPageRoute(
