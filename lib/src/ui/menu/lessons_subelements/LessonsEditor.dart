@@ -40,7 +40,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
   void initState() {
     super.initState();
     earnedMoney = lesson?.earnedMoney ?? Decimal.fromInt(0);
-    groupId = lesson?.groupToStudy?.groupId ?? '';
+    groupId = lesson?.groupToStudy?.groupId;
     studyTheme = lesson?.theme ?? '';
     hw = lesson?.homeWork ?? '';
     lessonTime = lesson?.lessonTime;
