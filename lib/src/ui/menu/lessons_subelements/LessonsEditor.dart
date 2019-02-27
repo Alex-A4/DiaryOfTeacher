@@ -4,6 +4,7 @@ import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
+import 'package:diary_of_teacher/src/ui/menu/students_subelements/GroupEditor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -34,6 +35,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
   TextEditingController _themeController;
   TextEditingController _hwController;
 
+  //Initialize all variables by default values or incoming
   @override
   void initState() {
     super.initState();
@@ -134,6 +136,19 @@ class _LessonsEditorState extends State<LessonsEditor> {
                         ],
                       ),
                     ),
+                    IconButton(
+                      padding: const EdgeInsets.only(left: 50.0),
+                      alignment: AlignmentDirectional.centerEnd,
+                      icon: Icon(Icons.remove_red_eye, color: theme.accentColor,),
+                      tooltip: 'Посмотреть группу',
+                      onPressed: () async {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => GroupEditor(
+                                  group: StudentsController.getInstance()
+                                      .getGroupById(groupId),
+                                )));
+                      },
+                    ),
                   ],
                 ),
 
@@ -179,6 +194,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0)),
+                fillColor: theme.accentColor,
                 hintText: 'Домашнее задание',
                 hintStyle: hintStyle,
               ),
@@ -203,12 +219,10 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
     String dayZero = '';
     String monthZero = '';
-    if (widget.date.day < 10)
-      dayZero = '0';
-    if (widget.date.month < 10)
-      monthZero = '0';
+    if (widget.date.day < 10) dayZero = '0';
+    if (widget.date.month < 10) monthZero = '0';
 
-    return '$monthZero${widget.date.day}.$monthZero${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:${lessonTime.minute}';
+    return '$dayZero${widget.date.day}.$monthZero${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:${lessonTime.minute}';
   }
 
   //Show dialog to pick date and time
