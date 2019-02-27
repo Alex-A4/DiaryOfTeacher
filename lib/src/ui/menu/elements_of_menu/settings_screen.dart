@@ -217,12 +217,14 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   //Restore all data from the firestore and notify user about complete or error
   Future restoreDataFromFirestore() async {
+    Navigator.of(context).pop();
+
     await StudentsRepository.getInstance()
         .restoreFromFirebase()
-        .catchError((error) => Fluttertoast.showToast(msg: error));
+        .catchError((error) => Fluttertoast.showToast(msg: error.toString()));
     await LessonController.getInstance()
         .restoreLessonsFromFirestore()
-        .catchError((error) => Fluttertoast.showToast(msg: error));
+        .catchError((error) => Fluttertoast.showToast(msg: error.toString()));
 
     Fluttertoast.showToast(msg: 'Данные восстановлены');
   }
