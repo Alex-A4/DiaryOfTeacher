@@ -54,7 +54,6 @@ class LessonController {
     });
   }
 
-
   //Remove lesson from specified date
   //If list of lessons at date is empty then remove date
   void removeLessonFromDate(DateTime date, Lesson lesson) {
@@ -62,19 +61,17 @@ class LessonController {
       throw 'Trying to remove null value from list';
 
     //If there is no date in list
-    if (!isEventsContainsDate(date))
-      return;
+    if (!isEventsContainsDate(date)) return;
 
     var listEvents = events.keys.toList();
     for (int i = 0; i < listEvents.length; i++) {
       var eventDate = listEvents[i];
-      if (isDatesEquals(eventDate, date)){
+      if (isDatesEquals(eventDate, date)) {
         //Delete lesson at date
         _events[eventDate].remove(lesson);
 
         //Delete date if lessons empty
-        if (_events[eventDate].length < 1)
-          _events.remove(eventDate);
+        if (_events[eventDate].length < 1) _events.remove(eventDate);
 
         return;
       }
@@ -124,7 +121,8 @@ class LessonController {
   //All entries looks like: List of  lesson lists [[lessons1],[lessons2]...]
   Future saveToCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('events', _decoder.encode(convertEventsToJsonLikeList()));
+    await prefs.setString(
+        'events', _decoder.encode(convertEventsToJsonLikeList()));
     print('Lessons saved to cache!');
   }
 
@@ -168,5 +166,39 @@ class LessonController {
     List<dynamic> dyn = [];
     lessons.forEach((lesson) => dyn.add(lesson.toJson()));
     return dyn;
+  }
+
+
+  //Restore all data from cloud firestore
+  // WARNING: all existing data will be rewritten
+  Future restoreLessonsFromFirestore() async {
+    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .collection('lessons')
+        .document('events')
+        .get();
+
+    if (snapshot == null) throw 'В облаке нет данных';
+
+    var dynamicData = snapshot['events'];
+
+    //Build lessons from dynamic data
+    dynamicData.forEach((date, lessonsList) {
+      if (lessonsList.length > 0) {
+        lessonsList.forEach((listOfLessons) {
+          List<Lesson> newLessons = [];
+          listOfLessons.forEach((lesson) {
+            newLessons.add(Lesson.fromJson(lesson));
+          });
+
+          _events[DateTime.parse(date)] = newLessons;
+        });
+      }
+    });
   }
 }
