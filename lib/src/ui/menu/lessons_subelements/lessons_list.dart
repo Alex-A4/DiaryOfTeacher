@@ -46,6 +46,10 @@ class _LessonsListState extends State<LessonsList> {
 
   //Get column of lessons by specified date from events map
   Widget getDatedLessons(DateTime date) {
+    //If events at date is empty
+    if (_controller.events[date].length < 1)
+      return Container();
+
     return Container(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Card(
@@ -82,7 +86,20 @@ class _LessonsListState extends State<LessonsList> {
 
   //Get item which contains info about one lesson
   Widget getLessonItem(Lesson lesson, DateTime date) {
-    return Container(
+    return Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction){
+        print(lesson);
+      },
+      background: Container(
+        alignment: AlignmentDirectional.centerEnd,
+        color: Colors.red[400],
+        child: Padding(
+          padding: const EdgeInsets.only(right: 10.0),
+          child: Icon(Icons.delete, color: Colors.white70,),
+        ),
+      ),
+      direction: DismissDirection.endToStart,
       child: ListTile(
         onTap: () async {
           await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -93,12 +110,9 @@ class _LessonsListState extends State<LessonsList> {
           }));
           setState(() {});
         },
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text('Время: ${getStringTime(lesson.lessonTime)}. Группа ${lesson.groupToStudy?.name ?? 'не указана'}'),
-          ],
-        ),
+        leading: Text('${getStringTime(lesson.lessonTime)}'),
+        title: Text('Группа ${lesson.groupToStudy?.name ?? 'не указана'}'),
+        subtitle: Text('Тема: ${lesson.theme}', style: TextStyle(fontSize: 15.0, color: Colors.black38),),
       ),
     );
   }
@@ -106,6 +120,8 @@ class _LessonsListState extends State<LessonsList> {
   //Get time to show like hh:mm
   String getStringTime(TimeOfDay time) {
     if (time == null) return 'Время не указано';
+    if (time.minute < 10) return '${time.hour}:0${time.minute}';
+
     return '${time.hour}:${time.minute}';
   }
 }
