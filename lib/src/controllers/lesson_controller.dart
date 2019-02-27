@@ -124,7 +124,7 @@ class LessonController {
   //All entries looks like: List of  lesson lists [[lessons1],[lessons2]...]
   Future saveToCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('events', _decoder.encode(convertEventsToJson()));
+    await prefs.setString('events', _decoder.encode(convertEventsToJsonLikeList()));
     print('Lessons saved to cache!');
   }
 
@@ -139,17 +139,28 @@ class LessonController {
         .document(User.user.uid)
         .collection('lessons')
         .document('events')
-        .updateData({'events': convertEventsToJson()});
+        .setData({'events': convertEventsToJsonLikeMap()});
     print('Lessons saved to cache');
   }
 
   //Convert events to dynamic list to save to cache
-  List<dynamic> convertEventsToJson() {
+  List<dynamic> convertEventsToJsonLikeList() {
     List<dynamic> dyn = [];
     events.values.forEach((list) {
       dyn.add(convertLessonsListToJson(list));
     });
     return dyn;
+  }
+
+  //Convert events to dynamic map to save to firestore
+  // Firestore do not allow inherited dynamic lists
+  Map<String, dynamic> convertEventsToJsonLikeMap() {
+    Map<String, dynamic> map = {};
+    events.forEach((date, lessons) {
+      map[date.toString()] = convertLessonsListToJson(lessons);
+    });
+
+    return map;
   }
 
   //Convert list of lessons to Json list
