@@ -67,9 +67,11 @@ class LessonController {
     if (!isEventsContainsDate(date))
       return;
 
-    _events.keys.forEach((eventDate) {
-      //Delete lesson at date
+    var listEvents = events.keys.toList();
+    for (int i = 0; i < listEvents.length; i++) {
+      var eventDate = listEvents[i];
       if (isDatesEquals(eventDate, date)){
+        //Delete lesson at date
         _events[eventDate].remove(lesson);
 
         //Delete date if lessons empty
@@ -78,7 +80,7 @@ class LessonController {
 
         return;
       }
-    });
+    }
 
     print(events.toString());
   }
