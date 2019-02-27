@@ -86,7 +86,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
                 //Lesson date
                 GestureDetector(
                   child: Text(
-                    getDateToShow() ?? 'Укажите дату',
+                    getDateToShow() ?? 'Укажите время занятия',
                     style: TextStyle(
                       fontSize: 16.0,
                       color: Colors.black,
@@ -201,7 +201,14 @@ class _LessonsEditorState extends State<LessonsEditor> {
   String getDateToShow() {
     if (lessonTime == null) return null;
 
-    return '${widget.date.day}.${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:${lessonTime.minute}';
+    String dayZero = '';
+    String monthZero = '';
+    if (widget.date.day < 10)
+      dayZero = '0';
+    if (widget.date.month < 10)
+      monthZero = '0';
+
+    return '$monthZero${widget.date.day}.$monthZero${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:${lessonTime.minute}';
   }
 
   //Show dialog to pick date and time
