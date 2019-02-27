@@ -85,7 +85,7 @@ final theme = ThemeData(
   primaryColorDark: Color(0xCFBFFFBF),
   hintColor: Colors.black,
   dividerColor: Colors.grey[500],
-  fontFamily: 'Roboto',
+  fontFamily: 'RobotoCondensed',
   textTheme: TextTheme(
     //For TextField
     body1: TextStyle(color: Colors.black, fontSize: 23.0, letterSpacing: 0.0),

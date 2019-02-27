@@ -48,7 +48,7 @@ flutter:
     - family: Neucha
       fonts:
         - asset: assets/fonts/Neucha.ttf
-    - family: Roboto
+    - family: RobotoCondensed
       fonts:
         - asset: assets/fonts/RobotoCondensed-Italic.ttf
         - asset: assets/fonts/RobotoCondensed-Light.ttf
