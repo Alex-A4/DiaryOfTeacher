@@ -1,6 +1,8 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
+import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
+import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +39,21 @@ class SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.cloud_download),
+            title: Text('Восстановить данные из облака', style: theme.textTheme.display1,),
+            onTap: () async {
+              try {
+                await StudentsRepository.getInstance().restoreFromFirebase();
+                await LessonController.getInstance().restoreLessonsFromFirestore();
+              } catch (error) {
+                Fluttertoast.showToast(msg: error);
+                return;
+              }
+              Fluttertoast.showToast(msg: 'Данные восстановлены');
+            },
+          ),
+          Divider(),
           ListTile(
             title: Text(
               'Сменить пароль',
