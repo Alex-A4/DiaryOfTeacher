@@ -93,8 +93,7 @@ class UserRepository {
       await User.buildUser();
       await StudentsRepository.buildRepo();
       await LessonController.buildController();
-    }
-    else
+    } else
       throw 'Пароль неверный';
   }
 
