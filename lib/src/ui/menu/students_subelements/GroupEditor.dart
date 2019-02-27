@@ -75,12 +75,12 @@ class _GroupEditorState extends State<GroupEditor> {
                         ? CircularProgressIndicator()
                         : IconButton(
                             onPressed: updateName,
-                            icon: Icon(Icons.update),
+                            icon: Icon(Icons.update, color: theme.accentColor,),
                           ),
                   ],
                 ),
 
-                Divider(color: Colors.black45,),
+                Divider(),
               ],
             ),
           ),
