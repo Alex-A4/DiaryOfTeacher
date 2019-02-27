@@ -118,12 +118,13 @@ class _GroupEditorState extends State<GroupEditor> {
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
       background: Container(
+        alignment: AlignmentDirectional.centerEnd,
         color: Colors.red[400],
         child: Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: Icon(
             Icons.delete_sweep,
-            color: Colors.white10,
+            color: Colors.white,
           ),
         ),
       ),
@@ -133,6 +134,7 @@ class _GroupEditorState extends State<GroupEditor> {
       child: ListTile(
         title: Text(
           stud.fio,
+          textAlign: TextAlign.center,
           style: theme.textTheme.display4,
         ),
         onTap: () async {
