@@ -95,7 +95,10 @@ class _LessonsListState extends State<LessonsList> {
       key: UniqueKey(),
       onDismissed: (direction) {
         _controller.removeLessonFromDate(date, lesson);
-        setState(() {});
+        _controller.saveToCache().then((_){
+          setState(() {});
+          Fluttertoast.showToast(msg: 'Занятие удалено');
+        });
       },
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
