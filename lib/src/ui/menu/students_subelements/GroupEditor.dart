@@ -46,8 +46,7 @@ class _GroupEditorState extends State<GroupEditor> {
         children: <Widget>[
           Container(
             alignment: AlignmentDirectional.topCenter,
-            padding: const EdgeInsets.only(
-                top: 16.0, left: 24.0, right: 24.0),
+            padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0),
             height: 70.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,11 +74,13 @@ class _GroupEditorState extends State<GroupEditor> {
                         ? CircularProgressIndicator()
                         : IconButton(
                             onPressed: updateName,
-                            icon: Icon(Icons.update, color: theme.accentColor,),
+                            icon: Icon(
+                              Icons.update,
+                              color: theme.accentColor,
+                            ),
                           ),
                   ],
                 ),
-
                 Divider(),
               ],
             ),
@@ -113,26 +114,36 @@ class _GroupEditorState extends State<GroupEditor> {
 
   //Get student representation
   Widget getStudentElement(Student stud) {
-    return ListTile(
-      title: Text(
-        stud.fio,
-        style: theme.textTheme.display4,
+    return Dismissible(
+      key: UniqueKey(),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Colors.red[400],
+        child: Padding(
+          padding: const EdgeInsets.only(right: 10.0),
+          child: Icon(
+            Icons.delete_sweep,
+            color: Colors.white10,
+          ),
+        ),
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.delete_sweep),
-        onPressed: () {
-          removeStudent(stud);
-        },
-        tooltip: 'Удалить ученика из группы',
-      ),
-      onTap: () async {
-        await Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => StudentEditor(
-                  student: stud,
-                  isEditing: true,
-                )));
-        setState(() {});
+      onDismissed: (direction) {
+        removeStudent(stud);
       },
+      child: ListTile(
+        title: Text(
+          stud.fio,
+          style: theme.textTheme.display4,
+        ),
+        onTap: () async {
+          await Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => StudentEditor(
+                    student: stud,
+                    isEditing: true,
+                  )));
+          setState(() {});
+        },
+      ),
     );
   }
 
