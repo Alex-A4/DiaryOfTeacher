@@ -56,6 +56,33 @@ class LessonController {
     print(events.toString());
   }
 
+
+  //Remove lesson from specified date
+  //If list of lessons at date is empty then remove date
+  void removeLessonFromDate(DateTime date, Lesson lesson) {
+    if (date == null || lesson == null)
+      throw 'Trying to remove null value from list';
+
+    //If there is no date in list
+    if (!isEventsContainsDate(date))
+      return;
+
+    _events.keys.forEach((eventDate) {
+      //Delete lesson at date
+      if (isDatesEquals(eventDate, date)){
+        _events[eventDate].remove(lesson);
+
+        //Delete date if lessons empty
+        if (_events[eventDate].length < 1)
+          _events.remove(eventDate);
+
+        return;
+      }
+    });
+
+    print(events.toString());
+  }
+
   //Custom check is events map contains [date]
   bool isEventsContainsDate(DateTime date) {
     bool isContains = false;
