@@ -11,7 +11,7 @@ class Group {
 
   Group(this._name) : this._groupId = Uuid().v1();
 
-  Group.fromJson(Map<String, dynamic> data)
+  Group.fromJson(Map<dynamic, dynamic> data)
       : _groupId = data['groupId'],
         _name = data['groupName'],
         _students = [];

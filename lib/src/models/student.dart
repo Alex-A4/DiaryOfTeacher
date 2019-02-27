@@ -28,7 +28,7 @@ class Student {
       : uid = Uuid().v1();
 
   //This constructor needs to restore Student from store
-  Student.fromJson(Map<String, dynamic> data) : this.uid = data['uid'] {
+  Student.fromJson(Map<dynamic, dynamic> data) : this.uid = data['uid'] {
     this.fio = data['fio'];
     this.groupId = data['groupId'];
     this.photoUrl = data['photoUrl'] ?? defaultPhotoUrl;
