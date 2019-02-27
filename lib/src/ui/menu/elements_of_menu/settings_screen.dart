@@ -141,7 +141,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
-            title: Text('Сменить пароль'),
+            title: Text('Сменить пароль', textAlign: TextAlign.center,),
             content: Container(
               height: 100.0,
               child: Form(
@@ -231,5 +231,5 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   final textInputTheme = TextStyle(fontSize: 20.0, color: Colors.black);
   final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38);
-  final buttonTheme = TextStyle(fontSize: 20.0, color: theme.buttonColor);
+  final buttonTheme = TextStyle(fontSize: 18.0, color: theme.accentColor);
 }
