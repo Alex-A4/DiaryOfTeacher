@@ -44,7 +44,7 @@ class MenuDrawer extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20.0, bottom: 7.0),
                         child: Text(
                           User.user.userName,
-                          style: TextStyle(fontFamily: 'Neucha', fontSize: 23.0, letterSpacing: 0.0),
+                          style: TextStyle(fontFamily: 'RobotoCondensed', fontSize: 23.0, letterSpacing: 0.0),
                         ),
                       )
                     ],

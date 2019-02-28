@@ -229,6 +229,6 @@ class SettingsScreenState extends State<SettingsScreen> {
   }
 
   final textInputTheme = TextStyle(fontSize: 20.0, color: Colors.black);
-  final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38, letterSpacing: 1.0);
+  final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38, letterSpacing: 1.0, fontFamily: 'Neucha');
   final buttonTheme = TextStyle(fontSize: 18.0, color: theme.accentColor);
 }
