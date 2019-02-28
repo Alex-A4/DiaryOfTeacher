@@ -4,6 +4,8 @@ import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
+import 'package:diary_of_teacher/src/models/user.dart';
+import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/photo_card.dart';
 import 'package:diary_of_teacher/src/ui/menu/students_subelements/GroupEditor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -65,151 +67,186 @@ class _LessonsEditorState extends State<LessonsEditor> {
         title: Text('Редактор уроков'),
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
         children: <Widget>[
-          //Theme field
           Container(
-            padding: const EdgeInsets.only(bottom: 24.0),
-            child: TextField(
-              controller: _themeController,
-              decoration: InputDecoration(
-                hintText: 'Тема занятия',
-                hintStyle: hintStyle,
-              ),
-            ),
-          ),
-
-          Container(
-            height: 100.0,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                //Lesson date
-                GestureDetector(
-                  child: Text(
-                    getDateToShow() ?? 'Укажите время занятия',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.black,
-                      letterSpacing: 0.0,
-                      decoration: TextDecoration.underline,
+                //Theme field
+                Container(
+                  padding: const EdgeInsets.only(bottom: 24.0),
+                  child: TextField(
+                    controller: _themeController,
+                    decoration: InputDecoration(
+                      hintText: 'Тема занятия',
+                      hintStyle: hintStyle,
                     ),
                   ),
-                  onTap: () {
-                    getDateAndTime();
-                  },
                 ),
 
-                //Lesson group
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                        padding: const EdgeInsets.only(right: 16.0),
+                Container(
+                  height: 100.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      //Lesson date
+                      GestureDetector(
                         child: Text(
-                          'Группа:',
-                          style: theme.textTheme.display4,
-                        )),
-                    PopupMenuButton<Group>(
-                      onSelected: (Group group) {
-                        setState(() {
-                          groupId = group.groupId;
-                        });
-                      },
-                      itemBuilder: (context) {
-                        return _studentsController.listOfGroups.map((group) {
-                          return PopupMenuItem<Group>(
-                            value: group,
-                            child: Text(group.name,
-                                style: theme.textTheme.display3),
-                          );
-                        }).toList();
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            _studentsController.getGroupNameById(groupId),
-                            style: theme.textTheme.display4,
+                          getDateToShow() ?? 'Укажите время занятия',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.black,
+                            letterSpacing: 0.0,
+                            decoration: TextDecoration.underline,
                           ),
-                          Icon(Icons.arrow_drop_down),
+                        ),
+                        onTap: () {
+                          getDateAndTime();
+                        },
+                      ),
+
+                      //Lesson group
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: Text(
+                                'Группа:',
+                                style: theme.textTheme.display4,
+                              )),
+                          PopupMenuButton<Group>(
+                            onSelected: (Group group) {
+                              setState(() {
+                                groupId = group.groupId;
+                              });
+                            },
+                            itemBuilder: (context) {
+                              return _studentsController.listOfGroups
+                                  .map((group) {
+                                return PopupMenuItem<Group>(
+                                  value: group,
+                                  child: Text(group.name,
+                                      style: theme.textTheme.display3),
+                                );
+                              }).toList();
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  _studentsController.getGroupNameById(groupId),
+                                  style: theme.textTheme.display4,
+                                ),
+                                Icon(Icons.arrow_drop_down),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            padding: const EdgeInsets.only(left: 50.0),
+                            alignment: AlignmentDirectional.centerEnd,
+                            icon: Icon(
+                              groupId == null
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: theme.accentColor,
+                            ),
+                            tooltip: 'Посмотреть группу',
+                            onPressed: groupId == null
+                                ? null
+                                : () async {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => GroupEditor(
+                                                  group: StudentsController
+                                                          .getInstance()
+                                                      .getGroupById(groupId),
+                                                )));
+                                  },
+                          ),
                         ],
                       ),
-                    ),
-                    IconButton(
-                      padding: const EdgeInsets.only(left: 50.0),
-                      alignment: AlignmentDirectional.centerEnd,
-                      icon: Icon(
-                        groupId == null
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: theme.accentColor,
-                      ),
-                      tooltip: 'Посмотреть группу',
-                      onPressed: groupId == null
-                          ? null
-                          : () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => GroupEditor(
-                                        group: StudentsController.getInstance()
-                                            .getGroupById(groupId),
-                                      )));
-                            },
-                    ),
-                  ],
-                ),
 
-                //Money field
-                Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Доход:',
-                        style: theme.textTheme.display4,
-                      ),
+                      //Money field
                       Container(
-                        padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                        width: 120.0,
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintStyle: hintStyle,
-                              hintText: '0',
-                              suffixText: 'руб.',
-                              suffixStyle: TextStyle(
-                                  color: Colors.black, fontSize: 15.0),
-                              contentPadding:
-                                  const EdgeInsets.only(bottom: 0.0)),
-                          controller: _moneyController,
-                          keyboardType: TextInputType.number,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Доход:',
+                              style: theme.textTheme.display4,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  right: 16.0, left: 16.0),
+                              width: 120.0,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    hintStyle: hintStyle,
+                                    hintText: '0',
+                                    suffixText: 'руб.',
+                                    suffixStyle: TextStyle(
+                                        color: Colors.black, fontSize: 15.0),
+                                    contentPadding:
+                                        const EdgeInsets.only(bottom: 0.0)),
+                                controller: _moneyController,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
+                  ),
+                ),
+
+                //Homework field
+                Container(
+                  padding: const EdgeInsets.only(top: 32.0),
+                  height: 150.0,
+                  child: TextField(
+                    controller: _hwController,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0)),
+                      fillColor: theme.accentColor,
+                      hintText: 'Домашнее задание',
+                      hintStyle: hintStyle,
+                    ),
+                    maxLines: 30,
                   ),
                 ),
               ],
             ),
           ),
 
-          //Homework field
-          Container(
-            padding: const EdgeInsets.only(top: 32.0),
-            height: 150.0,
-            child: TextField(
-              controller: _hwController,
-              keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0)),
-                fillColor: theme.accentColor,
-                hintText: 'Домашнее задание',
-                hintStyle: hintStyle,
-              ),
-              maxLines: 30,
-            ),
+          SizedBox(
+            height: 80,
           ),
 
-          //TODO: add list of images which could be downloaded with ImagePicker
+          Divider(),
+          //TODO: add displaying empty list and add attachment action
+          //TODO: add Hero animation
+          Container(
+            height: 150.0,
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return PhotoCard(
+                  photoUrl:
+                      User.user.photoUrl,
+                );
+              },
+              scrollDirection: Axis.horizontal,
+            ),
+          ),
+          Divider(),
+
+          SizedBox(
+            height: 80.0,
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -235,7 +272,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
   }
 
   //Show dialog to pick date and time
-  Future getDateAndTime() async {
+  void getDateAndTime() {
     //Get user date
     DatePicker.showTimePicker(context,
         currentTime: lessonTime ?? DateTime.now(),
