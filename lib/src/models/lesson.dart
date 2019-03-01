@@ -55,7 +55,7 @@ class Lesson {
         lessonTime =
             TimeOfDay(hour: data['lessonHour'], minute: data['lessonMin']),
         earnedMoney = Decimal.parse(data['earnedMoney']),
-        imagesList = data['imagesList'];
+        imagesList = data['imagesList'] ?? [];
 
   @override
   String toString() =>
