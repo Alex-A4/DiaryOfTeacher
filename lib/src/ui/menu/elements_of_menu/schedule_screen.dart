@@ -35,7 +35,7 @@ class _ScheduleState extends State<ScheduleScreen> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 400.0,
+              height: 430.0,
               child: CalendarCarousel<Lesson>(
                 isScrollable: false,
                 locale: "ru",
