@@ -37,7 +37,7 @@ class _ScheduleState extends State<ScheduleScreen> {
               width: MediaQuery.of(context).size.width,
               height: 400.0,
               child: CalendarCarousel<Lesson>(
-                customGridViewPhysics: null,
+                isScrollable: false,
                 locale: "ru",
                 onDayPressed: (dateTime, events) {
                   if (_selected == dateTime)
