@@ -33,8 +33,8 @@ class PhotoCard extends StatelessWidget {
                   .push(_PhotoDisplayRoute(photoUrl: photoUrl));
             },
             child: Container(
-              padding:
-                  EdgeInsets.only(top: topPadding, left: 10.0, right: 10.0),
+              padding: EdgeInsets.only(
+                  top: topPadding, left: 10.0, right: 10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.grey[600],
@@ -48,29 +48,31 @@ class PhotoCard extends StatelessWidget {
           deleteFunc == null
               ? Container()
               : Positioned(
-                  right: 0.0,
-                  top: 0.0,
-                  child: Container(
-                      width: 25,
-                      height: 25,
-                      decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0)),
-                          color: Colors.grey[400]),
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: deleteFunc,
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )),
-                ),
+            right: 0.0,
+            top: 0.0,
+            child: Container(
+                width: 25,
+                height: 25,
+                decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    color: Colors.grey[400]),
+                child: Center(
+                  child: GestureDetector(
+                    onTap: deleteFunc,
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+                  ),
+                )),
+          ),
         ],
       ),
     );
   }
+
+
 }
 
 class _PhotoDisplayRoute<T> extends PopupRoute<T> {
