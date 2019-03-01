@@ -1,15 +1,17 @@
+import 'dart:io';
+
 import 'package:decimal/decimal.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
-import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/photo_card.dart';
 import 'package:diary_of_teacher/src/ui/menu/students_subelements/GroupEditor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class LessonsEditor extends StatefulWidget {
   LessonsEditor({Key key, @required this.date, @required this.lesson})
@@ -32,6 +34,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
   String studyTheme;
   String hw;
   TimeOfDay lessonTime;
+  List<String> imagesList;
 
   TextEditingController _moneyController;
   TextEditingController _themeController;
@@ -46,6 +49,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
     studyTheme = lesson?.theme ?? '';
     hw = lesson?.homeWork ?? '';
     lessonTime = lesson?.lessonTime;
+    imagesList = lesson?.imagesList ?? [];
 
     _moneyController = TextEditingController(text: earnedMoney.toString());
     _themeController = TextEditingController(text: studyTheme);
@@ -227,22 +231,55 @@ class _LessonsEditorState extends State<LessonsEditor> {
           ),
 
           Divider(),
-          //TODO: add displaying empty list and add attachment action
           //TODO: add Hero animation
           Container(
             height: 150.0,
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return PhotoCard(
-                  photoUrl:
-                      User.user.photoUrl,
-                );
-              },
-              scrollDirection: Axis.horizontal,
-            ),
+            child: imagesList.isEmpty
+                ? Container(
+                    child: Center(
+                      child: Text(
+                        'Список фотографий пуст',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Neucha',
+                            fontSize: 25.0),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: imagesList.length,
+                    itemBuilder: (context, index) => PhotoCard(
+                          photoUrl: imagesList[index],
+                          deleteFunc: () {
+                            imagesList.remove(imagesList[index]);
+                            setState(() {});
+                          },
+                        ),
+                    scrollDirection: Axis.horizontal,
+                  ),
           ),
           Divider(),
+
+          Container(
+            child: Center(
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                onPressed: () {
+                  selectImageAndSave();
+                },
+                color: theme.accentColor,
+                child: Text(
+                  'Загрузить',
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontFamily: 'RobotoCondensed',
+                      color: Colors.white),
+                ),
+                elevation: 5.0,
+              ),
+            ),
+          ),
 
           SizedBox(
             height: 80.0,
@@ -251,7 +288,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: saveLesson,
-        child: Icon(Icons.save_alt),
+        child: Icon(Icons.check),
         tooltip: 'Сохранить данные',
       ),
     );
@@ -268,7 +305,8 @@ class _LessonsEditorState extends State<LessonsEditor> {
     if (widget.date.month < 10) monthZero = '0';
     if (lessonTime.minute < 10) minuteZero = '0';
 
-    return '$dayZero${widget.date.day}.$monthZero${widget.date.month}.${widget.date.year},  ${lessonTime.hour}:$minuteZero${lessonTime.minute}';
+    return '$dayZero${widget.date.day}.$monthZero${widget.date.month}.${widget.date.year},'
+        '  ${lessonTime.hour}:$minuteZero${lessonTime.minute}';
   }
 
   //Show dialog to pick date and time
@@ -306,12 +344,13 @@ class _LessonsEditorState extends State<LessonsEditor> {
           groupToStudy: _studentsController.getGroupById(groupId),
           homeWork: hw,
           lessonTime: lessonTime,
-          theme: studyTheme);
+          theme: studyTheme,
+          imagesList: imagesList);
 
       _lessonController.addLessonForDate(widget.date, lesson);
     } else
       lesson.updateData(earnedMoney, _studentsController.getGroupById(groupId),
-          hw, lessonTime, studyTheme);
+          hw, lessonTime, studyTheme, imagesList);
 
     _lessonController.saveToCache().then((_) {
       Fluttertoast.showToast(msg: 'Сохранение успешно');
@@ -332,4 +371,18 @@ class _LessonsEditorState extends State<LessonsEditor> {
 
   TextStyle hintStyle =
       TextStyle(fontSize: 15.0, color: Colors.black26, letterSpacing: 1.0);
+
+  //Select image by picker, save to cache and update screen
+  Future selectImageAndSave() async {
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    if (image == null) return;
+
+    await _lessonController.addImageAndSave(image).then((url) {
+      imagesList.add(url);
+      setState(() {});
+    }).catchError((error) {
+      Fluttertoast.showToast(msg: error);
+    });
+  }
 }
