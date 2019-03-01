@@ -54,8 +54,18 @@ class Lesson {
         homeWork = data['homeWork'],
         lessonTime =
             TimeOfDay(hour: data['lessonHour'], minute: data['lessonMin']),
-        earnedMoney = Decimal.parse(data['earnedMoney']),
-        imagesList = data['imagesList'] ?? [];
+        earnedMoney = Decimal.parse(data['earnedMoney']) {
+    imagesList = convertDynamicListToListOfString(data['imagesList']) ?? [];
+  }
+
+  //Convert dynamic list to list of strings
+  List<String> convertDynamicListToListOfString(List<dynamic> list) {
+    List<String> strings = [];
+    list.forEach((item) {
+      if (item is String) strings.add(item);
+    });
+    return strings.isEmpty ? null : strings;
+  }
 
   @override
   String toString() =>
@@ -73,3 +83,5 @@ class Lesson {
     this.theme = studyTheme;
   }
 }
+
+//TODO: add lesson comparator to sort list of lessons by date where newest lessons on top
