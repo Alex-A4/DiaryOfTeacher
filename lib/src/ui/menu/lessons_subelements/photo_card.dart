@@ -32,19 +32,16 @@ class PhotoCard extends StatelessWidget {
               Navigator.of(context)
                   .push(_PhotoDisplayRoute(photoUrl: photoUrl));
             },
-            child: Hero(
-              tag: photoUrl,
+            child: Container(
+              padding: EdgeInsets.only(
+                  top: topPadding, left: 10.0, right: 10.0),
               child: Container(
-                padding: EdgeInsets.only(
-                    top: topPadding, left: 10.0, right: 10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[600],
-                      borderRadius: BorderRadius.circular(10.0),
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(photoUrl),
-                          fit: BoxFit.cover)),
-                ),
+                decoration: BoxDecoration(
+                    color: Colors.grey[600],
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(photoUrl),
+                        fit: BoxFit.cover)),
               ),
             ),
           ),
@@ -100,24 +97,21 @@ class _PhotoDisplayRoute<T> extends PopupRoute<T> {
       removeRight: true,
       context: context,
       child: GestureDetector(
-        child: Hero(
-          tag: photoUrl,
-          child: Container(
-            constraints: const BoxConstraints.expand(),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 3.0, sigmaX: 3.0),
-              child: Container(
-                decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
-                child: Center(
-                  child: Container(
-                    width: 300,
-                    height: 300,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(photoUrl),
-                          fit: BoxFit.cover),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+        child: Container(
+          constraints: const BoxConstraints.expand(),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaY: 3.0, sigmaX: 3.0),
+            child: Container(
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
+              child: Center(
+                child: Container(
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(photoUrl),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
