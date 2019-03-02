@@ -63,7 +63,10 @@ class _LessonsListState extends State<LessonsList> {
             children: <Widget>[
               Text(
                 getDateToShow(date),
-                style: TextStyle(color: theme.accentColor, fontSize: 17.0),
+                style: TextStyle(
+                    color: theme.accentColor,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w700),
               ),
               Divider(),
               Column(
@@ -95,7 +98,7 @@ class _LessonsListState extends State<LessonsList> {
       key: UniqueKey(),
       onDismissed: (direction) {
         _controller.removeLessonFromDate(date, lesson);
-        _controller.saveToCache().then((_){
+        _controller.saveToCache().then((_) {
           setState(() {});
           Fluttertoast.showToast(msg: 'Занятие удалено');
         });
