@@ -231,7 +231,6 @@ class _LessonsEditorState extends State<LessonsEditor> {
           ),
 
           Divider(),
-          //TODO: add Hero animation
           Container(
             height: 150.0,
             child: imagesList.isEmpty
