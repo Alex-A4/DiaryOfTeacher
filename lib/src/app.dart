@@ -90,8 +90,7 @@ final theme = ThemeData(
   primaryTextTheme: TextTheme(
     title: TextStyle(
         color: Colors.black,
-        fontSize: 20.0,
-        letterSpacing: 0.0,
+        fontSize: 22.0,
         fontFamily: 'RobotoCondensed'),
   ),
   textTheme: TextTheme(
