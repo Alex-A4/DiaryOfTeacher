@@ -91,7 +91,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               children: <Widget>[
                 Text(
                   'ВНИМАНИЕ!  ',
-                  style: TextStyle(color: Colors.red[400], fontSize: 23.0),
+                  style: TextStyle(color: Colors.red[400], fontSize: 21.0),
                 ),
                 Icon(
                   Icons.warning,
