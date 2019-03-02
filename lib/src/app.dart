@@ -86,6 +86,14 @@ final theme = ThemeData(
   hintColor: Colors.black,
   dividerColor: Colors.grey[500],
   fontFamily: 'RobotoCondensed',
+  //Theme for AppBar texts
+  primaryTextTheme: TextTheme(
+    title: TextStyle(
+        color: Colors.black,
+        fontSize: 20.0,
+        letterSpacing: 0.0,
+        fontFamily: 'RobotoCondensed'),
+  ),
   textTheme: TextTheme(
     //For TextField
     body1: TextStyle(color: Colors.black, fontSize: 23.0, letterSpacing: 0.0),
@@ -100,9 +108,7 @@ final theme = ThemeData(
     display3:
         TextStyle(color: Colors.black54, fontSize: 14.0, letterSpacing: 0.0),
     //For time fields
-    display4: TextStyle(
-        color: Colors.black,
-        fontSize: 15.0,
-        letterSpacing: 0.0),
+    display4:
+        TextStyle(color: Colors.black, fontSize: 15.0, letterSpacing: 0.0),
   ),
 );
