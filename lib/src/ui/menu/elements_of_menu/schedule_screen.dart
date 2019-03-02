@@ -37,6 +37,7 @@ class _ScheduleState extends State<ScheduleScreen> {
               width: MediaQuery.of(context).size.width,
               height: 430.0,
               child: CalendarCarousel<Lesson>(
+                headerTextStyle: TextStyle(color: Colors.black,fontFamily: 'RobotoCondensed', fontSize: 20.0),
                 isScrollable: false,
                 locale: "ru",
                 onDayPressed: (dateTime, events) {
@@ -112,6 +113,6 @@ class _ScheduleState extends State<ScheduleScreen> {
 }
 
 final TextStyle disabledStyle =
-    TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: Colors.grey[300]);
+    TextStyle(fontSize: 18.0, letterSpacing: 0.0, color: Colors.grey[300]);
 final TextStyle style =
-    TextStyle(fontSize: 15.0, letterSpacing: 0.0, color: theme.accentColor);
+    TextStyle(fontSize: 18.0, letterSpacing: 0.0, color: theme.accentColor);
