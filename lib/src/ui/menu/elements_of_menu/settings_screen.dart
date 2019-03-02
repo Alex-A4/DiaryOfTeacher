@@ -91,7 +91,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               children: <Widget>[
                 Text(
                   'ВНИМАНИЕ!  ',
-                  style: TextStyle(color: Colors.red[400], fontSize: 17.0),
+                  style: TextStyle(color: Colors.red[400], fontSize: 23.0),
                 ),
                 Icon(
                   Icons.warning,
@@ -103,7 +103,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 'Все несохранённые данные будут перезаписаны.\n\nПродолжить?',
                 maxLines: 4,
-                style: theme.textTheme.display2,
+                style: TextStyle(fontSize: 20.0, color: Colors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -111,7 +111,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               FlatButton(
                 child: Text(
                   'Нет',
-                  style: TextStyle(color: theme.accentColor, fontSize: 16.0),
+                  style: TextStyle(color: theme.accentColor, fontSize: 20.0),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -122,7 +122,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   restoreDataFromFirestore();
                 },
                 child: Text('Да',
-                    style: TextStyle(color: theme.accentColor, fontSize: 16.0)),
+                    style: TextStyle(color: theme.accentColor, fontSize: 18.0)),
               )
             ],
           );
@@ -140,7 +140,11 @@ class SettingsScreenState extends State<SettingsScreen> {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
-            title: Text('Сменить пароль', textAlign: TextAlign.center,),
+            title: Text(
+              'Сменить пароль',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black, fontSize: 23.0),
+            ),
             content: Container(
               height: 100.0,
               child: Form(
@@ -229,6 +233,10 @@ class SettingsScreenState extends State<SettingsScreen> {
   }
 
   final textInputTheme = TextStyle(fontSize: 20.0, color: Colors.black);
-  final textHintTheme = TextStyle(fontSize: 20.0, color: Colors.black38, letterSpacing: 1.0, fontFamily: 'Neucha');
-  final buttonTheme = TextStyle(fontSize: 18.0, color: theme.accentColor);
+  final textHintTheme = TextStyle(
+      fontSize: 20.0,
+      color: Colors.black38,
+      letterSpacing: 1.0,
+      fontFamily: 'Neucha');
+  final buttonTheme = TextStyle(fontSize: 20.0, color: theme.accentColor);
 }
