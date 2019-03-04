@@ -168,9 +168,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future tryToUpdateImage() async {
     File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-    startLoadingImage();
-
     if (imageFile != null) {
+      startLoadingImage();
+
       UserRepository.uploadUserImage(imageFile).then((_) {
         Fluttertoast.showToast(msg: 'Фотография изменена успешно');
         finishLoadingImage();
@@ -178,8 +178,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Fluttertoast.showToast(msg: err);
         finishLoadingImage();
       });
-    } else {
-      finishLoadingImage();
     }
   }
 
