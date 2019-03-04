@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
@@ -5,6 +7,7 @@ import 'package:diary_of_teacher/src/models/student.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 class StudentEditor extends StatefulWidget {
   final bool isEditing;
@@ -20,8 +23,8 @@ class _StudentEditorState extends State<StudentEditor> {
 
   _StudentEditorState(this._isEditing);
 
-  TextStyle _hintStyle = TextStyle(
-      fontSize: 18.0, letterSpacing: 1.0, color: Colors.grey[400]);
+  TextStyle _hintStyle =
+      TextStyle(fontSize: 18.0, letterSpacing: 1.0, color: Colors.grey[400]);
 
   bool _isEditing;
 
@@ -86,212 +89,213 @@ class _StudentEditorState extends State<StudentEditor> {
             slivers: <Widget>[
               SliverList(
                   delegate: SliverChildListDelegate(
-                    <Widget>[
-                      Container(
-                        padding:
+                <Widget>[
+                  Container(
+                    padding:
                         EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-                        height: 120.0,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    backgroundImage:
+                    height: 120.0,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundImage:
                                     CachedNetworkImageProvider(photoUrl),
-                                    child: IconButton(
-                                        iconSize: 30.0,
-                                        color: Colors.white,
-                                        icon: Icon(Icons.camera_alt),
-                                        //TODO: add image loading
-                                        onPressed: _isEditing ? () {} : null),
-                                    radius: 50.0,
-                                  ),
-                                ],
-                              ),
-                              padding: const EdgeInsets.only(right: 8.0),
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  //FIO field
-                                  Expanded(
-                                    child: TextField(
-                                      enabled: _isEditing,
-                                      controller: _fioController,
-                                      decoration:
-                                      InputDecoration(
-                                          hintText: 'ФИО ученика', hintStyle: _hintStyle),
-                                      style: textTheme,
-                                    ),
-                                  ),
-
-                                  //Group field
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-
-                                  PopupMenuButton<Group>(
-                                    onSelected: (Group group) {
-                                      setState(() {
-                                        groupId = group.groupId;
-                                      });
-                                    },
-                                    itemBuilder: (context) {
-                                      return _controller.listOfGroups.map((
-                                          group) {
-                                        return PopupMenuItem<Group>(
-                                          value: group,
-                                          child: Text(group.name,
-                                              style: theme.textTheme.display3),
-                                        );
-                                      }).toList();
-                                    },
-                                    child: Row(
-                                      children: <Widget>[
-                                        Text(
-                                          _controller.getGroupNameById(groupId),
-                                          style: theme.textTheme.display4,
-                                        ),
-                                        Icon(Icons.arrow_drop_down),
-                                      ],
-                                    ),
-//                                initialValue: , //Add this
-                                  ),
-
-                                  //Course field
-                                  Expanded(
-                                    child: TextField(
-                                      enabled: _isEditing,
-                                      decoration: InputDecoration(
-                                          hintText: 'Название курса', hintStyle: _hintStyle),
-                                      controller: _courseController,
-                                      style: textTheme,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      //Date field
-                      Container(
-                        padding: const EdgeInsets.only(
-                            left: 16.0, right: 16.0, top: 5.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Срок обучения:',
-                              style: theme.textTheme.display4,
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'С',
-                                  style: theme.textTheme.display4,
-                                ),
-                                FlatButton(
-                                  onPressed: _isEditing
-                                      ? () async {
-                                    _dateSince =
-                                    await selectDate(context, _dateSince);
-                                    setState(() {});
-                                  }
-                                      : null,
-                                  child: Text(
-                                    getStringDate(_dateSince),
-                                    style: theme.textTheme.display4,
-                                  ),
-                                ),
-                                Text(
-                                  'До ',
-                                  style: theme.textTheme.display4,
-                                ),
-                                GestureDetector(
-                                  child: _dateTo != null
-                                      ? FlatButton(
+                                child: IconButton(
+                                    iconSize: 30.0,
+                                    color: Colors.white,
+                                    icon: Icon(Icons.camera_alt),
                                     onPressed: _isEditing
-                                        ? () async {
-                                      _dateTo = await selectDate(
-                                          context, _dateTo);
-                                      setState(() {});
-                                    }
-                                        : null,
-                                    child: Text(
-                                      getStringDate(_dateTo),
+                                        ? () {
+                                            pickAndUploadImage();
+                                          }
+                                        : null),
+                                radius: 50.0,
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.only(right: 8.0),
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              //FIO field
+                              Expanded(
+                                child: TextField(
+                                  enabled: _isEditing,
+                                  controller: _fioController,
+                                  decoration: InputDecoration(
+                                      hintText: 'ФИО ученика',
+                                      hintStyle: _hintStyle),
+                                  style: textTheme,
+                                ),
+                              ),
+
+                              //Group field
+                              SizedBox(
+                                height: 10.0,
+                              ),
+
+                              PopupMenuButton<Group>(
+                                onSelected: (Group group) {
+                                  setState(() {
+                                    groupId = group.groupId;
+                                  });
+                                },
+                                itemBuilder: (context) {
+                                  return _controller.listOfGroups.map((group) {
+                                    return PopupMenuItem<Group>(
+                                      value: group,
+                                      child: Text(group.name,
+                                          style: theme.textTheme.display3),
+                                    );
+                                  }).toList();
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      _controller.getGroupNameById(groupId),
                                       style: theme.textTheme.display4,
                                     ),
-                                  )
-                                      : Text(
-                                    'Ещё учится',
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        letterSpacing: 0.0,
-                                        color: Colors.black,
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.w900),
-                                  ),
-                                  //Show dialog to choose still student studying or not
-                                  onLongPress: selectToDateStatus,
+                                    Icon(Icons.arrow_drop_down),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+//                                initialValue: , //Add this
+                              ),
 
-                      //Characteristic field
-                      Container(
-                        padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                        height: 300.0,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
+                              //Course field
+                              Expanded(
+                                child: TextField(
+                                  enabled: _isEditing,
+                                  decoration: InputDecoration(
+                                      hintText: 'Название курса',
+                                      hintStyle: _hintStyle),
+                                  controller: _courseController,
+                                  style: textTheme,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //Date field
+                  Container(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, top: 5.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          'Срок обучения:',
+                          style: theme.textTheme.display4,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Flexible(
-                              child: TextField(
-                                maxLines: 50,
-                                keyboardType: TextInputType.multiline,
-                                enabled: _isEditing,
-                                style: textTheme,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.0)),
-                                  hintStyle: _hintStyle,
-                                  hintText: 'Характеристика ученика',
-                                ),
-                                scrollPadding: EdgeInsets.symmetric(
-                                    vertical: 5.0),
-                                controller: _characteristicController,
+                            Text(
+                              'С',
+                              style: theme.textTheme.display4,
+                            ),
+                            FlatButton(
+                              onPressed: _isEditing
+                                  ? () async {
+                                      _dateSince =
+                                          await selectDate(context, _dateSince);
+                                      setState(() {});
+                                    }
+                                  : null,
+                              child: Text(
+                                getStringDate(_dateSince),
+                                style: theme.textTheme.display4,
                               ),
-                              fit: FlexFit.tight,
+                            ),
+                            Text(
+                              'До ',
+                              style: theme.textTheme.display4,
+                            ),
+                            GestureDetector(
+                              child: _dateTo != null
+                                  ? FlatButton(
+                                      onPressed: _isEditing
+                                          ? () async {
+                                              _dateTo = await selectDate(
+                                                  context, _dateTo);
+                                              setState(() {});
+                                            }
+                                          : null,
+                                      child: Text(
+                                        getStringDate(_dateTo),
+                                        style: theme.textTheme.display4,
+                                      ),
+                                    )
+                                  : Text(
+                                      'Ещё учится',
+                                      style: TextStyle(
+                                          fontSize: 15.0,
+                                          letterSpacing: 0.0,
+                                          color: Colors.black,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                              //Show dialog to choose still student studying or not
+                              onLongPress: selectToDateStatus,
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  )),
+                      ],
+                    ),
+                  ),
+
+                  //Characteristic field
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    height: 300.0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child: TextField(
+                            maxLines: 50,
+                            keyboardType: TextInputType.multiline,
+                            enabled: _isEditing,
+                            style: textTheme,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6.0)),
+                              hintStyle: _hintStyle,
+                              hintText: 'Характеристика ученика',
+                            ),
+                            scrollPadding: EdgeInsets.symmetric(vertical: 5.0),
+                            controller: _characteristicController,
+                          ),
+                          fit: FlexFit.tight,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
             ],
           ),
           _isLoading
               ? Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ))
+                  child: Center(
+                  child: CircularProgressIndicator(),
+                ))
               : Container(),
         ],
       ),
@@ -357,11 +361,7 @@ class _StudentEditorState extends State<StudentEditor> {
         context: context,
         initialDate: currentDate,
         firstDate: DateTime(currentDate.year - 10, 1, 1),
-        lastDate: DateTime(DateTime
-            .now()
-            .year, DateTime
-            .now()
-            .month + 1, 1));
+        lastDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 1));
     return date ?? currentDate;
   }
 
@@ -375,9 +375,7 @@ class _StudentEditorState extends State<StudentEditor> {
 
   //Convert date to comfortable string
   String getStringDate(DateTime date) {
-    return '${date.day < 10 ? '0' : ''}${date.day}.${date.month < 10
-        ? '0'
-        : ''}${date.month}.${date.year}';
+    return '${date.day < 10 ? '0' : ''}${date.day}.${date.month < 10 ? '0' : ''}${date.month}.${date.year}';
   }
 
   //Show dialog and choose still student is studying
@@ -422,5 +420,23 @@ class _StudentEditorState extends State<StudentEditor> {
         });
 
     setState(() {});
+  }
+
+  //Ask user to pick image and then upload it to firebase
+  Future pickAndUploadImage() async {
+    File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    if (imageFile != null) {
+      setState(() => _isLoading = true);
+
+      _controller.uploadImageAndGetUrl(imageFile).then((url) {
+        photoUrl = url;
+        Fluttertoast.showToast(msg: 'Фотографияи загружена');
+        setState(() => _isLoading = false);
+      }).catchError((error) {
+        Fluttertoast.showToast(msg: error.toString());
+        setState(() => _isLoading = false);
+      });
+    }
   }
 }
