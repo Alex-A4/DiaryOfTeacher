@@ -1,3 +1,7 @@
+# Keystores
+key.properties
+diary_release_key.jks
+
 # Miscellaneous
 *.class
 *.lock
