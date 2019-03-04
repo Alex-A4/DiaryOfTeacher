@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
 
@@ -38,13 +40,12 @@ class StudentsController {
     return name;
   }
 
-
   //Get group by specified Id
   Group getGroupById(String groupId) {
     if (groupId == null) return null;
 
     Group groupRet;
-    listOfGroups.forEach((group){
+    listOfGroups.forEach((group) {
       if (group.groupId.compareTo(groupId) == 0) groupRet = group;
     });
 
@@ -90,5 +91,12 @@ class StudentsController {
     await _repository
         .deleteGroupAndSaveResult(group)
         .catchError((error) => throw error);
+  }
+
+  //Upload image to firebase and then return its url
+  Future<String> uploadImageAndGetUrl(File imageFile) async {
+    return await _repository
+        .uploadImageAndGetUrl(imageFile)
+        .catchError((err) => throw err);
   }
 }
