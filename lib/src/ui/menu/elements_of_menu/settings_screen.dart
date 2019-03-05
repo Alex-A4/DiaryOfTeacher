@@ -224,12 +224,10 @@ class SettingsScreenState extends State<SettingsScreen> {
 
     await StudentsRepository.getInstance()
         .restoreFromFirebase()
+        .then(
+            (_) => LessonController.getInstance().restoreLessonsFromFirestore())
+        .then((_) => Fluttertoast.showToast(msg: 'Данные восстановлены'))
         .catchError((error) => Fluttertoast.showToast(msg: error.toString()));
-    await LessonController.getInstance()
-        .restoreLessonsFromFirestore()
-        .catchError((error) => Fluttertoast.showToast(msg: error.toString()));
-
-    Fluttertoast.showToast(msg: 'Данные восстановлены');
   }
 
   final textInputTheme = TextStyle(fontSize: 20.0, color: Colors.black);
