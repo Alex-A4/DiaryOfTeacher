@@ -27,6 +27,7 @@ class _AppState extends State<App> {
   void initState() {
     authenticationBloc = AuthenticationBloc(userRepository: userRepository);
     authenticationBloc.dispatch(AppStarted());
+    authenticationBloc.userRepository.initSettings();
     super.initState();
   }
 

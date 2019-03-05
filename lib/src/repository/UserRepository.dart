@@ -40,7 +40,6 @@ class UserRepository {
       idToken: googleAuth.idToken,
     );
     FirebaseUser user = await _fbAuth.signInWithCredential(credential);
-    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
 
     if (user != null) {
       // Check is already signed up
@@ -176,5 +175,9 @@ class UserRepository {
     await saveStringToLocal('userName', userName);
 
     User.user.userName = userName;
+  }
+
+  Future<void> initSettings() async {
+    await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
   }
 }
