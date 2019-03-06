@@ -114,7 +114,6 @@ class _PhotoDisplayRoute<T> extends PopupRoute<T> {
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(photoUrl),
                         fit: BoxFit.contain),
-                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
