@@ -59,7 +59,7 @@ class _MenuScreenState extends State<MenuScreen> {
           }
 
           if (state is LessonsState) {
-            return LessonsScreen();
+            return CoursesScreen();
           }
 
           if (state is TimeoutState) {
