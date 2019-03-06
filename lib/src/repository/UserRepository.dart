@@ -180,4 +180,21 @@ class UserRepository {
   Future<void> initSettings() async {
     await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
   }
+
+  //Upload all data about lessons, students and groups to cloud firestore
+  Future uploadAllDataToCloud() async {
+    await StudentsRepository.getInstance()
+        .saveToFirebase()
+        .then((_) => LessonController.getInstance().saveToFirestore())
+        .catchError((err) => throw err.toString());
+  }
+
+  //Restore all data about lessons, students and groups from cloud firestore
+  Future restoreAllDataFromCloud() async {
+    await StudentsRepository.getInstance()
+        .restoreFromFirebase()
+        .then(
+            (_) => LessonController.getInstance().restoreLessonsFromFirestore())
+        .catchError((error) => throw error);
+  }
 }
