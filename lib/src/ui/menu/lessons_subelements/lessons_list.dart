@@ -1,8 +1,10 @@
 import 'package:diary_of_teacher/src/app.dart';
+import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/models/lesson.dart';
 import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/LessonsEditor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LessonsList extends StatefulWidget {
@@ -25,13 +27,16 @@ class _LessonsListState extends State<LessonsList> {
           IconButton(
             icon: Icon(Icons.cloud_upload),
             onPressed: () {
-              _controller.saveToFirestore().then((_) {
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .userRepository
+                  .uploadAllDataToCloud()
+                  .then((_) {
                 Fluttertoast.showToast(msg: 'Данные загужены в облако');
               }).catchError((error) {
                 Fluttertoast.showToast(msg: error.toString());
               });
             },
-            tooltip: 'Загрузить уроки в облако',
+            tooltip: 'Загрузить данные в облако',
           )
         ],
       ),
