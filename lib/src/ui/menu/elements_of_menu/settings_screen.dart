@@ -22,7 +22,6 @@ class SettingsScreenState extends State<SettingsScreen> {
   TextEditingController _oldPassword = TextEditingController();
   TextEditingController _newPassword = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -229,10 +228,8 @@ class SettingsScreenState extends State<SettingsScreen> {
   Future restoreDataFromFirestore() async {
     Navigator.of(context).pop();
 
-    await StudentsRepository.getInstance()
-        .restoreFromFirebase()
-        .then(
-            (_) => LessonController.getInstance().restoreLessonsFromFirestore())
+    await userRepository
+        .restoreAllDataFromCloud()
         .then((_) => Fluttertoast.showToast(msg: 'Данные восстановлены'))
         .catchError((error) => Fluttertoast.showToast(msg: error.toString()));
   }
