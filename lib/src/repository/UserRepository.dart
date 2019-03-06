@@ -97,7 +97,7 @@ class UserRepository {
   }
 
   //Check password correctness and return true if ok and false if not
-  static Future<bool> checkPasswordCorrect(String password) async {
+  Future<bool> checkPasswordCorrect(String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     int hash = prefs.getInt('passwordHash');
@@ -120,7 +120,7 @@ class UserRepository {
   }
 
   //Save password hash to local storage
-  static Future<Null> savePassword(String password) async {
+  Future<Null> savePassword(String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Writing hashcode of password to stores
 
@@ -135,7 +135,7 @@ class UserRepository {
   }
 
   //Save specified string value to local storage
-  static Future saveStringToLocal(String keyName, String value) async {
+  Future saveStringToLocal(String keyName, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(keyName, value);
   }
