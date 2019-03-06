@@ -10,6 +10,8 @@ class TimeoutController {
 
   ListOfImages _images;
 
+  ListOfImages get images => _images;
+
   //private constructor
   TimeoutController._();
 
