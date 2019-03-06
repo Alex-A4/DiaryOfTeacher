@@ -56,5 +56,6 @@ class TimeoutController {
     StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
     String url = await storageTaskSnapshot.ref.getDownloadURL();
     _images.urls.add(url);
+    await saveToCache();
   }
 }
