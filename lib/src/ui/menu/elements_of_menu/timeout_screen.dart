@@ -24,25 +24,20 @@ class _TimeoutState extends State<TimeoutScreen> {
       appBar: AppBar(
         title: Text('Перерыв'),
       ),
-      body: RefreshIndicator(
-        child: GridView.builder(
-          itemCount: list.urls.length,
-          itemBuilder: (context, index) {
-            return Container(
-              child: CachedNetworkImage(
-                imageUrl: list.urls[index],
-                fit: BoxFit.cover,
-                placeholder: (context, url) => CircularProgressIndicator(),
-              ),
-            );
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, mainAxisSpacing: 10.0, crossAxisSpacing: 10.0),
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        ),
-        onRefresh: () async {
-          print('Data refreshed');
+      body: GridView.builder(
+        itemCount: list.urls.length,
+        itemBuilder: (context, index) {
+          return Container(
+            child: CachedNetworkImage(
+              imageUrl: list.urls[index],
+              fit: BoxFit.cover,
+              placeholder: (context, url) => CircularProgressIndicator(),
+            ),
+          );
         },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 10.0, crossAxisSpacing: 10.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       ),
       drawer: MenuDrawer(),
       floatingActionButton: FloatingActionButton(
