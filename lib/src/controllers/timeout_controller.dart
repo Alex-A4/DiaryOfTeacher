@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/models/list_of_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,6 +50,10 @@ class TimeoutController {
 
   //Upload image file to cloud firestore
   Future uploadImage(File image) async {
+    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none)
+      throw 'Отсутствует интернет соединение';
+
     StorageReference reference =
         FirebaseStorage.instance.ref().child(Uuid().v1().toString());
     StorageUploadTask uploadTask = reference.putFile(image);
