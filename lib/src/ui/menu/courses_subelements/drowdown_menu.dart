@@ -1,8 +1,14 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class DropdownMenu extends StatefulWidget {
-  DropdownMenu({Key key}) : super(key: key);
+  DropdownMenu({Key key, this.editAction, this.addPhotoAction, this.textAction})
+      : super(key: key);
+
+  VoidCallback editAction;
+  VoidCallback addPhotoAction;
+  VoidCallback textAction;
 
   @override
   _DropdownMenuState createState() => _DropdownMenuState();
@@ -22,6 +28,7 @@ class _DropdownMenuState extends State<DropdownMenu>
   Animation<double> firstAnim;
   Animation<double> secondAnim;
   Animation<double> thirdAnim;
+  Animation<double> rotateAnim;
 
   AnimationController controller;
   Duration duration = Duration(milliseconds: 600);
@@ -31,27 +38,35 @@ class _DropdownMenuState extends State<DropdownMenu>
     super.initState();
     controller = AnimationController(vsync: this, duration: duration);
 
-    final anim = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
+    final anim =
+        CurvedAnimation(parent: controller, curve: Curves.easeOutQuart);
     firstAnim =
         Tween<double>(begin: 0, end: (iconSize + iconSpace) * 1).animate(anim);
     secondAnim =
         Tween<double>(begin: 0, end: (iconSize + iconSpace) * 2).animate(anim);
     thirdAnim =
         Tween<double>(begin: 0, end: (iconSize + iconSpace) * 3).animate(anim);
+    rotateAnim = Tween<double>(begin: 0.0, end: 10.0).animate(anim);
   }
 
   //Item of menu which will display always and allow to open/close menu
   Widget getPrimaryItem(IconData icon) {
-    return Container(
-      width: iconSize,
-      height: iconSize,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.0),
-        color: theme.primaryColor,
-      ),
-      child: Icon(
-        icon,
-        color: Colors.black54,
+    return Transform.rotate(
+      angle: -pi * rotateAnim.value / 10.0,
+      child: Container(
+        width: iconSize,
+        height: iconSize,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: theme.primaryColor,
+          boxShadow: [
+            BoxShadow(color: Colors.black54, blurRadius: rotateAnim.value + 5.0)
+          ],
+        ),
+        child: Icon(
+          icon,
+          color: Colors.black54,
+        ),
       ),
     );
   }
@@ -59,7 +74,10 @@ class _DropdownMenuState extends State<DropdownMenu>
   //Item of menu which will drop
   Widget getMenuItem(IconData icon, VoidCallback action) {
     return GestureDetector(
-      onTap: action,
+      onTap: () {
+        controller.reverse();
+        action();
+      },
       child: Container(
         width: iconSize,
         height: iconSize,
@@ -89,17 +107,17 @@ class _DropdownMenuState extends State<DropdownMenu>
                 Positioned(
                   left: 0.0,
                   top: firstAnim.value,
-                  child: getMenuItem(icons[0], () {}),
+                  child: getMenuItem(icons[0], widget.editAction),
                 ),
                 Positioned(
                   left: 0.0,
                   top: secondAnim.value,
-                  child: getMenuItem(icons[1], () {}),
+                  child: getMenuItem(icons[1], widget.addPhotoAction),
                 ),
                 Positioned(
                   left: 0.0,
                   top: thirdAnim.value,
-                  child: getMenuItem(icons[2], () {}),
+                  child: getMenuItem(icons[2], widget.textAction),
                 ),
                 GestureDetector(
                   onTap: controller.isCompleted
@@ -109,10 +127,7 @@ class _DropdownMenuState extends State<DropdownMenu>
                       : () {
                           controller.forward();
                         },
-                  child: getPrimaryItem(
-                      controller.isCompleted || controller.isAnimating
-                          ? Icons.arrow_upward
-                          : Icons.arrow_downward),
+                  child: getPrimaryItem(Icons.arrow_upward),
                 ),
               ],
             );
