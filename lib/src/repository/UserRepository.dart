@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
+import 'package:diary_of_teacher/src/controllers/timeout_controller.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,6 +93,7 @@ class UserRepository {
       await User.buildUser();
       await StudentsRepository.buildRepo();
       await LessonController.buildController();
+      await TimeoutController.buildController();
     } else
       throw 'Пароль неверный';
   }
