@@ -1,5 +1,5 @@
 import 'package:diary_of_teacher/src/blocs/menu/menu.dart';
-import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/lessons_screen.dart';
+import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/courses_screen.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/profile_screen.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/schedule_screen.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/settings_screen.dart';
