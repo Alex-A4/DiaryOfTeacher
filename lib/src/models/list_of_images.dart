@@ -7,14 +7,15 @@ class ListOfImages {
   ListOfImages() : urls = [];
 
   //Build list of images from json
-  ListOfImages.fromJson(Map<dynamic, dynamic> data){
-    urls = data['imagesUrls'];
+  ListOfImages.fromJson(List<dynamic> data){
+    data.forEach((element) {
+      if (element is String)
+        urls.add(element);
+    });
   }
 
   //Convert list of images to json map
-  Map<String, dynamic> toJson() {
-    return {
-      'imagesUrls' : urls,
-    };
+  List<dynamic> toJson() {
+    return urls;
   }
 }
