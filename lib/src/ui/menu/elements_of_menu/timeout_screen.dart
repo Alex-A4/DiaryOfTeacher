@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:diary_of_teacher/src/controllers/timeout_controller.dart';
 import 'package:diary_of_teacher/src/models/list_of_images.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu/drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/photo_card.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,11 +29,7 @@ class _TimeoutState extends State<TimeoutScreen> {
         itemCount: list.urls.length,
         itemBuilder: (context, index) {
           return Container(
-            child: CachedNetworkImage(
-              imageUrl: list.urls[index],
-              fit: BoxFit.cover,
-              placeholder: (context, url) => CircularProgressIndicator(),
-            ),
+            child: PhotoCard(photoUrl: list.urls[index],boxFit: BoxFit.contain, background: Colors.transparent,),
           );
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
