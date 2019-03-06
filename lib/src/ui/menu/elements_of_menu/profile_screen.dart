@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:diary_of_teacher/src/app.dart';
+import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -19,12 +21,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _key = GlobalKey<FormState>();
   FocusNode _focus = FocusNode();
 
+  UserRepository userRepository;
+
   bool _isLoadingImage = false;
   bool _isLoadingName = false;
 
   @override
   void initState() {
     super.initState();
+    userRepository = BlocProvider.of<AuthenticationBloc>(context).userRepository;
     _controller = TextEditingController(text: User.user.userName);
   }
 
@@ -155,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     startLoadingName();
 
-    UserRepository.uploadUserName(userName).then((_) {
+    userRepository.uploadUserName(userName).then((_) {
       Fluttertoast.showToast(msg: 'Имя обновлено');
       finishLoadingName();
     }).catchError((er) {
@@ -171,7 +176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (imageFile != null) {
       startLoadingImage();
 
-      UserRepository.uploadUserImage(imageFile).then((_) {
+      userRepository.uploadUserImage(imageFile).then((_) {
         Fluttertoast.showToast(msg: 'Фотография изменена успешно');
         finishLoadingImage();
       }).catchError((err) {
