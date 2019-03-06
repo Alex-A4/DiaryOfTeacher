@@ -141,7 +141,7 @@ class UserRepository {
   }
 
   //Upload user image to cloud storage
-  static Future uploadUserImage(File imageFile) async {
+  Future uploadUserImage(File imageFile) async {
     if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
       throw 'Отсутствует интернет соединение';
 
@@ -164,7 +164,7 @@ class UserRepository {
     }
   }
 
-  static Future uploadUserName(String userName) async {
+  Future uploadUserName(String userName) async {
     if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
       throw 'Отсутствует интернет соединение';
     await Firestore.instance
