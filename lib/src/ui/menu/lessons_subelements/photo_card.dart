@@ -9,8 +9,10 @@ class PhotoCard extends StatelessWidget {
       this.boxFit = BoxFit.cover,
       this.width = 150,
       this.height = 100,
+      this.background,
       this.deleteFunc})
       : super(key: key) {
+    background = background ?? Colors.grey[600];
     deleteFunc == null ? this.topPadding = 0.0 : this.topPadding = 10.0;
   }
 
@@ -19,6 +21,7 @@ class PhotoCard extends StatelessWidget {
   double height;
   double topPadding;
   BoxFit boxFit;
+  Color background;
 
   String photoUrl;
 
@@ -39,7 +42,7 @@ class PhotoCard extends StatelessWidget {
                   EdgeInsets.only(top: topPadding, left: 10.0, right: 10.0),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey[600],
+                    color: background,
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(photoUrl),
