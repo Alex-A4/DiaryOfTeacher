@@ -6,6 +6,7 @@ class PhotoCard extends StatelessWidget {
   PhotoCard(
       {Key key,
       @required this.photoUrl,
+      this.boxFit = BoxFit.cover,
       this.width = 150,
       this.height = 100,
       this.deleteFunc})
@@ -17,6 +18,7 @@ class PhotoCard extends StatelessWidget {
   double width;
   double height;
   double topPadding;
+  BoxFit boxFit;
 
   String photoUrl;
 
@@ -33,46 +35,44 @@ class PhotoCard extends StatelessWidget {
                   .push(_PhotoDisplayRoute(photoUrl: photoUrl));
             },
             child: Container(
-              padding: EdgeInsets.only(
-                  top: topPadding, left: 10.0, right: 10.0),
+              padding:
+                  EdgeInsets.only(top: topPadding, left: 10.0, right: 10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.grey[600],
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(photoUrl),
-                        fit: BoxFit.cover)),
+                        fit: boxFit)),
               ),
             ),
           ),
           deleteFunc == null
               ? Container()
               : Positioned(
-            right: 0.0,
-            top: 0.0,
-            child: Container(
-                width: 25,
-                height: 25,
-                decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    color: Colors.grey[400]),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: deleteFunc,
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    ),
-                  ),
-                )),
-          ),
+                  right: 0.0,
+                  top: 0.0,
+                  child: Container(
+                      width: 25,
+                      height: 25,
+                      decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                          color: Colors.grey[400]),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: deleteFunc,
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )),
+                ),
         ],
       ),
     );
   }
-
-
 }
 
 class _PhotoDisplayRoute<T> extends PopupRoute<T> {
@@ -105,12 +105,12 @@ class _PhotoDisplayRoute<T> extends PopupRoute<T> {
               decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
               child: Center(
                 child: Container(
-                  width: 300,
-                  height: 300,
+                  width: 330,
+                  height: 500,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(photoUrl),
-                        fit: BoxFit.cover),
+                        fit: BoxFit.contain),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
