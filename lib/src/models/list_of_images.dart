@@ -8,6 +8,7 @@ class ListOfImages {
 
   //Build list of images from json
   ListOfImages.fromJson(List<dynamic> data){
+    urls = [];
     data.forEach((element) {
       if (element is String)
         urls.add(element);
