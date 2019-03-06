@@ -37,7 +37,7 @@ class TimeoutController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String images = prefs.getString('timeoutImages');
     if (images != null)
-      ListOfImages.fromJson(_codec.decode(images));
+      _images = ListOfImages.fromJson(_codec.decode(images));
     else
       _images = ListOfImages();
   }
