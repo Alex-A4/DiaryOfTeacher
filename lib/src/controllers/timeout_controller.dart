@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:diary_of_teacher/src/models/list_of_images.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 //TimeoutController is a singleton class which contains
 // information about all images which user upload to spend timeout
@@ -42,5 +45,16 @@ class TimeoutController {
   Future saveToCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('timeoutImages', _codec.encode(_images.toJson()));
+  }
+
+  //Upload image file to cloud firestore
+  Future uploadImage(File image) async {
+    StorageReference reference =
+        FirebaseStorage.instance.ref().child(Uuid().v1().toString());
+    StorageUploadTask uploadTask = reference.putFile(image);
+
+    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+    String url = await storageTaskSnapshot.ref.getDownloadURL();
+    _images.urls.add(url);
   }
 }
