@@ -1,8 +1,6 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
-import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
-import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
