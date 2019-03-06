@@ -24,14 +24,14 @@ class _DropdownMenuState extends State<DropdownMenu>
   Animation<double> thirdAnim;
 
   AnimationController controller;
-  Duration duration = Duration(milliseconds: 270);
+  Duration duration = Duration(milliseconds: 600);
 
   @override
   void initState() {
     super.initState();
     controller = AnimationController(vsync: this, duration: duration);
 
-    final anim = CurvedAnimation(parent: controller, curve: Curves.bounceIn);
+    final anim = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
     firstAnim =
         Tween<double>(begin: 0, end: (iconSize + iconSpace) * 1).animate(anim);
     secondAnim =
@@ -65,7 +65,7 @@ class _DropdownMenuState extends State<DropdownMenu>
         height: iconSize,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: theme.primaryColor,
+          color: theme.primaryColorDark,
         ),
         child: Icon(
           icon,
@@ -79,7 +79,7 @@ class _DropdownMenuState extends State<DropdownMenu>
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(right: 5.0),
-      width: 50.0,
+      width: iconSize + 10.0,
       height: (iconSize + iconSpace) * 4,
       child: AnimatedBuilder(
           animation: controller,
@@ -103,8 +103,12 @@ class _DropdownMenuState extends State<DropdownMenu>
                 ),
                 GestureDetector(
                   onTap: controller.isCompleted
-                      ? controller.reverse
-                      : controller.forward(),
+                      ? () {
+                          controller.reverse();
+                        }
+                      : () {
+                          controller.forward();
+                        },
                   child: getPrimaryItem(
                       controller.isCompleted || controller.isAnimating
                           ? Icons.arrow_upward
