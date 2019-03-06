@@ -15,11 +15,20 @@ class SettingsScreen extends StatefulWidget {
 
 class SettingsScreenState extends State<SettingsScreen> {
   AuthenticationBloc _authenticationBloc;
+  UserRepository userRepository;
 
   GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   TextEditingController _oldPassword = TextEditingController();
   TextEditingController _newPassword = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    userRepository = _authenticationBloc.userRepository;
+  }
 
   @override
   void dispose() {
@@ -30,8 +39,6 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Настройки'),
@@ -208,9 +215,9 @@ class SettingsScreenState extends State<SettingsScreen> {
   //Firstly check correct of old password and if it's right
   // then create new password
   Future tryToChangePassword() async {
-    if (await UserRepository.checkPasswordCorrect(_oldPassword.text)) {
+    if (await userRepository.checkPasswordCorrect(_oldPassword.text)) {
       //Change password in store
-      await UserRepository.savePassword(_newPassword.text);
+      await userRepository.savePassword(_newPassword.text);
       Navigator.of(context).pop();
       Fluttertoast.showToast(msg: 'Пароль успешно изменён');
     } else {
