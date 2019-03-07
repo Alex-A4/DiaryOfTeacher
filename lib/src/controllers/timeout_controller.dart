@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
 import 'package:diary_of_teacher/src/models/list_of_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 //TimeoutController is a singleton class which contains
 // information about all images which user upload to spend timeout
-class TimeoutController {
+class TimeoutController extends ImageUploader {
   static TimeoutController _controller;
   static JsonCodec _codec = JsonCodec();
 
@@ -49,18 +50,10 @@ class TimeoutController {
   }
 
   //Upload image file to cloud firestore
-  Future uploadImage(File image) async {
-    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
-    if (connectivity == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+  Future uploadImageFile(File image) async {
+    String url =
+    await uploadImage(image, Uuid().v1()).catchError((err) => throw err);
 
-    StorageReference reference =
-        FirebaseStorage.instance.ref().child(Uuid().v1().toString());
-    StorageUploadTask uploadTask = reference.putFile(image);
-
-    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-    String url = await storageTaskSnapshot.ref.getDownloadURL();
     _images.urls.add(url);
     await saveToCache();
   }
-}

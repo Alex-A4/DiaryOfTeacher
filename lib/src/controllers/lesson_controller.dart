@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:convert';
@@ -12,7 +13,7 @@ import '../models/lesson.dart';
 //Singleton controller of lessons
 //It can save/restore data to/from cache.
 //Contains all information about lessons
-class LessonController {
+class LessonController extends ImageUploader {
   static LessonController _controller;
 
   //Json decoder to convert to/from Json
@@ -172,7 +173,6 @@ class LessonController {
     return dyn;
   }
 
-
   //Restore all data from cloud firestore
   // WARNING: all existing data will be rewritten
   Future restoreLessonsFromFirestore() async {
@@ -209,23 +209,8 @@ class LessonController {
     await saveToCache();
   }
 
-
   //Upload image to firestore, get image url and then return it
   Future<String> addImageAndSave(File image) async {
-    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
-
-    try {
-      StorageReference reference =
-      FirebaseStorage.instance.ref().child(Uuid().v1().toString());
-      StorageUploadTask uploadTask = reference.putFile(image);
-
-      StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-      String url = await storageTaskSnapshot.ref.getDownloadURL();
-
-      return url;
-    } catch (err) {
-      throw 'Ошибка загрузки';
-    }
+    return await uploadImage(image, Uuid().v1()).catchError((err) => throw err);
   }
 }

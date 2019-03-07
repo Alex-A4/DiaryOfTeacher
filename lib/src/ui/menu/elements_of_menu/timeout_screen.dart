@@ -49,7 +49,7 @@ class _TimeoutState extends State<TimeoutScreen> {
   Future getImageAndTryToUpload() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image != null)
-      _controller.uploadImage(image).then((_) {
+      _controller.uploadImageFile(image).then((_) {
         Fluttertoast.showToast(msg: 'Фото загружено');
         setState(() {});
       }).catchError((err) => Fluttertoast.showToast(msg: err));

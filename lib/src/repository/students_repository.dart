@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,7 +14,7 @@ import 'dart:convert' show JsonCodec;
 //Repository of students and groups
 //Uses in the sense of Model in MVC
 //Returns data by requests and handle it
-class StudentsRepository {
+class StudentsRepository extends ImageUploader {
   //Instance of Json codec
   static JsonCodec _decoder = JsonCodec();
 
@@ -239,20 +240,7 @@ class StudentsRepository {
 
   //Upload image to firebase storage and then get its url
   Future<String> uploadImageAndGetUrl(File imageFile) async {
-    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
-
-    try {
-      StorageReference reference =
-          FirebaseStorage.instance.ref().child(Uuid().v1().toString());
-      StorageUploadTask uploadTask = reference.putFile(imageFile);
-
-      StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-      String url = await storageTaskSnapshot.ref.getDownloadURL();
-
-      return url;
-    } catch (err) {
-      throw 'Ошибка загрузки';
-    }
+    return await uploadImage(imageFile, Uuid().v1())
+        .catchError((err) => throw err);
   }
 }
