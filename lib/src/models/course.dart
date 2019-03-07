@@ -2,7 +2,34 @@ import 'package:meta/meta.dart';
 
 //POJO class to store information about one course
 class Course {
-  //Title of course
+  String courseName;
+
+  //List of lessons of which course consist
+  List<CourseLesson> lessons;
+
+  //Default constructor
+  Course(this.courseName) : lessons = [];
+
+  //Restore course from Json
+  Course.fromJson(Map<dynamic, dynamic> course) {
+    this.courseName = course['courseName'];
+    this.lessons = course['lessons']
+            .map((lesson) => CourseLesson.fromJson(lesson))
+            .toList() ??
+        [];
+  }
+
+  //Convert course object to json
+  Map<String, dynamic> toJson() {
+    return {
+      'courseName': courseName,
+      'lessons': lessons.map((lesson) => lesson.toJson()).toList(),
+    };
+  }
+}
+
+class CourseLesson {
+  //Title of course lesson
   //It's null if unspecified
   String title;
 
@@ -14,12 +41,12 @@ class Course {
 
   //Default constructor
   //textsList and imagesList must not be null
-  Course({@required this.title, this.textsList, this.imagesList})
+  CourseLesson({@required this.title, this.textsList, this.imagesList})
       : assert(textsList != null),
         assert(imagesList != null);
 
   //Constructor to create object from Json data
-  Course.fromJson(Map<dynamic, dynamic> data) {
+  CourseLesson.fromJson(Map<dynamic, dynamic> data) {
     this.title = data['title'] ?? null;
     this.textsList = data['textsList'] ?? [];
     this.imagesList = data['imagesList'] ?? [];
