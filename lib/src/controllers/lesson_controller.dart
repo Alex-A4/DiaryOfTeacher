@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
