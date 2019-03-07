@@ -8,15 +8,18 @@ abstract class ImageUploader with CheckConnectivity {
   //Upload image file to cloud firestore and return the url
   Future<String> uploadImage(File image, String imageName) async {
     if (!await isConnected()) throw 'Отсутствует интернет соединение';
+    try {
+      StorageReference reference =
+          FirebaseStorage.instance.ref().child(imageName);
+      StorageUploadTask uploadTask = reference.putFile(image);
 
-    StorageReference reference =
-        FirebaseStorage.instance.ref().child(imageName);
-    StorageUploadTask uploadTask = reference.putFile(image);
+      StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+      String url = await storageTaskSnapshot.ref.getDownloadURL();
 
-    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-    String url = await storageTaskSnapshot.ref.getDownloadURL();
-
-    return url;
+      return url;
+    } catch (err) {
+      throw 'Ошика загрузки. Проверьре интернет соединение';
+    }
   }
 }
 
