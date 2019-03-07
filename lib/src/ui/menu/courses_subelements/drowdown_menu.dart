@@ -16,7 +16,7 @@ class DropdownMenu extends StatefulWidget {
 
 class _DropdownMenuState extends State<DropdownMenu>
     with SingleTickerProviderStateMixin {
-  final iconSize = 40.0;
+  final iconSize = 45.0;
   final iconSpace = 5.0;
 
   final List<IconData> icons = [
@@ -65,7 +65,7 @@ class _DropdownMenuState extends State<DropdownMenu>
         ),
         child: Icon(
           icon,
-          color: Colors.black54,
+          color: Colors.black,
         ),
       ),
     );
@@ -87,7 +87,7 @@ class _DropdownMenuState extends State<DropdownMenu>
         ),
         child: Icon(
           icon,
-          color: Colors.black54,
+          color: Colors.black87,
         ),
       ),
     );
