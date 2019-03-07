@@ -38,12 +38,15 @@ class CourseController extends ImageUploader {
       courses = convertJsonToCourses(_codec.decode(line));
     } else
       courses = [];
+
+    print('Courses restored ${courses.length}');
   }
 
   //Saving all courses to cache
   Future saveToCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('courses', _codec.encode(convertListToJson()));
+    await prefs.setString('courses', _codec.encode(convertListToJson()));
+    print('Courses saved to cache');
   }
 
   //Upload image to cloud firebase
@@ -64,6 +67,7 @@ class CourseController extends ImageUploader {
         .collection('courses')
         .document('courses')
         .updateData({'courses': convertListToJson()});
+    print('Courses uploaded');
   }
 
   //Restore data about courses from the cloud firestore
@@ -81,6 +85,7 @@ class CourseController extends ImageUploader {
     courses = convertJsonToCourses(snapshot.data['courses']);
 
     await saveToCache();
+    print('Courses restored');
   }
 
   //Convert list of courses to dynamic list
