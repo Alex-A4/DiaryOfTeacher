@@ -13,10 +13,8 @@ class Course {
   //Restore course from Json
   Course.fromJson(Map<dynamic, dynamic> course) {
     this.courseName = course['courseName'];
-    this.lessons = course['lessons']
-            .map((lesson) => CourseLesson.fromJson(lesson))
-            .toList() ??
-        [];
+    this.lessons = [];
+    course['lessons'].forEach((lesson) => lessons.add(CourseLesson.fromJson(lesson)));
   }
 
   //Convert course object to json
@@ -48,8 +46,10 @@ class CourseLesson {
   //Constructor to create object from Json data
   CourseLesson.fromJson(Map<dynamic, dynamic> data) {
     this.title = data['title'] ?? null;
-    this.textsList = data['textsList'] ?? [];
-    this.imagesList = data['imagesList'] ?? [];
+    this.textsList = [];
+    data['textsList'].forEach((value) => textsList.add(value as String));
+    this.imagesList = [];
+    data['imagesList'].forEach((value) => imagesList.add(value as String));
   }
 
   //Convert object to Json object
