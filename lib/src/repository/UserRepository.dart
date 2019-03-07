@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:diary_of_teacher/src/controllers/course_controller.dart';
 import 'package:diary_of_teacher/src/controllers/lesson_controller.dart';
 import 'package:diary_of_teacher/src/controllers/timeout_controller.dart';
+import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserRepository {
+class UserRepository extends ImageUploader {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   static final String userPhoto =
       'https://firebasestorage.googleapis.com/v0/b/diary-of-teacher-46bf7.appspot.com/o/login_picture.png?alt=media&token=876dc4f6-e42e-4a90-a812-d09ed6ccedbe';
@@ -19,8 +21,7 @@ class UserRepository {
   ///Trying to sign in with google
   ///returns the FirebaseUser if success
   Future<Null> handleSignIn() async {
-    ConnectivityResult res = await Connectivity().checkConnectivity();
-    if (res == ConnectivityResult.none) {
+    if (!await isConnected()) {
       throw 'Отсутствует интернет соединение';
     }
 
@@ -94,6 +95,7 @@ class UserRepository {
       await StudentsRepository.buildRepo();
       await LessonController.buildController();
       await TimeoutController.buildController();
+      await CourseController.buildController();
     } else
       throw 'Пароль неверный';
   }
@@ -126,7 +128,7 @@ class UserRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Writing hashcode of password to stores
 
-    if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+    if (await isConnected()) {
       Firestore.instance
           .collection('users')
           .document(prefs.getString('id'))
@@ -144,31 +146,22 @@ class UserRepository {
 
   //Upload user image to cloud storage
   Future uploadUserImage(File imageFile) async {
-    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+    if (!await isConnected()) throw 'Отсутствует интернет соединение';
 
-    try {
-      StorageReference reference =
-          FirebaseStorage.instance.ref().child(User.user.uid);
-      StorageUploadTask uploadTask = reference.putFile(imageFile);
+    String url = await uploadImage(imageFile, User.user.uid)
+        .catchError((err) => throw err);
 
-      StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-      String url = await storageTaskSnapshot.ref.getDownloadURL();
-
-      User.user.photoUrl = url.toString();
-      await saveStringToLocal('photoUrl', url.toString());
-      await Firestore.instance
-          .collection('users')
-          .document(User.user.uid)
-          .updateData({'photoUrl': url});
-    } catch (err) {
-      throw 'Ошибка загрузки';
-    }
+    User.user.photoUrl = url;
+    await saveStringToLocal('photoUrl', url);
+    await Firestore.instance
+        .collection('users')
+        .document(User.user.uid)
+        .updateData({'photoUrl': url});
   }
 
   Future uploadUserName(String userName) async {
-    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+    if (!await isConnected()) throw 'Отсутствует интернет соединение';
+
     await Firestore.instance
         .collection('users')
         .document(User.user.uid)
@@ -179,6 +172,7 @@ class UserRepository {
     User.user.userName = userName;
   }
 
+  //Initialize settings to fix uploading to firebase problem
   Future<void> initSettings() async {
     await Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
   }
@@ -188,6 +182,7 @@ class UserRepository {
     await StudentsRepository.getInstance()
         .saveToFirebase()
         .then((_) => LessonController.getInstance().saveToFirestore())
+        .then((_) => CourseController.getInstance().uploadDataToFirestore())
         .catchError((err) => throw err.toString());
   }
 
@@ -197,6 +192,7 @@ class UserRepository {
         .restoreFromFirebase()
         .then(
             (_) => LessonController.getInstance().restoreLessonsFromFirestore())
+        .then((_) => CourseController.getInstance().restoreDataFromFirestore())
         .catchError((error) => throw error);
   }
 }
