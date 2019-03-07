@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
@@ -109,9 +108,7 @@ class StudentsRepository extends ImageUploader {
 
   //Saving data to cloud Firebase
   Future saveToFirebase() async {
-    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
-    if (connectivity == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+    if (!await isConnected()) throw 'Отсутствует интернет соединение';
 
     //Saving groups
     List<dynamic> groups = convertGroupsToJson();
@@ -133,9 +130,8 @@ class StudentsRepository extends ImageUploader {
   //Restore all data from cloud firestore
   //WARNING: all existing data will be rewritten
   Future restoreFromFirebase() async {
-    ConnectivityResult connectivity = await Connectivity().checkConnectivity();
-    if (connectivity == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+    if (!await isConnected()) throw 'Отсутствует интернет соединение';
+
     DocumentSnapshot snapshot = await Firestore.instance
         .collection('users')
         .document(User.user.uid)
@@ -167,8 +163,7 @@ class StudentsRepository extends ImageUploader {
   //Delete user from cache and Firebase
   //Cache will update after dispose menu screen
   Future deleteStudentAndSaveResult(Student student) async {
-    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+    if (!await isConnected()) throw 'Отсутствует интернет соединение';
 
     if (student.groupId != null)
       getGroupById(student.groupId)?.removeStudentFromGroup(student);
@@ -183,8 +178,7 @@ class StudentsRepository extends ImageUploader {
   // by deleting it from both collections
   // and add user to archive collection
   Future archiveStudent(Student student) async {
-    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+    if (!await isConnected()) throw 'Отсутствует интернет соединение';
 
     if (student.groupId != null)
       getGroupById(student.groupId)?.removeStudentFromGroup(student);
@@ -211,8 +205,7 @@ class StudentsRepository extends ImageUploader {
   //Delete group and all links from students
   //Save result to firebase and to cache
   Future deleteGroupAndSaveResult(Group group) async {
-    if (await Connectivity().checkConnectivity() == ConnectivityResult.none)
-      throw 'Отсутствует интернет соединение';
+    if (!await isConnected()) throw 'Отсутствует интернет соединение';
 
     group.deleteAllStudents();
     _groups.remove(group);
