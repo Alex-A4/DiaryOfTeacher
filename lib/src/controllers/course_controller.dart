@@ -66,7 +66,7 @@ class CourseController extends ImageUploader {
         .document(User.user.uid)
         .collection('courses')
         .document('courses')
-        .updateData({'courses': convertListToJson()});
+        .setData({'courses': convertListToJson()});
     print('Courses uploaded');
   }
 
