@@ -82,7 +82,7 @@ class MenuDrawer extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(Icons.featured_play_list),
-                    title: Text('Уроки', style: theme.textTheme.display1),
+                    title: Text('Курсы', style: theme.textTheme.display1),
                     onTap: () {
                       moveTo(context, LessonsEvent());
                     },
