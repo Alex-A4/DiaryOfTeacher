@@ -15,7 +15,7 @@ class CourseController extends ImageUploader {
   static CourseController _controller;
 
   //List of courses
-  List<Course> _courses;
+  List<Course> courses;
 
   //Default private constructor
   CourseController._();
@@ -35,9 +35,9 @@ class CourseController extends ImageUploader {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String line = prefs.getString('courses');
     if (line != null) {
-      _courses = convertJsonToCourses(_codec.decode(line));
+      courses = convertJsonToCourses(_codec.decode(line));
     } else
-      _courses = [];
+      courses = [];
   }
 
   //Saving all courses to cache
@@ -78,14 +78,14 @@ class CourseController extends ImageUploader {
         .get();
 
     if (snapshot == null) throw 'Нет данных в облаке';
-    _courses = convertJsonToCourses(snapshot.data['courses']);
+    courses = convertJsonToCourses(snapshot.data['courses']);
 
     await saveToCache();
   }
 
   //Convert list of courses to dynamic list
   List<Map<String, dynamic>> convertListToJson() =>
-      _courses.map((data) => data.toJson()).toList();
+      courses.map((data) => data.toJson()).toList();
 
   //Convert dynamic list to list of courses
   List<Course> convertJsonToCourses(List<dynamic> dynCourses) =>
