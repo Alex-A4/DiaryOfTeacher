@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
 import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
 import 'package:diary_of_teacher/src/models/list_of_images.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -52,8 +50,9 @@ class TimeoutController extends ImageUploader {
   //Upload image file to cloud firestore
   Future uploadImageFile(File image) async {
     String url =
-    await uploadImage(image, Uuid().v1()).catchError((err) => throw err);
+        await uploadImage(image, Uuid().v1()).catchError((err) => throw err);
 
     _images.urls.add(url);
     await saveToCache();
   }
+}
