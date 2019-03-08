@@ -95,4 +95,19 @@ class CourseController extends ImageUploader {
   //Convert dynamic list to list of courses
   List<Course> convertJsonToCourses(List<dynamic> dynCourses) =>
       dynCourses.map((data) => Course.fromJson(data)).toList();
+
+  //Return course by specified uuid
+  //If there is no courses then return null
+  Course getCourseById(String uuid) {
+    Course course = null;
+    if (uuid != null)
+      courses.forEach((cour) {
+        if (cour.uuid.compareTo(uuid) == 0) {
+          course = cour;
+          return;
+        }
+      });
+
+    return course;
+  }
 }
