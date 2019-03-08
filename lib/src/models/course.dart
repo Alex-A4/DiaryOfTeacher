@@ -18,7 +18,7 @@ class Course {
   Course.fromJson(Map<dynamic, dynamic> course) {
     this.courseName = course['courseName'];
     this.lessons = [];
-    this.uuid = ['uuid'] ?? Uuid().v1();
+    this.uuid = course['uuid'] ?? Uuid().v1();
     course['lessons']
         .forEach((lesson) => lessons.add(CourseLesson.fromJson(lesson)));
   }
