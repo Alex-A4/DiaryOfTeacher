@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diary_of_teacher/src/mixins/network_mixin.dart';
+import 'package:diary_of_teacher/src/models/course.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -234,5 +235,16 @@ class StudentsRepository extends ImageUploader {
   Future<String> uploadImageAndGetUrl(File imageFile) async {
     return await uploadImage(imageFile, Uuid().v1())
         .catchError((err) => throw err);
+  }
+
+  //Deleting binds between group and course
+  void removeCourseFromGroup(Course course) {
+    groups.forEach((group) {
+      if (group.course != null && group.course.uuid.compareTo(course.uuid) == 0) {
+        group.updateCourse(null);
+        saveToCache();
+        return;
+      }
+    });
   }
 }
