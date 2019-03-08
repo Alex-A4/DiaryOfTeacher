@@ -1,26 +1,33 @@
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 //POJO class to store information about one course
 class Course {
+  String uuid;
   String courseName;
 
   //List of lessons of which course consist
   List<CourseLesson> lessons;
 
   //Default constructor
-  Course(this.courseName) : lessons = [];
+  Course(this.courseName)
+      : lessons = [],
+        uuid = Uuid().v1();
 
   //Restore course from Json
   Course.fromJson(Map<dynamic, dynamic> course) {
     this.courseName = course['courseName'];
     this.lessons = [];
-    course['lessons'].forEach((lesson) => lessons.add(CourseLesson.fromJson(lesson)));
+    this.uuid = ['uuid'] ?? Uuid().v1();
+    course['lessons']
+        .forEach((lesson) => lessons.add(CourseLesson.fromJson(lesson)));
   }
 
   //Convert course object to json
   Map<String, dynamic> toJson() {
     return {
       'courseName': courseName,
+      'uuid' : uuid,
       'lessons': lessons.map((lesson) => lesson.toJson()).toList(),
     };
   }
