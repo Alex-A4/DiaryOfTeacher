@@ -85,10 +85,16 @@ class _CoursesScreenState extends State<CoursesScreen> {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () async {
+                          //Add new lesson to list
+                          var less = CourseLesson(
+                              title: 'Название занятия',
+                              textsList: [],
+                              imagesList: []);
+                          course.lessons.add(less);
+
                           await Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => CourseLessonEditor(
-                                    lesson: null,
-                                    course: course,
+                                    lesson: less,
                                   )));
                           setState(() {});
                         },
@@ -128,7 +134,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
               children: <Widget>[
                 Column(
                   children: course.lessons
-                      .map((lesson) => getCourseLessonItem(lesson, course))
+                      .map((lesson) => getCourseLessonItem(lesson))
                       .toList(),
                 ),
               ],
@@ -144,7 +150,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
   }
 
   //Get widget which contains information about one lesson from course
-  Widget getCourseLessonItem(CourseLesson lesson, Course course) {
+  Widget getCourseLessonItem(CourseLesson lesson) {
     return Container(
       padding: const EdgeInsets.only(bottom: 6.0),
       child: GestureDetector(
@@ -152,7 +158,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
           await Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CourseLessonEditor(
                     lesson: lesson,
-                    course: course,
                   )));
           setState(() {});
         },
