@@ -57,7 +57,7 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
         fit: StackFit.expand,
         children: <Widget>[
           ListView(
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 16.0, top: 8.0),
             children: <Widget>[
               //List of texts
               texts.isEmpty
@@ -101,7 +101,7 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
                 () {
                   pickImage();
                 },
-                addText,
+                showTextAdder,
                 () {
                   saveDataToCache();
                 },
@@ -127,6 +127,7 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
   void editTitle() {
     setState(() => isEditing = true);
   }
+
   //Item for displaying text
   Widget getTextItem(String text) {
     return Container(
@@ -226,4 +227,62 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
       ),
     );
   }
+
+  void showTextAdder() {
+    TextEditingController _noteController = TextEditingController();
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            elevation: 5.0,
+            title: Text('Добавление новой заметки'),
+            content: Container(
+              height: 70.0,
+              child: TextField(
+                controller: _noteController,
+                keyboardType: TextInputType.multiline,
+                maxLines: 30,
+                style: TextStyle(
+                    color: Colors.black, fontSize: 20.0, fontFamily: 'Neucha'),
+                decoration: InputDecoration(
+                  hintText: 'Введите текст заметки',
+                  hintStyle: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 18.0,
+                      fontFamily: 'Neucha'),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                color: theme.accentColor,
+                child: Text(
+                  'Отменить',
+                  style: buttonTheme,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              RaisedButton(
+                color: theme.accentColor,
+                child: Text(
+                  'Добавить',
+                  style: buttonTheme,
+                ),
+                onPressed: () {
+                  texts.add(_noteController.text);
+                  Navigator.of(context).pop();
+                  setState(() {});
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  final buttonTheme = TextStyle(fontSize: 20.0, color: Colors.white);
 }
