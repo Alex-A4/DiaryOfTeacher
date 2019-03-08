@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/zoomable.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
 
 class PhotoCard extends StatelessWidget {
   PhotoCard(
@@ -112,12 +114,18 @@ class _PhotoDisplayRoute<T> extends PopupRoute<T> {
                 child: Container(
                   width: 330,
                   height: 500,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AdvancedNetworkImage(photoUrl,
-                            useDiskCache: true,
-                            cacheRule: CacheRule(maxAge: Duration(days: 7))),
-                        fit: BoxFit.contain),
+                  child: ZoomableWidget(
+                    maxScale: 3.0,
+//                    panLimit: 0.8,
+                    enableRotate: true,
+                    child: TransitionToImage(
+                      fit: BoxFit.contain,
+                      borderRadius: BorderRadius.circular(10.0),
+                      placeholder: CircularProgressIndicator(),
+                      image: AdvancedNetworkImage(photoUrl,
+                          useDiskCache: true,
+                          cacheRule: CacheRule(maxAge: Duration(days: 7))),
+                    ),
                   ),
                 ),
               ),
