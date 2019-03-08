@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
@@ -31,12 +31,15 @@ class _StudentsListViewState extends State<StudentsListView> {
               _openStudentEditor(context, false, student: student);
             },
             leading: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(student.photoUrl),
+              backgroundImage: AdvancedNetworkImage(student.photoUrl,
+                  useDiskCache: true,
+                  cacheRule: CacheRule(maxAge: Duration(days: 7))),
             ),
             title: Text(
               student.fio,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontFamily: 'Neucha', fontSize: 17.0, letterSpacing: 0.0),
+              style: TextStyle(
+                  fontFamily: 'Neucha', fontSize: 17.0, letterSpacing: 0.0),
             ),
             subtitle: Text(
               _controller.getGroupNameById(student.groupId),

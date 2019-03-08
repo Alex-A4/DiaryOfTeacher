@@ -5,7 +5,7 @@ import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -103,8 +103,10 @@ class _StudentEditorState extends State<StudentEditor> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               CircleAvatar(
-                                backgroundImage:
-                                    CachedNetworkImageProvider(photoUrl),
+                                backgroundImage: AdvancedNetworkImage(photoUrl,
+                                    useDiskCache: true,
+                                    cacheRule:
+                                        CacheRule(maxAge: Duration(days: 7))),
                                 child: IconButton(
                                     iconSize: 30.0,
                                     color: Colors.white,

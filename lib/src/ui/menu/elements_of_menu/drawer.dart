@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/blocs/menu/menu.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
@@ -33,9 +33,10 @@ class MenuDrawer extends StatelessWidget {
                       Container(
                         child: CircleAvatar(
                           radius: 40.0,
-                          backgroundImage: CachedNetworkImageProvider(
-                            User.user.photoUrl,
-                          ),
+                          backgroundImage: AdvancedNetworkImage(
+                              User.user.photoUrl,
+                              useDiskCache: true,
+                              cacheRule: CacheRule(maxAge: Duration(days: 7))),
                         ),
                         padding: EdgeInsets.only(
                             left: 15.0, top: 40.0, bottom: 15.0),
@@ -44,7 +45,10 @@ class MenuDrawer extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20.0, bottom: 7.0),
                         child: Text(
                           User.user.userName,
-                          style: TextStyle(fontFamily: 'RobotoCondensed', fontSize: 23.0, letterSpacing: 0.0),
+                          style: TextStyle(
+                              fontFamily: 'RobotoCondensed',
+                              fontSize: 23.0,
+                              letterSpacing: 0.0),
                         ),
                       )
                     ],
@@ -52,7 +56,6 @@ class MenuDrawer extends StatelessWidget {
                 ),
               ),
             ),
-
             SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[

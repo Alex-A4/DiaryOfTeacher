@@ -8,7 +8,6 @@ import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/photo_card.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 
 class CourseLessonEditor extends StatefulWidget {
   CourseLessonEditor({Key key, @required this.lesson}) : super(key: key);
@@ -133,7 +132,7 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Dismissible(
-        key: Key(Uuid().v1()),
+        key: UniqueKey(),
         direction: DismissDirection.startToEnd,
         onDismissed: (dir) {
           texts.remove(text);

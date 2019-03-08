@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 
 class PhotoCard extends StatelessWidget {
   PhotoCard(
@@ -45,7 +45,9 @@ class PhotoCard extends StatelessWidget {
                     color: background,
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
-                        image: CachedNetworkImageProvider(photoUrl),
+                        image: AdvancedNetworkImage(photoUrl,
+                            useDiskCache: true,
+                            cacheRule: CacheRule(maxAge: Duration(days: 7))),
                         fit: boxFit)),
               ),
             ),
@@ -112,7 +114,9 @@ class _PhotoDisplayRoute<T> extends PopupRoute<T> {
                   height: 500,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: CachedNetworkImageProvider(photoUrl),
+                        image: AdvancedNetworkImage(photoUrl,
+                            useDiskCache: true,
+                            cacheRule: CacheRule(maxAge: Duration(days: 7))),
                         fit: BoxFit.contain),
                   ),
                 ),

@@ -6,7 +6,7 @@ import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,7 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    userRepository = BlocProvider.of<AuthenticationBloc>(context).userRepository;
+    userRepository =
+        BlocProvider.of<AuthenticationBloc>(context).userRepository;
     _controller = TextEditingController(text: User.user.userName);
   }
 
@@ -60,8 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       child: Center(
                         child: CircleAvatar(
-                          backgroundImage:
-                              CachedNetworkImageProvider(User.user.photoUrl),
+                          backgroundImage: AdvancedNetworkImage(
+                              User.user.photoUrl,
+                              useDiskCache: true,
+                              cacheRule: CacheRule(maxAge: Duration(days: 7))),
                           radius: 100,
                           child: Center(
                             child: _isLoadingImage
