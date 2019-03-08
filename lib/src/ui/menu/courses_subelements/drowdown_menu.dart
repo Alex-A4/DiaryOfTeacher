@@ -43,7 +43,7 @@ class _DropdownMenuState extends State<DropdownMenu>
         CurvedAnimation(parent: controller, curve: Curves.easeOutQuart);
 
     for (int i = 0; i < widget.buttonsCount; i++)
-      animations.add(Tween<double>(begin: 0, end: (iconSize + iconSpace) * i)
+      animations.add(Tween<double>(begin: 0, end: (iconSize + iconSpace) * (i+1))
           .animate(anim));
 
     rotateAnim = Tween<double>(begin: 0.0, end: 10.0).animate(anim);
