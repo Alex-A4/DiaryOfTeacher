@@ -87,7 +87,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                         onTap: () async {
                           //Add new lesson to list
                           var less = CourseLesson(
-                              title: 'Название занятия',
+                              title: 'Измените название',
                               textsList: [],
                               imagesList: []);
                           course.lessons.add(less);
