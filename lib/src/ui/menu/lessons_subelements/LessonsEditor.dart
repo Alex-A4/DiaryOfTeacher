@@ -317,7 +317,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
         showTitleActions: true,
         theme: DatePickerTheme(
             doneStyle:
-                TextStyle(color: theme.primaryColorDark, fontSize: 17.0)),
+                TextStyle(color: theme.accentColor, fontSize: 17.0)),
         onConfirm: (time) {
       lessonTime = TimeOfDay(hour: time.hour, minute: time.minute);
       setState(() {});
