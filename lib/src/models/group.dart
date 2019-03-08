@@ -1,3 +1,5 @@
+import 'package:diary_of_teacher/src/controllers/course_controller.dart';
+import 'package:diary_of_teacher/src/models/course.dart';
 import 'package:uuid/uuid.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
 
@@ -6,6 +8,7 @@ import 'package:diary_of_teacher/src/models/student.dart';
 class Group {
   final String _groupId;
   String _name;
+  Course course;
 
   List<Student> _students = [];
 
@@ -14,11 +17,14 @@ class Group {
   Group.fromJson(Map<dynamic, dynamic> data)
       : _groupId = data['groupId'],
         _name = data['groupName'],
-        _students = [];
+        _students = [],
+        course =
+            CourseController.getInstance().getCourseById(data['courseUid']);
 
   Map<String, dynamic> toJson() => {
         'groupId': _groupId,
         'groupName': _name,
+        'courseUid': course.uuid,
       };
 
   set name(String value) => _name = value;
@@ -58,8 +64,13 @@ class Group {
     _students = null;
   }
 
-  //Update student name
+  //Update group name
   void updateName(String name) {
     this.name = name;
+  }
+
+  //Update the course
+  void updateCourse(Course newCourse) {
+    this.course = newCourse;
   }
 }
