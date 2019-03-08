@@ -98,7 +98,9 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
               buttonsCount: 4,
               actions: [
                 editTitle,
-                addPhoto,
+                () {
+                  pickImage();
+                },
                 addText,
                 () {
                   saveDataToCache();
@@ -125,13 +127,6 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
   void editTitle() {
     setState(() => isEditing = true);
   }
-
-  void addPhoto() {
-    images.add(
-        'https://firebasestorage.googleapis.com/v0/b/diary-of-teacher-46bf7.appspot.com/o/bf42f050-3260-11e9-9ac5-e7de3cd283be?alt=media&token=195a7b2f-519c-4486-97cd-daa8a3ec5d9b');
-    setState(() {});
-  }
-
   //Item for displaying text
   Widget getTextItem(String text) {
     return Container(
@@ -177,6 +172,7 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
 
     _controller.uploadImageAndGetUrl(image).then((url) {
       images.add(url);
+      Fluttertoast.showToast(msg: 'Фотография загружена');
       setState(() {});
     }).catchError((err) => Fluttertoast.showToast(msg: err));
   }
