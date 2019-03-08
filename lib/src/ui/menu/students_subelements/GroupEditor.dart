@@ -1,3 +1,5 @@
+import 'package:diary_of_teacher/src/controllers/course_controller.dart';
+import 'package:diary_of_teacher/src/models/course.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
@@ -82,12 +84,54 @@ class _GroupEditorState extends State<GroupEditor> {
                           ),
                   ],
                 ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Курс занятий группы:  ',
+                        style: TextStyle(color: Colors.black, fontSize: 16.0),
+                      ),
+                      CourseController.getInstance().courses.isEmpty
+                          ? Text('Добавьте курсы', style: TextStyle(fontSize: 16.0),)
+                          : PopupMenuButton<Course>(
+                              onSelected: (Course course) {
+                                setState(() {
+                                  widget.group.updateCourse(course);
+                                });
+                                _controller.saveDataToCache();
+                              },
+                              itemBuilder: (context) {
+                                return CourseController.getInstance()
+                                    .courses
+                                    .map((course) {
+                                  return PopupMenuItem<Course>(
+                                    value: course,
+                                    child: Text(course.courseName,
+                                        style: theme.textTheme.body2),
+                                  );
+                                }).toList();
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    widget.group.course?.courseName ?? '',
+                                    style: theme.textTheme.display4,
+                                  ),
+                                  Icon(Icons.arrow_drop_down),
+                                ],
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
                 Divider(),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(top: 100.0),
+            padding: const EdgeInsets.only(top: 130.0),
             child: ListView(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               children: widget.group.students
