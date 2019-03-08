@@ -12,7 +12,6 @@ class Student {
   String groupId;
   String photoUrl;
   String characteristic;
-  String course;
   DateTime studyingSince;
   DateTime studyingTo;
 
@@ -22,7 +21,6 @@ class Student {
       this.groupId,
       this.photoUrl = defaultPhotoUrl,
       this.characteristic,
-      this.course,
       this.studyingSince,
       this.studyingTo})
       : uid = Uuid().v1();
@@ -33,7 +31,6 @@ class Student {
     this.groupId = data['groupId'];
     this.photoUrl = data['photoUrl'] ?? defaultPhotoUrl;
     this.characteristic = data['characteristic'];
-    this.course = data['cource'];
     this.studyingSince = data['studyingSince'] != null
         ? DateTime.parse(data['studyingSince'])
         : null;
@@ -48,7 +45,6 @@ class Student {
         'groupId': groupId,
         'photoUrl': photoUrl,
         'characteristic': characteristic,
-        'cource': course,
         'studyingSince':
             studyingSince != null ? studyingSince.toUtc().toString() : null,
         'studyingTo': studyingTo != null ? studyingTo.toUtc().toString() : null,
@@ -62,7 +58,6 @@ class Student {
   void updateData(Student newData) {
     this.fio = newData.fio;
     this.photoUrl = newData.photoUrl;
-    this.course = newData.course;
     this.characteristic = newData.characteristic;
     updateGroupId(newData.groupId);
     this.studyingSince = newData.studyingSince;

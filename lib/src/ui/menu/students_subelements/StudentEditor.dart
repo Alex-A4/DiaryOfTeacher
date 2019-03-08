@@ -37,7 +37,6 @@ class _StudentEditorState extends State<StudentEditor> {
   String groupId;
   String groupName;
   TextEditingController _fioController;
-  TextEditingController _courseController;
   TextEditingController _characteristicController;
   DateTime _dateSince;
 
@@ -56,9 +55,6 @@ class _StudentEditorState extends State<StudentEditor> {
     photoUrl = widget.student?.photoUrl ?? Student.defaultPhotoUrl;
 
     _fioController = TextEditingController(text: widget.student?.fio ?? '');
-
-    _courseController =
-        TextEditingController(text: widget.student?.course ?? '');
 
     _characteristicController =
         TextEditingController(text: widget.student?.characteristic ?? '');
@@ -167,19 +163,6 @@ class _StudentEditorState extends State<StudentEditor> {
                                     ),
                                     Icon(Icons.arrow_drop_down),
                                   ],
-                                ),
-//                                initialValue: , //Add this
-                              ),
-
-                              //Course field
-                              Expanded(
-                                child: TextField(
-                                  enabled: _isEditing,
-                                  decoration: InputDecoration(
-                                      hintText: 'Название курса',
-                                      hintStyle: _hintStyle),
-                                  controller: _courseController,
-                                  style: textTheme,
                                 ),
                               ),
                             ],
@@ -325,7 +308,6 @@ class _StudentEditorState extends State<StudentEditor> {
         photoUrl: photoUrl,
         groupId: groupId,
         fio: _fioController.text,
-        course: _courseController.text,
         characteristic: _characteristicController.text,
         studyingTo: _dateTo,
         studyingSince: _dateSince);
