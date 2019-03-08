@@ -243,7 +243,6 @@ class StudentsRepository extends ImageUploader {
       if (group.course != null && group.course.uuid.compareTo(course.uuid) == 0) {
         group.updateCourse(null);
         saveToCache();
-        return;
       }
     });
   }
