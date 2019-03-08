@@ -1,14 +1,23 @@
-import 'package:diary_of_teacher/src/app.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
 class DropdownMenu extends StatefulWidget {
-  DropdownMenu({Key key, this.editAction, this.addPhotoAction, this.textAction})
-      : super(key: key);
+  DropdownMenu(
+      {Key key,
+      this.buttonsCount,
+      this.actions,
+      this.icons,
+      this.backgroundColor = Colors.black,
+      this.iconColor = Colors.white})
+      : assert(buttonsCount == icons.length),
+        assert(buttonsCount == actions.length),
+        super(key: key);
 
-  VoidCallback editAction;
-  VoidCallback addPhotoAction;
-  VoidCallback textAction;
+  int buttonsCount;
+  Color iconColor;
+  Color backgroundColor;
+  List<IconData> icons;
+  List<VoidCallback> actions;
 
   @override
   _DropdownMenuState createState() => _DropdownMenuState();
@@ -19,15 +28,7 @@ class _DropdownMenuState extends State<DropdownMenu>
   final iconSize = 45.0;
   final iconSpace = 5.0;
 
-  final List<IconData> icons = [
-    Icons.edit,
-    Icons.add_a_photo,
-    Icons.text_fields
-  ];
-
-  Animation<double> firstAnim;
-  Animation<double> secondAnim;
-  Animation<double> thirdAnim;
+  List<Animation<double>> animations = [];
   Animation<double> rotateAnim;
 
   AnimationController controller;
@@ -40,12 +41,11 @@ class _DropdownMenuState extends State<DropdownMenu>
 
     final anim =
         CurvedAnimation(parent: controller, curve: Curves.easeOutQuart);
-    firstAnim =
-        Tween<double>(begin: 0, end: (iconSize + iconSpace) * 1).animate(anim);
-    secondAnim =
-        Tween<double>(begin: 0, end: (iconSize + iconSpace) * 2).animate(anim);
-    thirdAnim =
-        Tween<double>(begin: 0, end: (iconSize + iconSpace) * 3).animate(anim);
+
+    for (int i = 0; i < widget.buttonsCount; i++)
+      animations.add(Tween<double>(begin: 0, end: (iconSize + iconSpace) * i)
+          .animate(anim));
+
     rotateAnim = Tween<double>(begin: 0.0, end: 10.0).animate(anim);
   }
 
@@ -58,14 +58,14 @@ class _DropdownMenuState extends State<DropdownMenu>
         height: iconSize,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: theme.primaryColor,
+          color: widget.backgroundColor,
           boxShadow: [
-            BoxShadow(color: Colors.black54, blurRadius: rotateAnim.value + 5.0)
+            BoxShadow(color: Colors.black87, blurRadius: rotateAnim.value*2+5.0),
           ],
         ),
         child: Icon(
           icon,
-          color: Colors.black,
+          color: widget.iconColor,
         ),
       ),
     );
@@ -75,19 +75,21 @@ class _DropdownMenuState extends State<DropdownMenu>
   Widget getMenuItem(IconData icon, VoidCallback action) {
     return GestureDetector(
       onTap: () {
-        controller.reverse();
-        action();
+        if (controller.isCompleted) {
+          controller.reverse();
+          action();
+        }
       },
       child: Container(
         width: iconSize,
         height: iconSize,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: theme.primaryColorDark,
+          color: widget.backgroundColor,
         ),
         child: Icon(
           icon,
-          color: Colors.black87,
+          color: widget.iconColor,
         ),
       ),
     );
@@ -98,26 +100,26 @@ class _DropdownMenuState extends State<DropdownMenu>
     return Container(
       padding: const EdgeInsets.only(right: 5.0),
       width: iconSize + 10.0,
-      height: (iconSize + iconSpace) * 4,
+      height: (iconSize + iconSpace) * (widget.buttonsCount + 1),
       child: AnimatedBuilder(
           animation: controller,
           builder: (context, child) {
             return Stack(
               children: <Widget>[
-                Positioned(
-                  left: 0.0,
-                  top: firstAnim.value,
-                  child: getMenuItem(icons[0], widget.editAction),
-                ),
-                Positioned(
-                  left: 0.0,
-                  top: secondAnim.value,
-                  child: getMenuItem(icons[1], widget.addPhotoAction),
-                ),
-                Positioned(
-                  left: 0.0,
-                  top: thirdAnim.value,
-                  child: getMenuItem(icons[2], widget.textAction),
+                Container(
+                  width: iconSize + 10.0,
+                  height: (iconSize + iconSpace) * (widget.buttonsCount + 1),
+                  child: Stack(
+                    children: widget.icons
+                        .map((icon) => Positioned(
+                              left: 0.0,
+                              top: animations[widget.icons.indexOf(icon)]
+                                  .value,
+                              child: getMenuItem(icon,
+                                  widget.actions[widget.icons.indexOf(icon)]),
+                            ))
+                        .toList(),
+                  ),
                 ),
                 GestureDetector(
                   onTap: controller.isCompleted
