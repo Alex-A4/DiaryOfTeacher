@@ -136,10 +136,6 @@ class _StudentEditorState extends State<StudentEditor> {
                               ),
 
                               //Group field
-                              SizedBox(
-                                height: 10.0,
-                              ),
-
                               PopupMenuButton<Group>(
                                 onSelected: (Group group) {
                                   setState(() {
