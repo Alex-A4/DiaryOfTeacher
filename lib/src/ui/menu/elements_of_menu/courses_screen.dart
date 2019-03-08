@@ -134,7 +134,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
               children: <Widget>[
                 Column(
                   children: course.lessons
-                      .map((lesson) => getCourseLessonItem(lesson))
+                      .map((lesson) => getCourseLessonItem(lesson, course))
                       .toList(),
                 ),
               ],
@@ -150,28 +150,48 @@ class _CoursesScreenState extends State<CoursesScreen> {
   }
 
   //Get widget which contains information about one lesson from course
-  Widget getCourseLessonItem(CourseLesson lesson) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: GestureDetector(
-        onTap: () async {
-          await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CourseLessonEditor(
-                    lesson: lesson,
-                  )));
+  Widget getCourseLessonItem(CourseLesson lesson, Course course) {
+    return Dismissible(
+      key: UniqueKey(),
+      direction: DismissDirection.startToEnd,
+      onDismissed: (dir) {
+        course.lessons.remove(lesson);
+        _controller.saveToCache().then((_) {
+          Fluttertoast.showToast(msg: 'Занятие удалено');
           setState(() {});
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
-          child: Text(
-            lesson.title,
-            style: TextStyle(
-                fontSize: 20.0, fontFamily: 'Neucha', color: Colors.black),
+        }).catchError((err) => Fluttertoast.showToast(msg: err));
+      },
+      background: Container(
+        alignment: AlignmentDirectional.centerStart,
+        child: Icon(Icons.delete_sweep, color: Colors.white, size: 30.0,),
+        decoration: BoxDecoration(
+          color: Colors.red[400],
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.only(bottom: 6.0),
+        child: GestureDetector(
+          onTap: () async {
+            await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => CourseLessonEditor(
+                      lesson: lesson,
+                    )));
+            setState(() {});
+          },
+          child: Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
+            child: Text(
+              lesson.title,
+              style: TextStyle(
+                  fontSize: 20.0, fontFamily: 'Neucha', color: Colors.black),
+            ),
+            decoration: BoxDecoration(
+                border:
+                    Border.all(style: BorderStyle.solid, color: Colors.black45),
+                borderRadius: BorderRadius.circular(5.0)),
           ),
-          decoration: BoxDecoration(
-              border:
-                  Border.all(style: BorderStyle.solid, color: Colors.black45),
-              borderRadius: BorderRadius.circular(5.0)),
         ),
       ),
     );
