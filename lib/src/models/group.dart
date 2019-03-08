@@ -24,7 +24,7 @@ class Group {
   Map<String, dynamic> toJson() => {
         'groupId': _groupId,
         'groupName': _name,
-        'courseUid': course.uuid,
+        'courseUid': course?.uuid,
       };
 
   set name(String value) => _name = value;
