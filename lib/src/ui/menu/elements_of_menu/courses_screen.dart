@@ -2,6 +2,7 @@ import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/controllers/course_controller.dart';
 import 'package:diary_of_teacher/src/models/course.dart';
+import 'package:diary_of_teacher/src/repository/students_repository.dart';
 import 'package:diary_of_teacher/src/ui/menu/courses_subelements/course_lesson_editor.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +111,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                       GestureDetector(
                         onTap: () {
                           courses.remove(course);
+                          StudentsRepository.getInstance().removeCourseFromGroup(course);
                           _controller.saveToCache().then((_) {
                             Fluttertoast.showToast(msg: 'Курс удалён');
                             setState(() {});
