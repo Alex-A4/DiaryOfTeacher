@@ -35,6 +35,7 @@ class _GroupsListViewState extends State<GroupsListView> {
               setState(() {});
             },
             title: Text(group.name, style: theme.textTheme.body1),
+            subtitle: Text(group.course?.courseName ?? '', style: theme.textTheme.display3,),
             trailing: IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
