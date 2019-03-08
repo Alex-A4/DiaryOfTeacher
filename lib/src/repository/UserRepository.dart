@@ -92,10 +92,10 @@ class UserRepository extends ImageUploader {
     //If password is correct build user and start work
     if (await checkPasswordCorrect(password)) {
       await User.buildUser();
+      await CourseController.buildController();
       await StudentsRepository.buildRepo();
       await LessonController.buildController();
       await TimeoutController.buildController();
-      await CourseController.buildController();
     } else
       throw 'Пароль неверный';
   }
