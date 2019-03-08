@@ -118,11 +118,6 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
     );
   }
 
-  void addText() {
-    texts.add('dauofhsdoifpjiqurmpeuwqrupmqwqwehqlweh');
-    setState(() {});
-  }
-
   void editTitle() {
     setState(() => isEditing = true);
   }
@@ -154,7 +149,7 @@ class _CourseLessonEditorState extends State<CourseLessonEditor> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             text,
-            style: theme.textTheme.display4,
+            style: theme.textTheme.body2,
             softWrap: true,
           ),
           decoration: BoxDecoration(
