@@ -55,4 +55,9 @@ class TimeoutController extends ImageUploader {
     _images.urls.add(url);
     await saveToCache();
   }
+
+  //Remove image from the list
+  void deleteImageFromList(String image) {
+    images.urls.remove(image);
+  }
 }

@@ -30,8 +30,12 @@ class _TimeoutState extends State<TimeoutScreen> {
           return Container(
             child: PhotoCard(
               photoUrl: list.urls[index],
-              boxFit: BoxFit.contain,
-              background: Colors.transparent,
+              boxFit: BoxFit.cover,
+              deleteFunc: () {
+                _controller.deleteImageFromList(list.urls[index]);
+                _controller.saveToCache();
+                setState(() {});
+              },
             ),
           );
         },
