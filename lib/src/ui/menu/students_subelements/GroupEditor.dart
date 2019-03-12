@@ -91,10 +91,13 @@ class _GroupEditorState extends State<GroupEditor> {
                     children: <Widget>[
                       Text(
                         'Курс занятий группы:  ',
-                        style: TextStyle(color: Colors.black, fontSize: 16.0),
+                        style: TextStyle(color: Colors.black, fontSize: 18.0),
                       ),
                       CourseController.getInstance().courses.isEmpty
-                          ? Text('Добавьте курсы', style: TextStyle(fontSize: 16.0),)
+                          ? Text(
+                              'Добавьте курсы',
+                              style: TextStyle(fontSize: 18.0),
+                            )
                           : PopupMenuButton<Course>(
                               onSelected: (Course course) {
                                 setState(() {
@@ -117,7 +120,7 @@ class _GroupEditorState extends State<GroupEditor> {
                                 children: <Widget>[
                                   Text(
                                     widget.group.course?.courseName ?? '',
-                                    style: theme.textTheme.display4,
+                                    style: theme.textTheme.body2,
                                   ),
                                   Icon(Icons.arrow_drop_down),
                                 ],
