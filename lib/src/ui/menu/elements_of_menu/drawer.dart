@@ -60,7 +60,8 @@ class MenuDrawer extends StatelessWidget {
               delegate: SliverChildListDelegate(
                 <Widget>[
                   Container(
-                    height: 30.0,
+                    padding: const EdgeInsets.only(top: 4.0),
+                    height: 34.0,
                     child: Image.asset(
                       'assets/images/sheepTP.png',
                       width: 30.0,
