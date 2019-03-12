@@ -63,6 +63,9 @@ class MenuDrawer extends StatelessWidget {
                     height: 30.0,
                     child: Image.asset(
                       'assets/images/sheepTP.png',
+                      width: 30.0,
+                      height: 30.0,
+                      fit: BoxFit.contain,
                       repeat: ImageRepeat.repeat,
                     ),
                   ),
