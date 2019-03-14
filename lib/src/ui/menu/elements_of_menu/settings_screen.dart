@@ -212,7 +212,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   //Firstly check correct of old password and if it's right
   // then create new password
   Future tryToChangePassword() async {
-    if (await userRepository.checkPasswordCorrect(_oldPassword.text)) {
+    if (await UserRepository.checkPasswordCorrect(_oldPassword.text)) {
       //Change password in store
       await userRepository.savePassword(_newPassword.text);
       Navigator.of(context).pop();
