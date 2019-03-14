@@ -87,21 +87,17 @@ class UserRepository extends ImageUploader {
     }
   }
 
-//Trying to login by comparing password's hash
+  //Log in system by initializing all repositories
   Future<Null> handleLogin(String password) async {
-    //If password is correct build user and start work
-    if (await checkPasswordCorrect(password)) {
-      await User.buildUser();
-      await CourseController.buildController();
-      await StudentsRepository.buildRepo();
-      await LessonController.buildController();
-      await TimeoutController.buildController();
-    } else
-      throw 'Пароль неверный';
+    await User.buildUser();
+    await CourseController.buildController();
+    await StudentsRepository.buildRepo();
+    await LessonController.buildController();
+    await TimeoutController.buildController();
   }
 
   //Check password correctness and return true if ok and false if not
-  Future<bool> checkPasswordCorrect(String password) async {
+  static Future<bool> checkPasswordCorrect(String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     int hash = prefs.getInt('passwordHash');
