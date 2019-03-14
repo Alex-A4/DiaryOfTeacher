@@ -1,5 +1,6 @@
 import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
+import 'package:diary_of_teacher/src/repository/UserRepository.dart';
 import 'package:diary_of_teacher/src/ui/authorization/time_passer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -133,24 +134,7 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
                             letterSpacing: 1.0,
                             color: Colors.black),
                       ),
-                      onPressed: isTicking
-                          ? null
-                          : () {
-                              if (_formKey.currentState.validate()) {
-                                _authenticationBloc
-                                    .dispatch(LogIn(_passwordController.text));
-                              } else {
-                                countOfWrongPasswordEnters++;
-                                _buttonController.forward();
-
-                                if (countOfWrongPasswordEnters == 3) {
-                                  _passerController.toggle();
-                                  countOfWrongPasswordEnters = 0;
-                                }
-                              }
-
-                              _passwordController.clear();
-                            },
+                      onPressed: isTicking ? null : tryToLogIn,
                     ),
                   );
                 },
@@ -170,5 +154,32 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  //Pushing vibration to enter button and check count of wrong enters
+  void pushVibration() {
+    countOfWrongPasswordEnters++;
+    _buttonController.forward();
+
+    if (countOfWrongPasswordEnters == 3) {
+      _passerController.toggle();
+      countOfWrongPasswordEnters = 0;
+    }
+  }
+
+  //Trying to log in
+  void tryToLogIn() {
+    if (_formKey.currentState.validate()) {
+      UserRepository.checkPasswordCorrect(_passwordController.text)
+          .then((value) {
+        if (value)
+          _authenticationBloc.dispatch(LogIn(_passwordController.text));
+        else
+          pushVibration();
+      });
+    } else
+      pushVibration();
+
+    _passwordController.clear();
   }
 }
