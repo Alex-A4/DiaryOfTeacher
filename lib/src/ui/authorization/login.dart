@@ -30,9 +30,9 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
     _passerController = PasserController(vsync: this, secondsToPass: 30);
 
     _buttonController =
-    AnimationController(vsync: this, duration: Duration(milliseconds: 50))
+    AnimationController(vsync: this, duration: Duration(milliseconds: 40))
       ..addStatusListener((status) {
-        if (countOfVibrates < 10) {
+        if (countOfVibrates < 5) {
           if (status == AnimationStatus.completed) {
             countOfVibrates++;
             _buttonController.reverse();
@@ -41,12 +41,16 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
             countOfVibrates++;
             _buttonController.forward();
           }
-        } else countOfVibrates = 0;
+        } else {
+          if (status == AnimationStatus.dismissed ||
+              status == AnimationStatus.completed)
+            countOfVibrates = 0;
+        }
       });
 
     final anim = CurvedAnimation(
         parent: _buttonController, curve: Curves.linear);
-    vibrateTranslate = Tween<double>(begin: 0.0, end: 10.0).animate(anim);
+    vibrateTranslate = Tween<double>(begin: 0.0, end: 5.0).animate(anim);
     super.initState();
   }
 
@@ -127,7 +131,7 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
                         } else {
                           countOfWrongPasswordEnters++;
                           _buttonController.forward();
-                          
+
                           if (countOfWrongPasswordEnters == 3) {
                             _passerController.toggle();
                             countOfWrongPasswordEnters = 0;
