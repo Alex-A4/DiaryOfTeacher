@@ -126,6 +126,8 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
                               .dispatch(LogIn(_passwordController.text));
                         } else {
                           countOfWrongPasswordEnters++;
+                          _buttonController.forward();
+                          
                           if (countOfWrongPasswordEnters == 3) {
                             _passerController.toggle();
                             countOfWrongPasswordEnters = 0;
