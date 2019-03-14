@@ -4,6 +4,7 @@ import 'package:diary_of_teacher/src/app.dart';
 import 'package:diary_of_teacher/src/controllers/students_controller.dart';
 import 'package:diary_of_teacher/src/models/group.dart';
 import 'package:diary_of_teacher/src/models/student.dart';
+import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/photo_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -94,29 +95,23 @@ class _StudentEditorState extends State<StudentEditor> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              CircleAvatar(
-                                backgroundImage: AdvancedNetworkImage(photoUrl,
-                                    useDiskCache: true,
-                                    cacheRule:
-                                        CacheRule(maxAge: Duration(days: 7))),
-                                child: IconButton(
-                                    iconSize: 30.0,
-                                    color: Colors.white,
-                                    icon: Icon(Icons.camera_alt),
-                                    onPressed: _isEditing
-                                        ? () {
-                                            pickAndUploadImage();
-                                          }
-                                        : null),
-                                radius: 50.0,
-                              ),
-                            ],
+                        InkWell(
+                          onTap: showActionPhotoDialog,
+                          child: Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  backgroundImage: AdvancedNetworkImage(photoUrl,
+                                      useDiskCache: true,
+                                      cacheRule:
+                                          CacheRule(maxAge: Duration(days: 7))),
+                                  radius: 50.0,
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.only(right: 8.0),
                           ),
-                          padding: const EdgeInsets.only(right: 8.0),
                         ),
                         Expanded(
                           child: Column(
@@ -439,5 +434,41 @@ class _StudentEditorState extends State<StudentEditor> {
   }
 
   TextStyle dialogButtonStyle =
-      TextStyle(fontSize: 23.0, color: theme.accentColor);
+      TextStyle(fontSize: 20.0, color: theme.accentColor);
+
+  //Show dialog when user tap on profile image
+  //Actions: open image, upload new image
+  void showActionPhotoDialog() {
+    showDialog(context: context, builder: (context) {
+      return Dialog(
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)),
+        child: Container(
+          width: 150.0,
+          color: theme.primaryColor,
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text('Фото', style: theme.textTheme.body1,),
+              ListTile(title: Text('Открыть', style: dialogButtonStyle,),
+                leading: Icon(Icons.open_in_new, color: theme.accentColor,),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                      PhotoDisplayRoute(photoUrl: photoUrl));
+                },),
+              ListTile(title: Text('Загрузить', style: dialogButtonStyle,),
+                leading: Icon(
+                  Icons.photo_size_select_actual, color: theme.accentColor,),
+                onTap: () {
+                  pickAndUploadImage().then((_) => Navigator.of(context).pop());
+                },),
+            ],
+          ),
+        ),
+      );
+    });
+  }
 }
