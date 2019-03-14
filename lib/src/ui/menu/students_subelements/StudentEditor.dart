@@ -351,6 +351,7 @@ class _StudentEditorState extends State<StudentEditor> {
   Future<DateTime> selectDate(context, DateTime currentDate) async {
     var date = await showDatePicker(
         context: context,
+        locale: Locale.fromSubtags(languageCode: 'ru'),
         initialDate: currentDate,
         firstDate: DateTime(currentDate.year - 10, 1, 1),
         lastDate: DateTime(DateTime.now().year, DateTime.now().month + 1, 1));
