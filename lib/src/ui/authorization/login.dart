@@ -14,6 +14,8 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
   AuthenticationBloc _authenticationBloc;
   PasserController _passerController;
 
+  bool isTicking = false;
+
   //Animation which needs to make "vibrate" animation
   AnimationController _buttonController;
   Animation<double> vibrateTranslate;
@@ -29,27 +31,36 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
     _passwordController = TextEditingController();
     _passerController = PasserController(vsync: this, secondsToPass: 30);
 
-    _buttonController =
-    AnimationController(vsync: this, duration: Duration(milliseconds: 40))
-      ..addStatusListener((status) {
-        if (countOfVibrates < 5) {
-          if (status == AnimationStatus.completed) {
-            countOfVibrates++;
-            _buttonController.reverse();
-          }
-          if (status == AnimationStatus.dismissed) {
-            countOfVibrates++;
-            _buttonController.forward();
-          }
-        } else {
-          if (status == AnimationStatus.dismissed ||
-              status == AnimationStatus.completed)
-            countOfVibrates = 0;
-        }
-      });
+    _passerController.addListener(() {
+      if (_passerController.state == PasserState.stopped) {
+        isTicking = false;
+        setState(() {});
+      } else {
+        isTicking = true;
+        setState(() {});
+      }
+    });
 
-    final anim = CurvedAnimation(
-        parent: _buttonController, curve: Curves.linear);
+    _buttonController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 40))
+          ..addStatusListener((status) {
+            if (countOfVibrates < 5) {
+              if (status == AnimationStatus.completed) {
+                countOfVibrates++;
+                _buttonController.reverse();
+              }
+              if (status == AnimationStatus.dismissed) {
+                countOfVibrates++;
+                _buttonController.forward();
+              }
+            } else {
+              if (status == AnimationStatus.dismissed ||
+                  status == AnimationStatus.completed) countOfVibrates = 0;
+            }
+          });
+
+    final anim =
+        CurvedAnimation(parent: _buttonController, curve: Curves.linear);
     vibrateTranslate = Tween<double>(begin: 0.0, end: 5.0).animate(anim);
     super.initState();
   }
@@ -105,7 +116,7 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
 
               //Button which is triggered when password is wrong
               AnimatedBuilder(
-                animation:_buttonController,
+                animation: _buttonController,
                 builder: (context, child) {
                   return Transform.translate(
                     offset: Offset(0.0, vibrateTranslate.value),
@@ -122,24 +133,24 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
                             letterSpacing: 1.0,
                             color: Colors.black),
                       ),
-                      onPressed: _passerController.state == PasserState.ticking
+                      onPressed: isTicking
                           ? null
                           : () {
-                        if (_formKey.currentState.validate()) {
-                          _authenticationBloc
-                              .dispatch(LogIn(_passwordController.text));
-                        } else {
-                          countOfWrongPasswordEnters++;
-                          _buttonController.forward();
+                              if (_formKey.currentState.validate()) {
+                                _authenticationBloc
+                                    .dispatch(LogIn(_passwordController.text));
+                              } else {
+                                countOfWrongPasswordEnters++;
+                                _buttonController.forward();
 
-                          if (countOfWrongPasswordEnters == 3) {
-                            _passerController.toggle();
-                            countOfWrongPasswordEnters = 0;
-                          }
-                        }
+                                if (countOfWrongPasswordEnters == 3) {
+                                  _passerController.toggle();
+                                  countOfWrongPasswordEnters = 0;
+                                }
+                              }
 
-                        _passwordController.clear();
-                      },
+                              _passwordController.clear();
+                            },
                     ),
                   );
                 },
