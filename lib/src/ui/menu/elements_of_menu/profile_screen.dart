@@ -5,6 +5,7 @@ import 'package:diary_of_teacher/src/blocs/authentication/authentication.dart';
 import 'package:diary_of_teacher/src/models/user.dart';
 import 'package:diary_of_teacher/src/repository/UserRepository.dart';
 import 'package:diary_of_teacher/src/ui/menu/elements_of_menu//drawer.dart';
+import 'package:diary_of_teacher/src/ui/menu/lessons_subelements/photo_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +31,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     userRepository =
-        BlocProvider.of<AuthenticationBloc>(context).userRepository;
+        BlocProvider
+            .of<AuthenticationBloc>(context)
+            .userRepository;
     _controller = TextEditingController(text: User.user.userName);
   }
 
@@ -50,98 +53,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
         drawer: MenuDrawer(),
         body: Container(
             child: ListView(
-          children: <Widget>[
-            Stack(
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                Stack(
                   children: <Widget>[
-                    Container(
-                      height: 232.0,
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Center(
-                        child: CircleAvatar(
-                          backgroundImage: AdvancedNetworkImage(
-                              User.user.photoUrl,
-                              useDiskCache: true,
-                              cacheRule: CacheRule(maxAge: Duration(days: 7))),
-                          radius: 100,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: 232.0,
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
                           child: Center(
-                            child: _isLoadingImage
-                                ? CircularProgressIndicator()
-                                : IconButton(
-                                    onPressed: () {
-                                      tryToUpdateImage();
-                                    },
-                                    iconSize: 60.0,
-                                    color: Colors.white70,
-                                    icon: Icon(Icons.camera_alt),
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: 50.0, right: 30.0, top: 30.0, bottom: 10.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: Form(
-                              key: _key,
-                              child: TextFormField(
-                                focusNode: _focus,
-                                textAlign: TextAlign.center,
-                                controller: _controller,
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 20.0),
-                                  hintText: 'Введите имя',
+                            child: InkWell(
+                              onTap: showActionPhotoDialog,
+                              child: CircleAvatar(
+                                backgroundImage: AdvancedNetworkImage(
+                                    User.user.photoUrl,
+                                    useDiskCache: true,
+                                    cacheRule: CacheRule(
+                                        maxAge: Duration(days: 7))),
+                                radius: 100,
+                                child: Center(
+                                  child: _isLoadingImage
+                                      ? CircularProgressIndicator()
+                                      : Container(),
                                 ),
-                                enabled: isEditing,
-                                style: TextStyle(
-                                    fontFamily: 'Neucha',
-                                    fontSize: 25.0,
-                                    letterSpacing: 0.0,
-                                    color: Colors.black),
-                                validator: (value) {
-                                  if (value.length == 0)
-                                    return 'Имя не должно быть пустым';
-                                },
                               ),
                             ),
                           ),
-                          _isLoadingName
-                              ? CircularProgressIndicator()
-                              : IconButton(
-                                  color: theme.accentColor,
-                                  icon:
-                                      Icon(isEditing ? Icons.done : Icons.edit),
-                                  onPressed: () {
-                                    if (isEditing && validate()) {
-                                      setState(() {
-                                        isEditing = !isEditing;
-                                      });
-                                      tryToUpdateName();
-                                      return;
-                                    }
-                                    if (!isEditing) {
-                                      startEdit();
-                                      return;
-                                    }
-                                  },
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                              left: 50.0, right: 30.0, top: 30.0, bottom: 10.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child: Form(
+                                  key: _key,
+                                  child: TextFormField(
+                                    focusNode: _focus,
+                                    textAlign: TextAlign.center,
+                                    controller: _controller,
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
+                                      hintText: 'Введите имя',
+                                    ),
+                                    enabled: isEditing,
+                                    style: TextStyle(
+                                        fontFamily: 'Neucha',
+                                        fontSize: 25.0,
+                                        letterSpacing: 0.0,
+                                        color: Colors.black),
+                                    validator: (value) {
+                                      if (value.length == 0)
+                                        return 'Имя не должно быть пустым';
+                                    },
+                                  ),
                                 ),
-                        ],
-                      ),
+                              ),
+                              _isLoadingName
+                                  ? CircularProgressIndicator()
+                                  : IconButton(
+                                color: theme.accentColor,
+                                icon:
+                                Icon(isEditing ? Icons.done : Icons.edit),
+                                onPressed: () {
+                                  if (isEditing && validate()) {
+                                    setState(() {
+                                      isEditing = !isEditing;
+                                    });
+                                    tryToUpdateName();
+                                    return;
+                                  }
+                                  if (!isEditing) {
+                                    startEdit();
+                                    return;
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ],
-            ),
-          ],
-        )));
+            )));
   }
 
   //Validate the user name
@@ -189,23 +189,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  //Show dialog when user tap on profile image
+  //Actions: open image, upload new image
+  void showActionPhotoDialog() {
+    showDialog(context: context, builder: (context) {
+      return Dialog(
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)),
+        child: Container(
+          width: 150.0,
+          color: theme.primaryColor,
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text('Фото', style: theme.textTheme.body1,),
+              ListTile(title: Text('Открыть', style: dialogButtonTheme,),
+                leading: Icon(Icons.open_in_new, color: theme.accentColor,),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                      PhotoDisplayRoute(photoUrl: User.user.photoUrl));
+                },),
+              ListTile(title: Text('Загрузить', style: dialogButtonTheme,),
+                leading: Icon(
+                  Icons.photo_size_select_actual, color: theme.accentColor,),
+                onTap: () {
+                  tryToUpdateImage().then((_) => Navigator.of(context).pop());
+                },),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  final dialogButtonTheme = TextStyle(color: theme.accentColor, fontSize: 20.0);
+
   //Start loading of user name
-  void startLoadingName() => setState(() {
+  void startLoadingName() =>
+      setState(() {
         _isLoadingName = true;
       });
 
   //Finish loading of user name
-  void finishLoadingName() => setState(() {
+  void finishLoadingName() =>
+      setState(() {
         _isLoadingName = false;
       });
 
   //Start loading of image
-  void startLoadingImage() => setState(() {
+  void startLoadingImage() =>
+      setState(() {
         _isLoadingImage = true;
       });
 
   //Stop loading of image
-  void finishLoadingImage() => setState(() {
+  void finishLoadingImage() =>
+      setState(() {
         _isLoadingImage = false;
       });
 }
