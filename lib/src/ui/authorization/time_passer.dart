@@ -30,8 +30,9 @@ class _TimePasserState extends State<TimePasser> {
         ? Container()
         : Container(
       child: Text(
-        'Повторный ввод пароля заблокирован ещё ${controller
+        'Повторный ввод пароля будет доступен через ${controller
             .passedTime} секунд',
+        textAlign: TextAlign.center,
         softWrap: true,
         style: widget.textStyle,
       ),
