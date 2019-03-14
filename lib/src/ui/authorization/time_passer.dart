@@ -26,9 +26,13 @@ class _TimePasserState extends State<TimePasser> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return controller.state == PasserState.stopped
+        ? Container()
+        : Container(
       child: Text(
-        'Повторный ввод пароля заблокирован ещё ${controller.passedTime} секунд',
+        'Повторный ввод пароля заблокирован ещё ${controller
+            .passedTime} секунд',
+        softWrap: true,
         style: widget.textStyle,
       ),
     );
@@ -45,6 +49,7 @@ class PasserController extends ChangeNotifier {
 
   //Time in seconds which need to pass
   int secondsToPass;
+  Animation<double> timer;
 
   //State to track controller status
   PasserState state = PasserState.stopped;
@@ -57,25 +62,33 @@ class PasserController extends ChangeNotifier {
 
   //Constructor with basic init
   PasserController({this.vsync, this.secondsToPass})
-      : _controller = AnimationController(
-            vsync: vsync, duration: Duration(seconds: secondsToPass)) {
-    _controller.addListener(() => notifyListeners());
+      : _controller = AnimationController(vsync: vsync) {
+    _controller
+      ..duration = Duration(seconds: secondsToPass)
+      ..addListener(() => notifyListeners())
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.forward) state = PasserState.ticking;
+        if (status == AnimationStatus.completed) state = PasserState.stopped;
 
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.forward) state = PasserState.ticking;
-      if (status == AnimationStatus.completed) state = PasserState.stopped;
+        //Notify listeners if they are
+        notifyListeners();
+      });
 
-      //Notify listeners if they are
-      notifyListeners();
-    });
+    final anim = CurvedAnimation(parent: _controller, curve: Curves.linear);
+
+    timer =
+        Tween<double>(begin: 0.0, end: secondsToPass.toDouble()).animate(anim);
   }
 
   //Get passed time
-  int get passedTime => secondsToPass - _controller.value.toInt();
+  int get passedTime => (secondsToPass.toDouble() - timer.value).toInt();
 
   //Start to pass time if it's stopped
   void toggle() {
-    if (state == PasserState.stopped) _controller.forward();
+    if (state == PasserState.stopped) {
+      _controller.value = 0.0;
+      _controller.forward();
+    }
   }
 }
 
