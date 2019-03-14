@@ -37,7 +37,7 @@ class PhotoCard extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.of(context)
-                  .push(_PhotoDisplayRoute(photoUrl: photoUrl));
+                  .push(PhotoDisplayRoute(photoUrl: photoUrl));
             },
             child: Container(
               padding:
@@ -82,10 +82,8 @@ class PhotoCard extends StatelessWidget {
   }
 }
 
-class _PhotoDisplayRoute<T> extends PopupRoute<T> {
+class PhotoDisplayRoute<T> extends PopupRoute<T> {
   final String photoUrl;
-  final double width;
-  final double height;
 
   @override
   Color get barrierColor => Colors.white24;
@@ -144,5 +142,5 @@ class _PhotoDisplayRoute<T> extends PopupRoute<T> {
   @override
   Duration get transitionDuration => const Duration(milliseconds: 100);
 
-  _PhotoDisplayRoute({this.photoUrl, this.width, this.height});
+  PhotoDisplayRoute({this.photoUrl});
 }
