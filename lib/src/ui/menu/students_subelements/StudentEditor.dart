@@ -442,13 +442,14 @@ class _StudentEditorState extends State<StudentEditor> {
     showDialog(context: context, builder: (context) {
       return Dialog(
         elevation: 5.0,
+        backgroundColor: theme.primaryColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)),
         child: Container(
           width: 150.0,
-          color: theme.primaryColor,
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text('Фото', style: theme.textTheme.body1,),
