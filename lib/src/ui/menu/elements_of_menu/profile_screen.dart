@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       child: Center(
                         child: InkWell(
-                          onTap: showActionPhotoDialog,
+                          onTap: _isLoadingImage ? null : showActionPhotoDialog,
                           child: CircleAvatar(
                             backgroundImage: AdvancedNetworkImage(
                                 User.user.photoUrl,

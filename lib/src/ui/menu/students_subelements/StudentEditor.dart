@@ -96,7 +96,7 @@ class _StudentEditorState extends State<StudentEditor> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         InkWell(
-                          onTap: showActionPhotoDialog,
+                          onTap: _isLoading ? null : showActionPhotoDialog,
                           child: Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
