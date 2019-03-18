@@ -101,6 +101,7 @@ class _LogIn extends State<LogInScreen> with TickerProviderStateMixin {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       hintText: 'Введите пароль',
+                      hintStyle: TextStyle(color: Colors.grey[350], fontSize: 20.0),
                     ),
                     style: theme.textTheme.body1,
                     controller: _passwordController,
