@@ -44,14 +44,15 @@ class _LessonsEditorState extends State<LessonsEditor> {
   @override
   void initState() {
     super.initState();
-    earnedMoney = lesson?.earnedMoney ?? Decimal.fromInt(0);
+    earnedMoney = lesson?.earnedMoney ?? '';
     groupId = lesson?.groupToStudy?.groupId;
     studyTheme = lesson?.theme ?? '';
     hw = lesson?.homeWork ?? '';
     lessonTime = lesson?.lessonTime;
     imagesList = lesson?.imagesList ?? [];
 
-    _moneyController = TextEditingController(text: earnedMoney.toString());
+    _moneyController = TextEditingController(
+        text: earnedMoney.toInt() == 0 ? '' : earnedMoney.toString());
     _themeController = TextEditingController(text: studyTheme);
     _hwController = TextEditingController(text: hw);
   }
@@ -225,11 +226,9 @@ class _LessonsEditorState extends State<LessonsEditor> {
               ],
             ),
           ),
-
           SizedBox(
             height: 80,
           ),
-
           Divider(),
           Container(
             height: 150.0,
@@ -258,7 +257,6 @@ class _LessonsEditorState extends State<LessonsEditor> {
                   ),
           ),
           Divider(),
-
           Container(
             child: Center(
               child: RaisedButton(
@@ -279,7 +277,6 @@ class _LessonsEditorState extends State<LessonsEditor> {
               ),
             ),
           ),
-
           SizedBox(
             height: 80.0,
           )
@@ -316,8 +313,7 @@ class _LessonsEditorState extends State<LessonsEditor> {
         locale: LocaleType.ru,
         showTitleActions: true,
         theme: DatePickerTheme(
-            doneStyle:
-                TextStyle(color: theme.accentColor, fontSize: 17.0)),
+            doneStyle: TextStyle(color: theme.accentColor, fontSize: 17.0)),
         onConfirm: (time) {
       lessonTime = TimeOfDay(hour: time.hour, minute: time.minute);
       setState(() {});
@@ -364,6 +360,8 @@ class _LessonsEditorState extends State<LessonsEditor> {
   void updateValues() {
     earnedMoney = Decimal.parse(
         _moneyController.text.isEmpty ? '0' : _moneyController.text);
+    _moneyController.text =
+        earnedMoney.toInt() == 0 ? '' : earnedMoney.toString();
     hw = _hwController.text;
     studyTheme = _themeController.text;
   }
