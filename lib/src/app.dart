@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'ui/authorization/sign_in.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 //Start's point of the app
 class App extends StatefulWidget {
@@ -43,6 +44,14 @@ class _AppState extends State<App> {
       bloc: authenticationBloc,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('ru', 'RU'),
+        ],
         title: 'Diary of teacher',
         theme: theme,
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
