@@ -34,24 +34,18 @@ class PhotoCard extends StatelessWidget {
       height: height,
       child: Stack(
         children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(PhotoDisplayRoute(photoUrl: photoUrl));
-            },
+          Container(
+            padding:
+                EdgeInsets.only(top: topPadding, left: 10.0, right: 10.0),
             child: Container(
-              padding:
-                  EdgeInsets.only(top: topPadding, left: 10.0, right: 10.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: background,
-                    borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                        image: AdvancedNetworkImage(photoUrl,
-                            useDiskCache: true,
-                            cacheRule: CacheRule(maxAge: Duration(days: 7))),
-                        fit: boxFit)),
-              ),
+              decoration: BoxDecoration(
+                  color: background,
+                  borderRadius: BorderRadius.circular(10.0),
+                  image: DecorationImage(
+                      image: AdvancedNetworkImage(photoUrl,
+                          useDiskCache: true,
+                          cacheRule: CacheRule(maxAge: Duration(days: 7))),
+                      fit: boxFit)),
             ),
           ),
           deleteFunc == null
