@@ -144,7 +144,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
           ],
         ),
         decoration: BoxDecoration(
-            color: theme.primaryColorDark,
+            color: theme.primaryColor,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 6.0)]),
       ),
