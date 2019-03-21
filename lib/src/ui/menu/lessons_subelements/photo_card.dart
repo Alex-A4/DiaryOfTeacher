@@ -34,18 +34,23 @@ class PhotoCard extends StatelessWidget {
       height: height,
       child: Stack(
         children: <Widget>[
-          Container(
-            padding:
-                EdgeInsets.only(top: topPadding, left: 10.0, right: 10.0),
+          GestureDetector(
+            onTap: (){
+              Navigator.of(context).push(PhotoDisplayRoute(photoUrl: photoUrl));
+            },
             child: Container(
-              decoration: BoxDecoration(
-                  color: background,
-                  borderRadius: BorderRadius.circular(10.0),
-                  image: DecorationImage(
-                      image: AdvancedNetworkImage(photoUrl,
-                          useDiskCache: true,
-                          cacheRule: CacheRule(maxAge: Duration(days: 7))),
-                      fit: boxFit)),
+              padding:
+                  EdgeInsets.only(top: topPadding, left: 10.0, right: 10.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: background,
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                        image: AdvancedNetworkImage(photoUrl,
+                            useDiskCache: true,
+                            cacheRule: CacheRule(maxAge: Duration(days: 7))),
+                        fit: boxFit)),
+              ),
             ),
           ),
           deleteFunc == null
@@ -95,38 +100,32 @@ class PhotoDisplayRoute<T> extends PopupRoute<T> {
       removeLeft: true,
       removeRight: true,
       context: context,
-      child: GestureDetector(
-        child: Container(
-          constraints: const BoxConstraints.expand(),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaY: 3.0, sigmaX: 3.0),
-            child: Container(
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
-              child: Center(
-                child: Container(
-                  width: 330,
-                  height: 500,
-                  child: ZoomableWidget(
-                    maxScale: 3.0,
-//                    panLimit: 0.8,
-                    enableRotate: true,
-                    child: TransitionToImage(
-                      fit: BoxFit.contain,
-                      borderRadius: BorderRadius.circular(10.0),
-                      placeholder: CircularProgressIndicator(),
-                      image: AdvancedNetworkImage(photoUrl,
-                          useDiskCache: true,
-                          cacheRule: CacheRule(maxAge: Duration(days: 7))),
-                    ),
+      child: Container(
+        constraints: const BoxConstraints.expand(),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaY: 3.0, sigmaX: 3.0),
+          child: Container(
+            decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
+            child: Center(
+              child: Container(
+                width: 330,
+                height: 500,
+                child: ZoomableWidget(
+                  maxScale: 3.0,
+                  enableRotate: true,
+                  child: TransitionToImage(
+                    fit: BoxFit.contain,
+                    borderRadius: BorderRadius.circular(10.0),
+                    placeholder: CircularProgressIndicator(),
+                    image: AdvancedNetworkImage(photoUrl,
+                        useDiskCache: true,
+                        cacheRule: CacheRule(maxAge: Duration(days: 7))),
                   ),
                 ),
               ),
             ),
           ),
         ),
-        onTap: () {
-          Navigator.of(context).pop();
-        },
       ),
     );
 
