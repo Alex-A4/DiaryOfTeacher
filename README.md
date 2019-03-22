@@ -1,6 +1,6 @@
 Application that allows teachers to keep a diary, especially about students, courses, lessons and much more.
 
-To download released verion of app visit [link](https://yadi.sk/d/p1GJqYnsfY4Tdg).
+To download released verion of app visit [link](https://yadi.sk/d/vAWtIJbda0r_Dg).
 
 > Supported Platforms
 > * Android
