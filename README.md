@@ -1,10 +1,15 @@
 Application that allows teachers to keep a diary, especially about students, courses, lessons and much more.
 
-To download latest verion of app visit [link](https://yadi.sk/d/qoJ1UFTCNotngQ).
+# Platforms for which app built:: 
+> * Android
+> * iOS - no Mac
 
-> Supported Platforms
+> Code supports platforms:
 > * Android
 > * iOS
+
+To download latest verion of app visit [link](https://yadi.sk/d/qoJ1UFTCNotngQ).
+
 
 # Preview Images
 <img src="https://user-images.githubusercontent.com/32712725/54049918-fb8f3880-41ee-11e9-878e-25d04cf6b46e.jpg" width="250px" />
