@@ -1,6 +1,6 @@
 Application that allows teachers to keep a diary, especially about students, courses, lessons and much more.
 
-# Platforms for which app built:: 
+> * Platforms for which app built:
 > * Android
 > * iOS - no Mac
 
